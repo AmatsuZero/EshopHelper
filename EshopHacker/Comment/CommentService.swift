@@ -31,18 +31,19 @@ class CommentService {
     struct PostCommentOption: URLQueryItemConvertiable {
         var moduleId = 1
         var commentId: String?
-        var acceptor: String
+        var acceptorId: String
         let attitude: Int
         var content: String
         
         init(appid: String, content: String, isLike: Bool) {
-            acceptor = appid
+            acceptorId = appid
             self.content = content
             attitude = isLike ? 1 : -1
         }
     }
     
-    struct CommentData: Codable {
+    struct CommentData: ClientVerifiableData {
+        
         struct CommentInfo: Codable {
             struct Comment: Codable {
                 let attitude: Int
@@ -62,8 +63,13 @@ class CommentService {
             let selfCommentHits: Int?
         }
         
-        let result: ResponseResult
+        var result: ResponseResult
         let data: CommentInfo?
+    }
+    
+    struct PostCommentData: ClientVerifiableData {
+        var result: ResponseResult
+        let data: Int?
     }
     
     func getGameComment(by appid: String) -> Promise<CommentData>  {
@@ -72,7 +78,22 @@ class CommentService {
         return getComment(option: option)
     }
     
-    func getComment(option: FetchCommentsOption) -> Promise<CommentData> {
-        return sessionManager.request(Router.getComment(option)).responseDecodable(CommentData.self)
+    @discardableResult
+    func postGameComment(by appid: String, isLike: Bool, content: String) -> Promise<PostCommentData> {
+        enum PostCommentError: Error {
+            case invalidContent
+        }
+        guard content.count >= 8 else {
+            return Promise(error: PostCommentError.invalidContent)
+        }
+        return postComment(option: .init(appid: appid, content: content, isLike: isLike))
+    }
+    
+    private func getComment(option: FetchCommentsOption) -> Promise<CommentData> {
+        return sessionManager.request(Router.getComment(option)).customResponse(CommentData.self)
+    }
+    
+    private func postComment(option: PostCommentOption) -> Promise<PostCommentData> {
+        return sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
     }
 }

@@ -14,7 +14,7 @@ class MainPageService {
     
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
     
-    struct BannerData: Codable {
+    struct BannerData: ClientVerifiableData {
         struct Body: Codable {
             struct Banner: Codable {
                 let content: String
@@ -24,19 +24,11 @@ class MainPageService {
             }
             let banner: [Banner]
         }
-        let result: ResponseResult
+        var result: ResponseResult
         let data: Body?
     }
     
     func getBannerData() -> Promise<BannerData> {
-        return sessionManager
-            .request(Router.banner)
-            .responseDecodable(BannerData.self)
-            .map {
-                guard $0.result.code == 0 else {
-                    throw Router.Error.serverError($0.result)
-                }
-                return $0
-        }
+        return sessionManager.request(Router.banner).customResponse(BannerData.self)
     }
 }

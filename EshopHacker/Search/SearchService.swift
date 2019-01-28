@@ -36,7 +36,7 @@ class SearchService {
         var scene = 1089
     }
     
-    struct SearchResult: Codable {
+    struct SearchResult: ClientVerifiableData {
         
         struct Data: Codable {
             struct Game: Codable {
@@ -82,7 +82,7 @@ class SearchService {
             let hits: Int
         }
         
-        let result: ResponseResult
+        var result: ResponseResult
         let data: Data?
     }
     
@@ -102,14 +102,6 @@ class SearchService {
     }
     
     func search(option: SearchOption) -> Promise<SearchResult> {
-        return sessionManager
-            .request(Router.search(option))
-            .responseDecodable(SearchResult.self)
-            .map {
-                guard $0.result.code == 0 else {
-                    throw Router.Error.serverError($0.result)
-                }
-                return $0
-        }
+        return sessionManager.request(Router.search(option)).customResponse(SearchResult.self)
     }
 }

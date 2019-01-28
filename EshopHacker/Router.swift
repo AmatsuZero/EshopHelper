@@ -6,16 +6,19 @@
 //  Copyright © 2019 Daubert. All rights reserved.
 //
 
-import Foundation
-import Alamofire
+import PromiseKit
+
+struct ResponseResult: Codable {
+    var code: Int
+    var msg: String?
+}
 
 protocol URLQueryItemConvertiable {
     func asQueryItems() -> [URLQueryItem]
 }
 
-struct ResponseResult: Codable {
-    var code: Int
-    var msg: String?
+protocol ClientVerifiableData: Codable {
+    var result: ResponseResult { get set }
 }
 
 enum Router: URLConvertible, URLRequestConvertible {
@@ -132,5 +135,20 @@ extension SessionManager {
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D40 MicroMessenger/7.0.3(0x17000321) NetType/WIFI Language/zh_CN",
         ]
         return .init(configuration: configuration)
+    }
+}
+
+extension ClientVerifiableData {
+    func isValid() -> Bool {  return result.code == 0 }
+}
+
+extension Alamofire.DataRequest {
+    func customResponse<T: ClientVerifiableData>(_ type: T.Type) -> Promise<T> {
+        return responseDecodable(type).map {
+            guard $0.result.code == 0 else {
+                throw Router.Error.serverError($0.result)
+            }
+            return $0
+        }
     }
 }

@@ -15,7 +15,7 @@ class GameInfoService {
     
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
     
-    struct GameInfoData: Codable {
+    struct GameInfoData: ClientVerifiableData {
         struct Info: Codable {
             struct Game: Codable {
                 struct LanguageRegion: Codable {
@@ -80,19 +80,13 @@ class GameInfoService {
             let prices: [GamePrice]
         }
         
-        let result: ResponseResult
+        var result: ResponseResult
         let data: Info?
     }
     
     func gameInfo(appId: String, fromName: String? = nil) -> Promise<GameInfoData> {
         return sessionManager
             .request(Router.gameInfo(appId: appId, fromName: fromName))
-            .responseDecodable(GameInfoData.self)
-            .map {
-                guard $0.result.code == 0 else {
-                    throw Router.Error.serverError($0.result)
-                }
-                return $0
-        }
+            .customResponse(GameInfoData.self)
     }
 }
