@@ -6,7 +6,6 @@
 //  Copyright © 2019 Daubert. All rights reserved.
 //
 
-import Alamofire
 import PromiseKit
 import UIKit
 
@@ -14,19 +13,17 @@ class GameInfoService {
     
     static let shared = GameInfoService()
     
-    fileprivate let sessionManager: SessionManager = SessionManager.default
+    fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
     
     struct GameInfoData: Codable {
-        
         struct Info: Codable {
-            
             struct Game: Codable {
-                
                 struct LanguageRegion: Codable {
                     let country: String
-                    let english: Int
+                    let english: Int?
+                    let japanese: Int?
+                    let chinese: Int?
                 }
-                
                 let appid: String
                 let banner: String
                 let brief: String
@@ -91,5 +88,11 @@ class GameInfoService {
         return sessionManager
             .request(Router.gameInfo(appId: appId, fromName: fromName))
             .responseDecodable(GameInfoData.self)
+            .map {
+                guard $0.result.code == 0 else {
+                    throw Router.Error.serverError($0.result)
+                }
+                return $0
+        }
     }
 }

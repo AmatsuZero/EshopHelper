@@ -13,14 +13,7 @@ class SearchService {
     
     static let shared = SearchService()
     
-    fileprivate lazy var sessionManager: SessionManager = {
-        let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = [
-            "Host": "switch.vgjump.com",
-            "Switch-Agent": Router.switchAgent,
-        ]
-        return .init(configuration: configuration)
-    }()
+    fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
     
     struct SearchOption: URLQueryItemConvertiable {
         
@@ -112,5 +105,11 @@ class SearchService {
         return sessionManager
             .request(Router.search(option))
             .responseDecodable(SearchResult.self)
+            .map {
+                guard $0.result.code == 0 else {
+                    throw Router.Error.serverError($0.result)
+                }
+                return $0
+        }
     }
 }

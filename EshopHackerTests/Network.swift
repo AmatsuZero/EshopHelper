@@ -11,21 +11,21 @@ import PromiseKit
 @testable import EshopHacker
 
 class Network: XCTestCase {
-
+    
     enum TestError: Error {
         case noAppId
     }
-
+    
     func testBuildSearch() {
         let exception = expectation(description: "搜索")
         firstly {
             SearchService.shared.mainIndex(page: 1)
-        }.done { ret in
-            print(ret)
-        }.catch {
-            XCTFail($0.localizedDescription)
-        }.finally {
-            exception.fulfill()
+            }.done { ret in
+                print(ret)
+            }.catch {
+                XCTFail($0.localizedDescription)
+            }.finally {
+                exception.fulfill()
         }
         wait(for: [exception], timeout: 3)
     }
@@ -34,11 +34,46 @@ class Network: XCTestCase {
         let exception = expectation(description: "游戏信息")
         firstly {
             SearchService.shared.mainIndex(page: 1)
+            }.then { ret -> Promise<GameInfoService.GameInfoData> in
+                guard let id = ret.data?.games.first?.appID else {
+                    throw TestError.noAppId
+                }
+                return GameInfoService.shared.gameInfo(appId: id)
+            }.done {
+                print($0)
+            }.catch {
+                XCTFail($0.localizedDescription)
+            }.finally {
+                exception.fulfill()
+        }
+        wait(for: [exception], timeout: 10)
+    }
+    
+    func testBannerData() {
+        let exception = expectation(description: "轮播图")
+        firstly {
+            MainPageService.shared.getBannerData()
+            }.done {
+                print($0)
+            }.catch {
+                XCTFail($0.localizedDescription)
+            }.finally {
+                exception.fulfill()
+        }
+        wait(for: [exception], timeout: 10)
+    }
+    
+    func testGetComment() {
+        let exception = expectation(description: "评论")
+        firstly {
+            SearchService.shared.mainIndex(page: 1)
         }.then { ret -> Promise<GameInfoService.GameInfoData> in
             guard let id = ret.data?.games.first?.appID else {
                 throw TestError.noAppId
             }
             return GameInfoService.shared.gameInfo(appId: id)
+        }.then { info -> Promise<CommentService.CommentData> in
+            return CommentService.shared.getGameComment(by: info.data!.game.appid)
         }.done {
             print($0)
         }.catch {
@@ -46,14 +81,6 @@ class Network: XCTestCase {
         }.finally {
             exception.fulfill()
         }
-        wait(for: [exception], timeout: 3)
+        wait(for: [exception], timeout: 10)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

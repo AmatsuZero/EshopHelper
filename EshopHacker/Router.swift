@@ -21,6 +21,7 @@ struct ResponseResult: Codable {
 enum Router: URLConvertible, URLRequestConvertible {
     
     static let baseURLString = "https://switch.vgjump.com"
+    static let cookieString = "qiyeToken=eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJqdW1wIiwidXNlciI6IkpDODBoSTVvaEJJQ1ZEUWMifQ.wEOn0z1BkT3R-SnF96Vut0-RZ0GVP-hxaZfZsaBISWvgQHYV-LEmT9iHjt6PLPDm1Klk6ZFEq7AQBC5QIWFSRw;version=2;"
     static let version = 41
     static let switchAgent: String = {
         return [
@@ -30,9 +31,16 @@ enum Router: URLConvertible, URLRequestConvertible {
             "\(UIDevice.modelName)<\(UIDevice.identifier)>",
             "\(UIDevice.current.model)"].joined(separator: ";")
     }()
-    
+    /// 搜索
     case search(SearchService.SearchOption)
+    /// 游戏详情
     case gameInfo(appId: String, fromName: String?)
+    /// Banner位资源
+    case banner
+    /// 拉取评论列表
+    case getComment(CommentService.FetchCommentsOption)
+    /// 发评论
+    case postComment(CommentService.PostCommentOption)
     
     enum Error: CustomNSError {
         case invalidURL
@@ -61,6 +69,9 @@ enum Router: URLConvertible, URLRequestConvertible {
         switch self {
         case .search: return "/switch/gameDlc/list"
         case .gameInfo: return "/switch/gameInfo"
+        case .banner: return "/switch/banner/list"
+        case .getComment: return "/switch/comment/listGameComment"
+        case .postComment: return "/switch/comment/gameComment"
         }
     }
     
@@ -72,13 +83,19 @@ enum Router: URLConvertible, URLRequestConvertible {
         switch self {
         case .search(let option):
             components.queryItems = option.asQueryItems()
+        case .getComment(let option):
+            components.queryItems = option.asQueryItems()
+        case .postComment(let option):
+            components.queryItems = option.asQueryItems()
         case .gameInfo(let appId, let fromName):
             var queryItems = [URLQueryItem]()
             queryItems.append(.init(name: "appid", value: appId))
             queryItems.append(.init(name: "fromName", value: fromName))
-            queryItems.append(.init(name: "platform", value: UIDevice.current.systemName))
-            queryItems.append(.init(name: "system", value: "iOS%2012.1.3"))
+            queryItems.append(.init(name: "platform", value: UIDevice.current.systemName.lowercased()))
+            queryItems.append(.init(name: "system", value: "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"))
             components.queryItems = queryItems
+        case .banner:
+            components.queryItems = [.init(name: "version", value: "\(Router.version)")]
         }
         guard let url = components.url else {
             throw Error.invalidURL
@@ -89,10 +106,12 @@ enum Router: URLConvertible, URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
+        case .banner, .getComment, .postComment:
+            request.setValue(Router.cookieString, forHTTPHeaderField: "Cookie")
         default:
             request.httpMethod = "GET"
-            return request
         }
+        return request
     }
 }
 
@@ -102,5 +121,16 @@ extension URLQueryItemConvertiable {
         return mirror.children
             .filter { $0.label != nil }
             .map { URLQueryItem.init(name: $0.label!, value: "\($0.value)")}
+    }
+}
+
+extension SessionManager {
+    static var defaultSwitchSessionManager: SessionManager {
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = [
+            "Switch-Agent": Router.switchAgent,
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D40 MicroMessenger/7.0.3(0x17000321) NetType/WIFI Language/zh_CN",
+        ]
+        return .init(configuration: configuration)
     }
 }

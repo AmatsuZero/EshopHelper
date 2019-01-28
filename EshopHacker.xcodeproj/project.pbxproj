@@ -20,6 +20,9 @@
 		801B7F9421FDA7A8007DFCB5 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9321FDA7A8007DFCB5 /* Network.swift */; };
 		801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */; };
 		801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */; };
+		801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FCA21FED17C007DFCB5 /* MainPageService.swift */; };
+		801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FFB21FEE19C007DFCB5 /* CommentService.swift */; };
+		801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805A21FF22D3007DFCB5 /* UserService.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +56,9 @@
 		801B7F9321FDA7A8007DFCB5 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
 		801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoService.swift; sourceTree = "<group>"; };
+		801B7FCA21FED17C007DFCB5 /* MainPageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageService.swift; sourceTree = "<group>"; };
+		801B7FFB21FEE19C007DFCB5 /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
+		801B805A21FF22D3007DFCB5 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +116,9 @@
 		801B7F6921FD912D007DFCB5 /* EshopHacker */ = {
 			isa = PBXGroup;
 			children = (
+				801B805921FF22C1007DFCB5 /* User */,
+				801B7FFA21FEE11D007DFCB5 /* Comment */,
+				801B7FC921FED167007DFCB5 /* Main */,
 				801B7F9821FDCABD007DFCB5 /* Detail */,
 				801B7F9521FDAE66007DFCB5 /* Extensions */,
 				801B7F8D21FD916D007DFCB5 /* Search */,
@@ -157,6 +166,30 @@
 				801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		801B7FC921FED167007DFCB5 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				801B7FCA21FED17C007DFCB5 /* MainPageService.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		801B7FFA21FEE11D007DFCB5 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				801B7FFB21FEE19C007DFCB5 /* CommentService.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		801B805921FF22C1007DFCB5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				801B805A21FF22D3007DFCB5 /* UserService.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
@@ -348,7 +381,10 @@
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F6D21FD912D007DFCB5 /* ViewController.swift in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
+				801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */,
+				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
 				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
+				801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */,
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
