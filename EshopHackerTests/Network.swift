@@ -12,12 +12,8 @@ import PromiseKit
 
 class Network: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    enum TestError: Error {
+        case noAppId
     }
 
     func testBuildSearch() {
@@ -26,6 +22,25 @@ class Network: XCTestCase {
             SearchService.shared.mainIndex(page: 1)
         }.done { ret in
             print(ret)
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }.finally {
+            exception.fulfill()
+        }
+        wait(for: [exception], timeout: 3)
+    }
+    
+    func testGameInfo() {
+        let exception = expectation(description: "游戏信息")
+        firstly {
+            SearchService.shared.mainIndex(page: 1)
+        }.then { ret -> Promise<GameInfoService.GameInfoData> in
+            guard let id = ret.data?.games.first?.appID else {
+                throw TestError.noAppId
+            }
+            return GameInfoService.shared.gameInfo(appId: id)
+        }.done {
+            print($0)
         }.catch {
             XCTFail($0.localizedDescription)
         }.finally {

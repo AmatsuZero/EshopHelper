@@ -13,7 +13,7 @@ protocol URLQueryItemConvertiable {
     func asQueryItems() -> [URLQueryItem]
 }
 
-struct ResponseResult: Decodable {
+struct ResponseResult: Codable {
     var code: Int
     var msg: String?
 }
@@ -32,6 +32,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     }()
     
     case search(SearchService.SearchOption)
+    case gameInfo(appId: String, fromName: String?)
     
     enum Error: CustomNSError {
         case invalidURL
@@ -59,6 +60,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     var path: String {
         switch self {
         case .search: return "/switch/gameDlc/list"
+        case .gameInfo: return "/switch/gameInfo"
         }
     }
     
@@ -66,21 +68,28 @@ enum Router: URLConvertible, URLRequestConvertible {
         guard var components = URLComponents(string: Router.baseURLString) else {
             throw Error.invalidURL
         }
+        components.path = path
         switch self {
-        case .search(let options):
-            components.path = path
-            components.queryItems = options.asQueryItems()
-            guard let url = components.url else {
-                throw Error.invalidURL
-            }
-            return url
+        case .search(let option):
+            components.queryItems = option.asQueryItems()
+        case .gameInfo(let appId, let fromName):
+            var queryItems = [URLQueryItem]()
+            queryItems.append(.init(name: "appid", value: appId))
+            queryItems.append(.init(name: "fromName", value: fromName))
+            queryItems.append(.init(name: "platform", value: UIDevice.current.systemName))
+            queryItems.append(.init(name: "system", value: "iOS%2012.1.3"))
+            components.queryItems = queryItems
         }
+        guard let url = components.url else {
+            throw Error.invalidURL
+        }
+        return url
     }
     
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
-        case .search:
+        default:
             request.httpMethod = "GET"
             return request
         }

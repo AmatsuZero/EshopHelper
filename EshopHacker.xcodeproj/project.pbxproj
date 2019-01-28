@@ -15,10 +15,11 @@
 		801B7F7521FD912E007DFCB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F7421FD912E007DFCB5 /* Assets.xcassets */; };
 		801B7F7821FD912E007DFCB5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F7621FD912E007DFCB5 /* LaunchScreen.storyboard */; };
 		801B7F8321FD912F007DFCB5 /* EshopHackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F8221FD912F007DFCB5 /* EshopHackerTests.swift */; };
-		801B7F9021FD92C1007DFCB5 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F8F21FD92C1007DFCB5 /* Network.swift */; };
+		801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F8F21FD92C1007DFCB5 /* SearchService.swift */; };
 		801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9121FD9EF5007DFCB5 /* Router.swift */; };
 		801B7F9421FDA7A8007DFCB5 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9321FDA7A8007DFCB5 /* Network.swift */; };
 		801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */; };
+		801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,10 +48,11 @@
 		801B7F7E21FD912F007DFCB5 /* EshopHackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EshopHackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		801B7F8221FD912F007DFCB5 /* EshopHackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EshopHackerTests.swift; sourceTree = "<group>"; };
 		801B7F8421FD912F007DFCB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		801B7F8F21FD92C1007DFCB5 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		801B7F8F21FD92C1007DFCB5 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		801B7F9121FD9EF5007DFCB5 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		801B7F9321FDA7A8007DFCB5 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
+		801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoService.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,7 +138,7 @@
 		801B7F8D21FD916D007DFCB5 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				801B7F8F21FD92C1007DFCB5 /* Network.swift */,
+				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -152,6 +154,7 @@
 		801B7F9821FDCABD007DFCB5 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -345,8 +348,9 @@
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F6D21FD912D007DFCB5 /* ViewController.swift in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
-				801B7F9021FD92C1007DFCB5 /* Network.swift in Sources */,
+				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
+				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
