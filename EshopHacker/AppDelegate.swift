@@ -19,17 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = SSBLaunchViewController()
+        window?.rootViewController = rootViewController
         return true
     }
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window?.makeKeyAndVisible()
-        DispatchQueue.main.asyncAfter(deadline: 3) {
-            self.window?.setRootViewController(self.rootViewController,
-                                               options: .init(direction: .fade, style: .linear))
-        }
+//        DispatchQueue.main.asyncAfter(deadline: 1) {
+//            self.window?.setRootViewController(self.rootViewController,
+//                                               options: .init(direction: .fade, style: .linear))
+//        }
         return true
     }
 

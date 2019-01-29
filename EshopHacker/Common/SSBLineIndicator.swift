@@ -19,7 +19,6 @@ class SSBLineIndicator: TMLineBarIndicator {
         }
     }
     
-    
     override var displayMode: TMBarIndicator.DisplayMode { return .bottom }
     
     override func layoutSubviews() {

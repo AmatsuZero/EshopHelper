@@ -52,7 +52,7 @@ class Network: XCTestCase {
     func testBannerData() {
         let exception = expectation(description: "轮播图")
         firstly {
-            MainPageService.shared.getBannerData()
+            BannerDataService.shared.getBannerData()
             }.done {
                 print($0)
             }.catch {

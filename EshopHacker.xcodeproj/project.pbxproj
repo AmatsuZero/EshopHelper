@@ -18,7 +18,7 @@
 		801B7F9421FDA7A8007DFCB5 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9321FDA7A8007DFCB5 /* Network.swift */; };
 		801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */; };
 		801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */; };
-		801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FCA21FED17C007DFCB5 /* MainPageService.swift */; };
+		801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FCA21FED17C007DFCB5 /* BannerDataService.swift */; };
 		801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FFB21FEE19C007DFCB5 /* CommentService.swift */; };
 		801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805A21FF22D3007DFCB5 /* UserService.swift */; };
 		801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805D21FFE2F3007DFCB5 /* SSBLaunchViewController.swift */; };
@@ -36,6 +36,7 @@
 		801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */; };
 		801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */; };
 		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
+		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,7 +68,7 @@
 		801B7F9321FDA7A8007DFCB5 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
 		801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoService.swift; sourceTree = "<group>"; };
-		801B7FCA21FED17C007DFCB5 /* MainPageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageService.swift; sourceTree = "<group>"; };
+		801B7FCA21FED17C007DFCB5 /* BannerDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDataService.swift; sourceTree = "<group>"; };
 		801B7FFB21FEE19C007DFCB5 /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
 		801B805A21FF22D3007DFCB5 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		801B805D21FFE2F3007DFCB5 /* SSBLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLaunchViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 		801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTodayRecommendViewController.swift; sourceTree = "<group>"; };
 		801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLineIndicator.swift; sourceTree = "<group>"; };
 		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
+		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */,
+				801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */,
 				801B806121FFE33A007DFCB5 /* CALayer+Extensions.swift */,
 				801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */,
 				801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */,
@@ -202,7 +205,6 @@
 		801B7FC921FED167007DFCB5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				801B7FCA21FED17C007DFCB5 /* MainPageService.swift */,
 				801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */,
 				801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */,
 				801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */,
@@ -251,6 +253,7 @@
 				801B809F21FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift */,
 				801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */,
 				801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */,
+				801B7FCA21FED17C007DFCB5 /* BannerDataService.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -463,7 +466,7 @@
 				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
-				801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */,
+				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
 				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,
@@ -473,6 +476,7 @@
 				801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */,
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
 				801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */,
+				801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */,
 				801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */,
 				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
