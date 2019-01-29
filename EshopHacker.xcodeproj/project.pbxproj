@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		39C2AA03411DAF54897006D4 /* Pods_EshopHackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */; };
 		801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */; };
-		801B7F6D21FD912D007DFCB5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F6C21FD912D007DFCB5 /* ViewController.swift */; };
-		801B7F7021FD912D007DFCB5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F6E21FD912D007DFCB5 /* Main.storyboard */; };
 		801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F7121FD912D007DFCB5 /* EshopHacker.xcdatamodeld */; };
 		801B7F7521FD912E007DFCB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F7421FD912E007DFCB5 /* Assets.xcassets */; };
 		801B7F7821FD912E007DFCB5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F7621FD912E007DFCB5 /* LaunchScreen.storyboard */; };
@@ -23,6 +21,21 @@
 		801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FCA21FED17C007DFCB5 /* MainPageService.swift */; };
 		801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7FFB21FEE19C007DFCB5 /* CommentService.swift */; };
 		801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805A21FF22D3007DFCB5 /* UserService.swift */; };
+		801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805D21FFE2F3007DFCB5 /* SSBLaunchViewController.swift */; };
+		801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B805F21FFE30F007DFCB5 /* SSBLaunchView.swift */; };
+		801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B806121FFE33A007DFCB5 /* CALayer+Extensions.swift */; };
+		801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */; };
+		801B806821FFEF1D007DFCB5 /* eShop Load.wav in Resources */ = {isa = PBXBuildFile; fileRef = 801B806721FFEF1D007DFCB5 /* eShop Load.wav */; };
+		801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B809A21FFF4BF007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift */; };
+		801B809D21FFF51C007DFCB5 /* SSBRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B809C21FFF51C007DFCB5 /* SSBRootViewController.swift */; };
+		801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B809F21FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift */; };
+		801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */; };
+		801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */; };
+		801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */; };
+		801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */; };
+		801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */; };
+		801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */; };
+		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,8 +55,6 @@
 		779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHacker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		801B7F6721FD912D007DFCB5 /* EshopHacker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EshopHacker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		801B7F6C21FD912D007DFCB5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		801B7F6F21FD912D007DFCB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		801B7F7221FD912D007DFCB5 /* EshopHacker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EshopHacker.xcdatamodel; sourceTree = "<group>"; };
 		801B7F7421FD912E007DFCB5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		801B7F7721FD912E007DFCB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -59,6 +70,21 @@
 		801B7FCA21FED17C007DFCB5 /* MainPageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageService.swift; sourceTree = "<group>"; };
 		801B7FFB21FEE19C007DFCB5 /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
 		801B805A21FF22D3007DFCB5 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		801B805D21FFE2F3007DFCB5 /* SSBLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLaunchViewController.swift; sourceTree = "<group>"; };
+		801B805F21FFE30F007DFCB5 /* SSBLaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLaunchView.swift; sourceTree = "<group>"; };
+		801B806121FFE33A007DFCB5 /* CALayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extensions.swift"; sourceTree = "<group>"; };
+		801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		801B806721FFEF1D007DFCB5 /* eShop Load.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "eShop Load.wav"; sourceTree = "<group>"; };
+		801B809A21FFF4BF007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBAlphaTransitingViewControllerAnimator.swift; sourceTree = "<group>"; };
+		801B809C21FFF51C007DFCB5 /* SSBRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRootViewController.swift; sourceTree = "<group>"; };
+		801B809F21FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBFullscreenPresentationController.swift; sourceTree = "<group>"; };
+		801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GCD+Extensions.swift"; sourceTree = "<group>"; };
+		801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRecommendViewController.swift; sourceTree = "<group>"; };
+		801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchListViewController.swift; sourceTree = "<group>"; };
+		801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchViewController.swift; sourceTree = "<group>"; };
+		801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTodayRecommendViewController.swift; sourceTree = "<group>"; };
+		801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLineIndicator.swift; sourceTree = "<group>"; };
+		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +142,9 @@
 		801B7F6921FD912D007DFCB5 /* EshopHacker */ = {
 			isa = PBXGroup;
 			children = (
+				801B809E21FFF696007DFCB5 /* Common */,
+				801B806921FFEF65007DFCB5 /* Root */,
+				801B805C21FFE1CE007DFCB5 /* Launch */,
 				801B805921FF22C1007DFCB5 /* User */,
 				801B7FFA21FEE11D007DFCB5 /* Comment */,
 				801B7FC921FED167007DFCB5 /* Main */,
@@ -123,8 +152,6 @@
 				801B7F9521FDAE66007DFCB5 /* Extensions */,
 				801B7F8D21FD916D007DFCB5 /* Search */,
 				801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */,
-				801B7F6C21FD912D007DFCB5 /* ViewController.swift */,
-				801B7F6E21FD912D007DFCB5 /* Main.storyboard */,
 				801B7F7421FD912E007DFCB5 /* Assets.xcassets */,
 				801B7F7621FD912E007DFCB5 /* LaunchScreen.storyboard */,
 				801B7F7921FD912E007DFCB5 /* Info.plist */,
@@ -148,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
+				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -156,6 +184,9 @@
 			isa = PBXGroup;
 			children = (
 				801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */,
+				801B806121FFE33A007DFCB5 /* CALayer+Extensions.swift */,
+				801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */,
+				801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -172,6 +203,9 @@
 			isa = PBXGroup;
 			children = (
 				801B7FCA21FED17C007DFCB5 /* MainPageService.swift */,
+				801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */,
+				801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */,
+				801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -190,6 +224,35 @@
 				801B805A21FF22D3007DFCB5 /* UserService.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		801B805C21FFE1CE007DFCB5 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				801B806721FFEF1D007DFCB5 /* eShop Load.wav */,
+				801B805D21FFE2F3007DFCB5 /* SSBLaunchViewController.swift */,
+				801B805F21FFE30F007DFCB5 /* SSBLaunchView.swift */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
+		801B806921FFEF65007DFCB5 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				801B809C21FFF51C007DFCB5 /* SSBRootViewController.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		801B809E21FFF696007DFCB5 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				801B809A21FFF4BF007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift */,
+				801B809F21FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift */,
+				801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */,
+				801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
@@ -250,6 +313,7 @@
 		801B7F5F21FD912D007DFCB5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = SSB;
 				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Daubert;
@@ -288,8 +352,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				801B7F7821FD912E007DFCB5 /* LaunchScreen.storyboard in Resources */,
+				801B806821FFEF1D007DFCB5 /* eShop Load.wav in Resources */,
 				801B7F7521FD912E007DFCB5 /* Assets.xcassets in Resources */,
-				801B7F7021FD912D007DFCB5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,14 +399,32 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EshopHacker/Pods-EshopHacker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AutoInsetter/AutoInsetter.framework",
+				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/Pageboy/Pageboy.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Tabman/Tabman.framework",
+				"${BUILT_PRODUCTS_DIR}/UIWindowTransitions/UIWindowTransitions.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutoInsetter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pageboy.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Tabman.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIWindowTransitions.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -378,16 +460,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
-				801B7F6D21FD912D007DFCB5 /* ViewController.swift in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* MainPageService.swift in Sources */,
+				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
+				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
+				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,
 				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
+				801B809D21FFF51C007DFCB5 /* SSBRootViewController.swift in Sources */,
 				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
 				801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */,
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
+				801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */,
+				801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */,
+				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
+				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
+				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
+				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
+				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
+				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,
+				801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,14 +506,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		801B7F6E21FD912D007DFCB5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				801B7F6F21FD912D007DFCB5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		801B7F7621FD912E007DFCB5 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -481,7 +568,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -536,7 +623,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
