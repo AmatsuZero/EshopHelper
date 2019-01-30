@@ -8,19 +8,18 @@
 
 import SnapKit
 import Reusable
-import SDWebImage
 import PromiseKit
 
 class SSBBannerCollectionViewCell: UICollectionViewCell, Reusable {
     
-    private let bannerImageView = UIImageView()
+    private let bannerImageView = SSBLoadingImageView()
     
     var imgURL: String? {
         didSet {
             guard let url = imgURL else {
                 return
             }
-            bannerImageView.sd_setImage(with: URL(string: url))
+            bannerImageView.url = url
         }
     }
     
@@ -50,7 +49,7 @@ class SSBannerView: UIView {
     let pageControl = UIPageControl()
     var timer: Timer?
     private let duration: CFTimeInterval = 1
-    let padding: CGFloat = 10
+    let padding: CGFloat = 6
     weak var delegate: SSBBannerViewDelegate?
     
     var currentIndex = 1 {
@@ -76,6 +75,9 @@ class SSBannerView: UIView {
         collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundView = SSBListBackgroundView()
+        collectionView.backgroundView?.isHidden = false
+        collectionView.layer.cornerRadius = 6
         
         super.init(frame: frame)
         
@@ -93,6 +95,8 @@ class SSBannerView: UIView {
             make.bottom.equalTo(0)
             make.centerX.equalTo(self)
         }
+        
+        backgroundColor = .white
     }
     
     private var dataSourceCount: Int {
@@ -210,19 +214,12 @@ extension SSBannerView: UICollectionViewDelegate, UICollectionViewDelegateFlowLa
     }
 }
 
-protocol SSBBannerViewControllerDelegate: class {
-    func onLoadSuccess(controller: SSBBannerViewController)
-    func onLoadFaild(controller: SSBBannerViewController, error: Error)
-}
-
 class SSBBannerViewController: UIViewController {
     
     private let dataSouce = SSBBannerDataSource()
     private let bannerView = SSBannerView(frame: CGRect(origin: .zero,
                                                         size: .init(width: .screenWidth,
                                                                     height: 100)))
-    
-    weak var delegate: SSBBannerViewControllerDelegate?
     
     override func loadView() {
         view = bannerView
@@ -238,20 +235,7 @@ class SSBBannerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        BannerDataService.shared.getBannerData().done { [weak self] data in
-            guard let self = self,
-                let source = data.data?.banner else {
-                return
-            }
-            self.dataSouce.bind(data: source, collectionView: self.bannerView.collectionView)
-            if let delegate = self.delegate {
-                delegate.onLoadSuccess(controller: self)
-            }
-        }.catch { [weak self] error in
-            if let self = self, let delegate = self.delegate {
-                delegate.onLoadFaild(controller: self, error: error)
-            }
-        }
+        fetchData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -262,6 +246,32 @@ class SSBBannerViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         bannerView.endTimer()
+    }
+    
+    func fetchData() {
+        let backgroundView = self.bannerView.collectionView.backgroundView as? SSBListBackgroundView
+        backgroundView?.state = .loading
+        backgroundView?.isHidden = false
+        BannerDataService.shared.getBannerData().done { [weak self] data in
+            guard let self = self,
+                let source = data.data?.banner else {
+                    return
+            }
+            if source.isEmpty {
+                backgroundView?.state = .empty
+            }
+            self.dataSouce.bind(data: source, collectionView: self.bannerView.collectionView)
+        }.catch { [weak self] error in
+            backgroundView?.state = .error(self)
+        }
+        self.bannerView.collectionView.reloadData()
+    }
+}
+
+extension SSBBannerViewController: SSBListBackgroundViewDelegate {
+    func retry(view: SSBListBackgroundView) {
+        dataSouce.clear()
+        fetchData()
     }
 }
 

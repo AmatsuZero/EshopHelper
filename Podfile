@@ -15,6 +15,7 @@ target 'EshopHacker' do
   pod 'MJRefresh'
   pod 'Reusable'
   pod 'UIWindowTransitions'
+  pod 'NVActivityIndicatorView'
 
   target 'EshopHackerTests' do
     inherit! :search_paths

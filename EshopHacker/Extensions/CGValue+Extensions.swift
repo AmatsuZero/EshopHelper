@@ -19,11 +19,11 @@ extension CGFloat {
     }
     
     func factoredWitdh(by: CGFloat) -> CGFloat {
-        return self * .screenWidth / by
+        return by != 0 ? self * .screenWidth / by : 0
     }
     
     func factoredHeight(by: CGFloat) -> CGFloat {
-        return self * .screenHeight / by
+        return by != 0 ? self * .screenHeight / by : 0
     }
 }
 

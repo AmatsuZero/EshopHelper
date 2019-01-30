@@ -31,7 +31,6 @@ class SSBSearchListViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         title = "最新折扣"
-        bannerViewController.delegate = self
         addChild(bannerViewController)
     }
     
@@ -46,17 +45,5 @@ class SSBSearchListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-}
-
-extension SSBSearchListViewController: SSBBannerViewControllerDelegate {
-    
-    func onLoadSuccess(controller: SSBBannerViewController) {
-        
-    }
-    
-    func onLoadFaild(controller: SSBBannerViewController, error: Error) {
-        listView.tableView.tableHeaderView = nil
-        bannerViewController.removeFromParent()
     }
 }

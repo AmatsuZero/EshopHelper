@@ -45,11 +45,14 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
     
     weak var delegate: SSBBannerDataSourceDelegate?
     
+    func clear() {
+        dataSource.removeAll()
+    }
+    
     func bind(data: [BannerDataService.BannerData.Body.Banner], collectionView: UICollectionView) {
         guard !data.isEmpty else {
             return
         }
-        
         dataSource.removeAll()
         dataSource = data
         dataSource.insert(data.last!, at: 0)
@@ -58,6 +61,7 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        collectionView.backgroundView?.isHidden = !dataSource.isEmpty
         return dataSource.count
     }
     
