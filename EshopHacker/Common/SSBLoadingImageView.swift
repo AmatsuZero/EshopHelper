@@ -9,6 +9,7 @@
 import SDWebImage
 import SnapKit
 import NVActivityIndicatorView
+import FontAwesome_swift
 
 class SSBLoadingImageView: UIImageView {
     
@@ -19,6 +20,7 @@ class SSBLoadingImageView: UIImageView {
         indicator = NVActivityIndicatorView(frame: .zero, type: type, color: .eShopColor, padding: 0)
         super.init(frame: .zero)
         image = placeHolderImage
+        backgroundColor = .white
         addSubview(indicator)
         indicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -36,8 +38,16 @@ class SSBLoadingImageView: UIImageView {
                 indicator.startAnimating()
             }
             self.sd_setImage(with: URL(string: url)) { [weak self] (image, error, _, _) in
-                self?.image = image
-                self?.indicator.stopAnimating()
+                guard let self = self else { return }
+                if let image = image, error == nil {
+                    self.image = image
+                } else {
+                    self.image = .fontAwesomeIcon(name: .unlink,
+                                                  style: .solid,
+                                                  textColor: .eShopColor,
+                                                  size: self.frame.size)
+                }
+                self.indicator.stopAnimating()
             }
         }
     }

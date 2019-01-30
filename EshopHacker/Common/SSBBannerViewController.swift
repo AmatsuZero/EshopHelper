@@ -49,7 +49,7 @@ class SSBannerView: UIView {
     let pageControl = UIPageControl()
     var timer: Timer?
     private let duration: CFTimeInterval = 1
-    let padding: CGFloat = 6
+    let padding: CGFloat = 7
     weak var delegate: SSBBannerViewDelegate?
     
     var currentIndex = 1 {
@@ -75,7 +75,7 @@ class SSBannerView: UIView {
         collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundView = SSBListBackgroundView()
+        collectionView.backgroundView = SSBListBackgroundView(frame: .zero)
         collectionView.backgroundView?.isHidden = false
         collectionView.layer.cornerRadius = 6
         
@@ -106,6 +106,14 @@ class SSBannerView: UIView {
         return pageControl.numberOfPages > 0 ? pageControl.numberOfPages : 0
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        collectionView.snp.updateConstraints { make in
+            make.top.left.equalTo(padding)
+            make.bottom.right.equalTo(-padding)
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -117,11 +125,6 @@ class SSBannerView: UIView {
         let indexPath = IndexPath(item: 1, section: 0)
         scrollTo(indexPath: indexPath, animated: false)
         currentIndex = 1
-        
-        collectionView.snp.updateConstraints { make in
-            make.top.left.equalTo(padding)
-            make.bottom.right.equalTo(-padding)
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -219,7 +222,7 @@ class SSBBannerViewController: UIViewController {
     private let dataSouce = SSBBannerDataSource()
     private let bannerView = SSBannerView(frame: CGRect(origin: .zero,
                                                         size: .init(width: .screenWidth,
-                                                                    height: 100)))
+                                                                    height: 84)))
     
     override func loadView() {
         view = bannerView
@@ -249,7 +252,7 @@ class SSBBannerViewController: UIViewController {
     }
     
     func fetchData() {
-        let backgroundView = self.bannerView.collectionView.backgroundView as? SSBListBackgroundView
+        let backgroundView = bannerView.collectionView.backgroundView as? SSBListBackgroundView
         backgroundView?.state = .loading
         backgroundView?.isHidden = false
         BannerDataService.shared.getBannerData().done { [weak self] data in

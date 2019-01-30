@@ -134,6 +134,7 @@ extension SessionManager {
             "Switch-Agent": Router.switchAgent,
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D40 MicroMessenger/7.0.3(0x17000321) NetType/WIFI Language/zh_CN",
         ]
+        configuration.timeoutIntervalForRequest = 3
         return .init(configuration: configuration)
     }
 }

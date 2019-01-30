@@ -52,12 +52,8 @@ class SSBListBackgroundView: UIView {
         }
     }
     
+    private let loadingIndicator: NVActivityIndicatorView
     
-    
-    private let loadingIndicator = NVActivityIndicatorView(frame: .zero,
-                                                           type: .pacman,
-                                                           color: .eShopColor,
-                                                           padding: 0)
     var indicatorHeight: CGFloat = 40 {
         didSet {
             setNeedsLayout()
@@ -110,9 +106,13 @@ class SSBListBackgroundView: UIView {
         }
     }
     
-    override init(frame: CGRect) {
+    init(frame:CGRect, type: NVActivityIndicatorType = .pacman) {
+        loadingIndicator = NVActivityIndicatorView(frame: .zero,
+                                                   type: type,
+                                                   color: .eShopColor,
+                                                   padding: 0)
         super.init(frame: frame)
- 
+        
         addSubview(loadingIndicator)
         loadingIndicator.snp.makeConstraints { make in
             make.width.height.equalTo(indicatorHeight)
@@ -164,14 +164,14 @@ class SSBListBackgroundView: UIView {
         addSubview(emptyView)
         emptyImageView.image = .fontAwesomeIcon(name: .nintendoSwitch,
                                                 style: .brands,
-                                               textColor: .gray,
-                                               size: .init(width: imageViewSize, height: imageViewSize))
+                                                textColor: .gray,
+                                                size: .init(width: imageViewSize, height: imageViewSize))
         emptyView.addSubview(emptyImageView)
         emptyImageView.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
             make.width.height.equalTo(imageViewSize)
         }
-    
+        
         emptyLabel.font = retryButton.titleLabel?.font
         emptyLabel.textColor = .gray
         emptyLabel.backgroundColor = .clear

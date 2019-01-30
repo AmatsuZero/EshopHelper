@@ -39,6 +39,7 @@
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
+		8054525622017302002F04D7 /* SSBSearchListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8054525522017302002F04D7 /* SSBSearchListTableViewCell.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
+		8054525522017302002F04D7 /* SSBSearchListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchListTableViewCell.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,6 +213,7 @@
 			children = (
 				801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */,
 				801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */,
+				8054525522017302002F04D7 /* SSBSearchListTableViewCell.swift */,
 				801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */,
 			);
 			path = Main;
@@ -478,6 +481,7 @@
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
+				8054525622017302002F04D7 /* SSBSearchListTableViewCell.swift in Sources */,
 				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,
 				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
 				801B809D21FFF51C007DFCB5 /* SSBRootViewController.swift in Sources */,
