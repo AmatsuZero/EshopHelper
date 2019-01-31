@@ -17,7 +17,7 @@ class Network: XCTestCase {
     }
     
     func testBuildSearch() {
-        let exception = expectation(description: "搜索")
+        let expectation = self.expectation(description: "搜索")
         firstly {
             SearchService.shared.mainIndex(page: 1)
             }.done { ret in
@@ -25,13 +25,13 @@ class Network: XCTestCase {
             }.catch {
                 XCTFail($0.localizedDescription)
             }.finally {
-                exception.fulfill()
+                expectation.fulfill()
         }
-        wait(for: [exception], timeout: 3)
+        wait(for: [expectation], timeout: 3)
     }
     
     func testGameInfo() {
-        let exception = expectation(description: "游戏信息")
+        let expectation = self.expectation(description: "游戏信息")
         firstly {
             SearchService.shared.mainIndex(page: 1)
             }.then { ret -> Promise<GameInfoService.GameInfoData> in
@@ -44,13 +44,13 @@ class Network: XCTestCase {
             }.catch {
                 XCTFail($0.localizedDescription)
             }.finally {
-                exception.fulfill()
+                expectation.fulfill()
         }
-        wait(for: [exception], timeout: 10)
+        wait(for: [expectation], timeout: 10)
     }
     
     func testBannerData() {
-        let exception = expectation(description: "轮播图")
+        let expectation = self.expectation(description: "轮播图")
         firstly {
             BannerDataService.shared.getBannerData()
             }.done {
@@ -58,13 +58,13 @@ class Network: XCTestCase {
             }.catch {
                 XCTFail($0.localizedDescription)
             }.finally {
-                exception.fulfill()
+                expectation.fulfill()
         }
-        wait(for: [exception], timeout: 10)
+        wait(for: [expectation], timeout: 10)
     }
     
     func testGetComment() {
-        let exception = expectation(description: "拉评论")
+        let expectation = self.expectation(description: "拉评论")
         firstly {
             SearchService.shared.mainIndex(page: 1)
         }.then { ret -> Promise<GameInfoService.GameInfoData> in
@@ -79,13 +79,13 @@ class Network: XCTestCase {
         }.catch {
             XCTFail($0.localizedDescription)
         }.finally {
-            exception.fulfill()
+            expectation.fulfill()
         }
-        wait(for: [exception], timeout: 10)
+        wait(for: [expectation], timeout: 10)
     }
     
     func testPostComment() {
-        let exception = expectation(description: "发评论")
+        let expectation = self.expectation(description: "发评论")
         firstly {
             SearchService.shared.mainIndex(page: 1)
         }.then { ret -> Promise<GameInfoService.GameInfoData> in
@@ -100,8 +100,22 @@ class Network: XCTestCase {
         }.catch {
             XCTFail($0.localizedDescription)
         }.finally {
-            exception.fulfill()
+            expectation.fulfill()
         }
-        wait(for: [exception], timeout: 10)
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testTodayRecommend() {
+        let expectation = self.expectation(description: "今日推荐")
+        firstly {
+            TodayRecommendService.shared.todayRecommend(.init())
+        }.done {
+            print($0)
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }.finally {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
     }
 }

@@ -92,7 +92,7 @@ class SSBCustomRefreshHeader: MJRefreshHeader, CAAnimationDelegate {
     
     private func reset() {
         isRotating = false
-        sholudStop = false
+        sholudStop = true
     }
 }
 
@@ -178,7 +178,7 @@ class SSBCustomAutoFooter: MJRefreshAutoFooter, CAAnimationDelegate {
     
     private func reset() {
         isRotating = false
-        sholudStop = false
+        sholudStop = true
     }
 }
 

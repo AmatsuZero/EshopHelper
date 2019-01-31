@@ -12,47 +12,49 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     
     let rootViewController = SSBRootViewController(nibName: nil, bundle: nil)
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = rootViewController
+        window?.rootViewController = SSBLaunchViewController()
         return true
     }
-
-
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window?.makeKeyAndVisible()
-//        DispatchQueue.main.asyncAfter(deadline: 1) {
-//            self.window?.setRootViewController(self.rootViewController,
-//                                               options: .init(direction: .fade, style: .linear))
-//        }
+        SSBConfigHelper.shared.initialization().done {
+            self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
+        }.catch { error in
+            print(error.localizedDescription)
+        }
+        
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         
     }
-
+    
     func applicationDidEnterBackground(_ application: UIApplication) {
-      
+        
     }
-
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
-       
+        
     }
-
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
-      
+        
     }
-
+    
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
     }
-
+    
     // MARK: - Core Data stack
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "EshopHacker")
@@ -63,9 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
-
+    
     // MARK: - Core Data Saving support
-
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -79,6 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
 }
 

@@ -26,6 +26,7 @@ class SSBListBackgroundView: UIView {
     
     var state = State.loading {
         didSet {
+            reset()
             setNeedsLayout()
             delegate = nil
             switch state {
@@ -49,6 +50,8 @@ class SSBListBackgroundView: UIView {
                 loadingIndicator.stopAnimating()
                 bringSubviewToFront(emptyView)
             }
+            retryButton.isEnabled = true
+            retryButton.backgroundColor = .eShopColor
         }
     }
     
@@ -205,9 +208,40 @@ class SSBListBackgroundView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var sholudStop = false
+    private var isRotating = false
+    
     @objc private func onRetryButtonClicked(_ sender: UIButton) {
+        if needImage {
+            startAnimation()
+        }
         if let delegate = self.delegate {
             delegate.retry(view: self)
+        }
+        sender.isEnabled = false
+        sender.backgroundColor = .gray
+    }
+    
+    private func startAnimation() {
+        guard !isRotating else {
+            return
+        }
+        retryImageView.rotate360Degrees(completionDelegate: self)
+        isRotating = true
+    }
+    
+    private func reset() {
+        isRotating = false
+        sholudStop = true
+    }
+}
+
+extension SSBListBackgroundView: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if sholudStop {
+            reset()
+        } else {
+            retryImageView.rotate360Degrees(completionDelegate: self)
         }
     }
 }

@@ -285,6 +285,7 @@ struct SSBSearchListViewModel {
 class SSBSearchListDataSource: NSObject, UITableViewDataSource {
     
     private var dataSource = [SSBSearchListViewModel]()
+    var count: Int { return dataSource.count }
     
     func clear()  {
         dataSource.removeAll()

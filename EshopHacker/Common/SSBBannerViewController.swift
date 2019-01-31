@@ -75,7 +75,7 @@ class SSBannerView: UIView {
         collectionView.isPagingEnabled = true
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundView = SSBListBackgroundView(frame: .zero)
+        collectionView.backgroundView = SSBListBackgroundView(frame: .zero, needImage: false)
         collectionView.backgroundView?.isHidden = false
         collectionView.layer.cornerRadius = 6
         

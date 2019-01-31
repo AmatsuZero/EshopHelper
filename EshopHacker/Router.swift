@@ -44,6 +44,8 @@ enum Router: URLConvertible, URLRequestConvertible {
     case getComment(CommentService.FetchCommentsOption)
     /// 发评论
     case postComment(CommentService.PostCommentOption)
+    /// 今日推荐
+    case todayRecommend(TodayRecommendService.RequsetOption)
     
     enum Error: CustomNSError {
         case invalidURL
@@ -75,6 +77,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .banner: return "/switch/banner/list"
         case .getComment: return "/switch/comment/listGameComment"
         case .postComment: return "/switch/comment/gameComment"
+        case .todayRecommend: return "/switch/informationFlow/list"
         }
     }
     
@@ -89,6 +92,8 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .getComment(let option):
             components.queryItems = option.asQueryItems()
         case .postComment(let option):
+            components.queryItems = option.asQueryItems()
+        case .todayRecommend(let option):
             components.queryItems = option.asQueryItems()
         case .gameInfo(let appId, let fromName):
             var queryItems = [URLQueryItem]()
