@@ -23,6 +23,7 @@ PODS:
   - Tabman (2.1.3):
     - AutoInsetter (~> 1.4.1)
     - Pageboy (~> 3.0.1)
+  - Toast-Swift (4.0.1)
   - UIWindowTransitions (0.2.0)
 
 DEPENDENCIES:
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - SDWebImage (~> 4.0)
   - SnapKit (~> 4.0.0)
   - Tabman (~> 2.1)
+  - Toast-Swift (~> 4.0.0)
   - UIWindowTransitions
 
 SPEC REPOS:
@@ -50,6 +52,7 @@ SPEC REPOS:
     - SDWebImage
     - SnapKit
     - Tabman
+    - Toast-Swift
     - UIWindowTransitions
 
 SPEC CHECKSUMS:
@@ -64,8 +67,9 @@ SPEC CHECKSUMS:
   SDWebImage: c00ec18ab25d10e5ffac109b0f78d1b4341c9691
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Tabman: 083741793bed532032b1a010f4af3725d49fa519
+  Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
 
-PODFILE CHECKSUM: 44feecd894f444baa25e7047c2ece79c336470cb
+PODFILE CHECKSUM: 3d1ae091ee59c54ae2d93334597b90de4c3ce679
 
 COCOAPODS: 1.6.0.beta.2

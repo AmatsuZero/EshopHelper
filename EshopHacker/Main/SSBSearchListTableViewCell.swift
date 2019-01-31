@@ -19,8 +19,8 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
         override init(frame: CGRect) {
             super.init(frame: frame)
             layer.addSublayer(shapeLayer)
-            shapeLayer.strokeColor = UIColor.red.cgColor
-            shapeLayer.fillColor = UIColor.red.cgColor
+            shapeLayer.strokeColor = UIColor.eShopColor.cgColor
+            shapeLayer.fillColor = UIColor.eShopColor.cgColor
             shapeLayer.lineCap = .round
             shapeLayer.lineJoin = .round
             shapeLayer.lineWidth = 0.5

@@ -64,6 +64,7 @@ class SSBListBackgroundView: UIView {
     }
     var imageViewSize: CGFloat = 40 {
         didSet {
+            guard needImage else { return }
             setNeedsLayout()
             retryImageView.image = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
             
@@ -82,7 +83,7 @@ class SSBListBackgroundView: UIView {
     }
     
     private var errorViewHeight: CGFloat {
-        return imageViewSize + errorViewPadding + buttonSize.height
+        return (needImage ? imageViewSize : 0) + errorViewPadding + buttonSize.height
     }
     
     private let retryImageView = UIImageView()
@@ -100,17 +101,23 @@ class SSBListBackgroundView: UIView {
     private let emptyImageView = UIImageView()
     private let emptyLabel = UILabel()
     
+    private let needImage: Bool
+    
     var emptyDescription: String = "没有数据" {
         didSet {
             emptyLabel.text = emptyDescription
         }
     }
     
-    init(frame:CGRect, type: NVActivityIndicatorType = .pacman) {
+    init(frame:CGRect,needImage: Bool = true, type: NVActivityIndicatorType = .pacman) {
+        
+        self.needImage = needImage
+        
         loadingIndicator = NVActivityIndicatorView(frame: .zero,
                                                    type: type,
                                                    color: .eShopColor,
                                                    padding: 0)
+        
         super.init(frame: frame)
         
         addSubview(loadingIndicator)
@@ -121,9 +128,28 @@ class SSBListBackgroundView: UIView {
         loadingIndicator.startAnimating()
         
         errorView.isHidden = true
+        emptyView.isHidden = true
         
         addSubview(errorView)
+        addSubview(emptyView)
         
+        retryButton.setTitle("重试", for: .normal)
+        retryButton.setTitleColor(.white, for: .normal)
+        retryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        retryButton.backgroundColor = .eShopColor
+        errorView.addSubview(retryButton)
+        
+        retryButton.layer.cornerRadius = buttonSize.height / 2
+        retryButton.layer.masksToBounds = true
+        retryButton.addTarget(self, action: #selector(SSBListBackgroundView.onRetryButtonClicked(_:)), for: .touchUpInside)
+        
+        emptyLabel.font = retryButton.titleLabel?.font
+        emptyLabel.textColor = .gray
+        emptyLabel.backgroundColor = .clear
+        emptyLabel.text = emptyDescription
+        emptyView.addSubview(emptyLabel)
+        
+        let imageViewSize = needImage ? self.imageViewSize : 0
         let retryImage = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
         retryImageView.image = retryImage
         retryImageView.backgroundColor = .white
@@ -139,20 +165,11 @@ class SSBListBackgroundView: UIView {
             make.width.height.equalTo(imageViewSize)
         }
         
-        retryButton.setTitle("重试", for: .normal)
-        retryButton.setTitleColor(.white, for: .normal)
-        retryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        retryButton.backgroundColor = .eShopColor
-        errorView.addSubview(retryButton)
-        
         retryButton.snp.makeConstraints { make in
             make.size.equalTo(buttonSize)
             make.top.equalTo(retryImageView.snp.bottom).offset(errorViewPadding)
             make.centerX.equalToSuperview()
         }
-        retryButton.layer.cornerRadius = buttonSize.height / 2
-        retryButton.layer.masksToBounds = true
-        retryButton.addTarget(self, action: #selector(SSBListBackgroundView.onRetryButtonClicked(_:)), for: .touchUpInside)
         
         errorView.snp.makeConstraints {
             $0.width.equalTo(retryButton.snp.width)
@@ -160,8 +177,6 @@ class SSBListBackgroundView: UIView {
             $0.center.equalToSuperview()
         }
         
-        emptyView.isHidden = true
-        addSubview(emptyView)
         emptyImageView.image = .fontAwesomeIcon(name: .nintendoSwitch,
                                                 style: .brands,
                                                 textColor: .gray,
@@ -172,11 +187,6 @@ class SSBListBackgroundView: UIView {
             make.width.height.equalTo(imageViewSize)
         }
         
-        emptyLabel.font = retryButton.titleLabel?.font
-        emptyLabel.textColor = .gray
-        emptyLabel.backgroundColor = .clear
-        emptyLabel.text = emptyDescription
-        emptyView.addSubview(emptyLabel)
         emptyLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(emptyImageView.snp.bottom).offset(errorViewPadding)

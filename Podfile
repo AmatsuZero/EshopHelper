@@ -16,6 +16,7 @@ target 'EshopHacker' do
   pod 'Reusable'
   pod 'UIWindowTransitions'
   pod 'NVActivityIndicatorView'
+  pod 'Toast-Swift', '~> 4.0.0'
 
   target 'EshopHackerTests' do
     inherit! :search_paths

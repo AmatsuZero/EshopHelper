@@ -291,7 +291,13 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource {
     }
     
     func bind(data: [SearchService.SearchResult.Data.Game], tableView: UITableView) {
+        clear()
         dataSource = data.map { SSBSearchListViewModel(game: $0) }
+        tableView.reloadData()
+    }
+    
+    func append(data: [SearchService.SearchResult.Data.Game], tableView: UITableView) {
+        dataSource += data.map { SSBSearchListViewModel(game: $0) }
         tableView.reloadData()
     }
     

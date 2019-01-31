@@ -253,8 +253,6 @@ class SSBBannerViewController: UIViewController {
     
     func fetchData() {
         let backgroundView = bannerView.collectionView.backgroundView as? SSBListBackgroundView
-        backgroundView?.state = .loading
-        backgroundView?.isHidden = false
         BannerDataService.shared.getBannerData().done { [weak self] data in
             guard let self = self,
                 let source = data.data?.banner else {
