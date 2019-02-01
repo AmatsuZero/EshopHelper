@@ -20,12 +20,12 @@ class SSBRecommendViewController: TabmanViewController {
         dataSource = self
         
         title = "游戏推荐"
-        tabBarItem = UITabBarItem(title: title!,
+        tabBarItem = UITabBarItem(title: title,
                                   image: UIImage.fontAwesomeIcon(name: .nintendoSwitch,
                                                                  style: .brands,
                                                                  textColor: .eShopColor,
                                                                  size: .init(width: 40, height: 40)),
-                                  tag: 0)
+                                  tag: SSBRootViewController.TabType.recommend.rawValue)
         
         let listViewController = SSBSearchListViewController(nibName: nil, bundle: nil)
         let todayRecommendController = SSBTodayRecommendViewController(nibName: nil, bundle: nil)

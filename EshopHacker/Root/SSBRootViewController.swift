@@ -10,6 +10,13 @@ import UIKit
 
 class SSBRootViewController: UITabBarController {
     
+    enum TabType: Int {
+        /// 今日推荐
+        case recommend = 0
+        /// 搜索
+        case search
+    }
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let recommenViewController = SSBRecommendViewController(nibName: nil, bundle: nil)

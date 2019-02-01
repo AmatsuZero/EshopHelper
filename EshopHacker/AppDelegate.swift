@@ -26,10 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window?.makeKeyAndVisible()
-        SSBConfigHelper.shared.initialization().done {
-            self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
+        SSBConfigHelper.shared.initialization().done { ret in
+            if ret {
+               self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
+            } else {
+                self.window?.makeToast("注册App失败")
+            }
         }.catch { error in
-            print(error.localizedDescription)
+            self.window?.makeToast(error.localizedDescription)
         }
         
         return true
@@ -53,6 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        guard let urlKey = options[.sourceApplication] as? String else {
+            return false
+        }
+        if urlKey == "com.tencent.xin" {
+            return WXApi.handleOpen(url, delegate: UserService.shared)
+        }
+        return true
     }
     
     // MARK: - Core Data stack

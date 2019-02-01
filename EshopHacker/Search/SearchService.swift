@@ -113,8 +113,8 @@ class SearchService {
     }
 }
 
-struct SSBSearchListViewModel {
-    
+struct SSBSearchListViewModel: SSBViewModelProtocol {
+    var originalData: SearchService.SearchResult.Data.Game
     let titleLabel =  UILabel()
     let subTitleLabel: UILabel?
     let labelStackView = UIStackView()
@@ -124,8 +124,8 @@ struct SSBSearchListViewModel {
     let scoreLabel: UILabel?
     private(set) var disCountStackView: UIStackView? = nil
     
-    init(game: SearchService.SearchResult.Data.Game) {
-
+    init(model game: SearchService.SearchResult.Data.Game) {
+        originalData = game
         imageURL = game.icon
         titleLabel.text = game.titleZh
         titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -283,25 +283,21 @@ struct SSBSearchListViewModel {
 
 
 class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourceProtocol {
+    
     typealias DataType = SearchService.SearchResult.Data.Game
-    
     typealias ViewType = UITableView
-    
     typealias ViewModelType = SSBSearchListViewModel
-    
     
     var dataSource = [SSBSearchListViewModel]()
     
-    var count: Int { return dataSource.count }
-    
     func bind(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
         clear()
-        dataSource += data.map { SSBSearchListViewModel(game: $0) }
+        dataSource += data.map { SSBSearchListViewModel(model: $0) }
         tableView.reloadData()
     }
     
     func append(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
-        dataSource += data.map { SSBSearchListViewModel(game: $0) }
+        dataSource += data.map { SSBSearchListViewModel(model: $0) }
         tableView.reloadData()
     }
     

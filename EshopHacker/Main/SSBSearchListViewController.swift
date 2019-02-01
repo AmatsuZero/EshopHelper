@@ -163,7 +163,7 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
     
 }
 
-protocol SSBSearchListViewDelegate: class {
+protocol SSBSearchListViewDelegate: class, UITableViewDelegate {
     
     func listViewBeginToRefresh(_ listView: SSBSearchListView)
     func listViewBeginToAppend(_ listView: SSBSearchListView)
@@ -172,13 +172,16 @@ protocol SSBSearchListViewDelegate: class {
 class SSBSearchListView: UIView {
     
     let tableView = UITableView(frame: .zero, style: .grouped)
-    weak var delegate: SSBSearchListViewDelegate?
+    weak var delegate: SSBSearchListViewDelegate? {
+        didSet {
+            tableView.delegate = delegate
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(tableView)
         tableView.rowHeight = 120
-        tableView.delegate = self
         tableView.backgroundView = SSBListBackgroundView(frame: .zero, type: .lineScale)
         tableView.register(cellType: SSBSearchListTableViewCell.self)
         tableView.sectionFooterHeight = 5
@@ -209,10 +212,6 @@ class SSBSearchListView: UIView {
             delegate.listViewBeginToAppend(self)
         }
     }
-}
-
-extension SSBSearchListView: UITableViewDelegate {
-    
 }
 
 class SSBSearchListViewController: UIViewController {
@@ -318,5 +317,9 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
 extension SSBSearchListViewController: SSBListBackgroundViewDelegate {
     func retry(view: SSBListBackgroundView) {
         listViewBeginToRefresh(listView)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 }

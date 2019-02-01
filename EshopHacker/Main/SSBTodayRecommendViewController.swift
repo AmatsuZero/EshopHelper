@@ -10,6 +10,7 @@ import SnapKit
 import Reusable
 import SDWebImage
 import FontAwesome_swift
+import SafariServices
 
 class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
     
@@ -433,7 +434,7 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
     }
 }
 
-protocol SSBTodayRecommendViewDelegate: class {
+protocol SSBTodayRecommendViewDelegate: class, UITableViewDelegate {
     
     func listViewBeginToRefresh(_ listView: SSBTodayRecommendView)
     func listViewBeginToAppend(_ listView: SSBTodayRecommendView)
@@ -443,7 +444,11 @@ class SSBTodayRecommendView: UIView {
     
     let tableView = UITableView(frame: .zero, style: .grouped)
     
-    weak var delegate : SSBTodayRecommendViewDelegate?
+    weak var delegate : SSBTodayRecommendViewDelegate? {
+        didSet {
+            tableView.delegate = delegate
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -596,17 +601,31 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 }
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = dataSource.dataSource[indexPath.section]
+        guard let type = model.type else {
+            return
+        }
+        switch type {
+        case .headline:
+            if let addr = model.originalData.content,
+                let url = URL(string: addr)  {
+                let browser = SFSafariViewController(href: url)
+                present(browser, animated: true)
+            }
+        default:
+            break
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return dataSource.heightForRow(indexPath: indexPath)
+    }
 }
 
 extension SSBTodayRecommendViewController: SSBListBackgroundViewDelegate {
     func retry(view: SSBListBackgroundView) {
         listViewBeginToRefresh(todayRecommendView)
-    }
-}
-
-extension SSBTodayRecommendViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return dataSource.heightForRow(indexPath: indexPath)
     }
 }

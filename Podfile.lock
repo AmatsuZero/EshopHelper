@@ -25,6 +25,7 @@ PODS:
     - Pageboy (~> 3.0.1)
   - Toast-Swift (4.0.1)
   - UIWindowTransitions (0.2.0)
+  - WechatOpenSDK (1.8.3)
 
 DEPENDENCIES:
   - Alamofire
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - Tabman (~> 2.1)
   - Toast-Swift (~> 4.0.0)
   - UIWindowTransitions
+  - WechatOpenSDK
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -54,6 +56,7 @@ SPEC REPOS:
     - Tabman
     - Toast-Swift
     - UIWindowTransitions
+    - WechatOpenSDK
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
@@ -69,7 +72,8 @@ SPEC CHECKSUMS:
   Tabman: 083741793bed532032b1a010f4af3725d49fa519
   Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
+  WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
 
-PODFILE CHECKSUM: 3d1ae091ee59c54ae2d93334597b90de4c3ce679
+PODFILE CHECKSUM: ea4bce167a4a3cd9066ed971eb2b0876c605f67a
 
 COCOAPODS: 1.6.0.beta.2

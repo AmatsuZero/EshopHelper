@@ -22,7 +22,7 @@ class SSBSearchViewController: TabmanViewController {
                                                                  style: .solid,
                                                                  textColor: .eShopColor,
                                                                  size: .init(width: 40, height: 40)),
-                                  tag: 1)
+                                  tag: SSBRootViewController.TabType.search.rawValue)
         
     }
     

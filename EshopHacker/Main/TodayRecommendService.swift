@@ -71,7 +71,9 @@ class TodayRecommendService {
     }
 }
 
-struct SSBtodayRecommendViewModel {
+struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
+    
+    var originalData: TodayRecommendService.Response.Data.FlowInfo
     
     /// Cell类型
     enum CellType: Int {
@@ -99,6 +101,7 @@ struct SSBtodayRecommendViewModel {
     let time: String
 
     init(model: TodayRecommendService.Response.Data.FlowInfo) {
+        originalData = model
         type = CellType(rawValue: model.type)
         imageURL = model.pic
         
@@ -187,7 +190,7 @@ struct SSBtodayRecommendViewModel {
 }
 
 class SSBtodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewDataSource {
-    
+
     typealias DataType = TodayRecommendService.Response.Data.FlowInfo
     typealias ViewType = UITableView
     typealias ViewModelType = SSBtodayRecommendViewModel
@@ -219,13 +222,13 @@ class SSBtodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewD
         }
     }
     
-    func bind(data: [DataType], collectionView: UITableView) {
+    func bind(data: [DataType], collectionView: ViewType) {
         clear()
         dataSource += data.map { ViewModelType(model: $0) }.filter { $0.type != nil }
         collectionView.reloadData()
     }
   
-    func append(data: [DataType], collectionView: UITableView) {
+    func append(data: [DataType], collectionView: ViewType) {
         dataSource += data.map { ViewModelType(model: $0) }.filter { $0.type != nil }
         collectionView.reloadData()
     }

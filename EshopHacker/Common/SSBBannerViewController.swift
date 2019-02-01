@@ -9,6 +9,7 @@
 import SnapKit
 import Reusable
 import PromiseKit
+import SafariServices
 
 class SSBBannerCollectionViewCell: UICollectionViewCell, Reusable {
     
@@ -277,8 +278,24 @@ extension SSBBannerViewController: SSBListBackgroundViewDelegate {
 }
 
 extension SSBBannerViewController: SSBBannerDataSourceDelegate {
-    func bannerView(_ bannerView: SSBannerView,
-                    onSelected model: BannerDataService.BannerData.Body.Banner) {
-        print(model)
+    func bannerView(_ bannerView: SSBannerView, onSelected model: SSBBannerDataSource.SSBBannerViewModel) {
+        guard let type = model.type else {
+            return
+        }
+        switch type {
+        case .article:
+            guard let url = URL(string: model.originalData.content),
+                let scheme = url.scheme else {
+                return
+            }
+            if ["http", "https"].contains(scheme) {
+                let browser = SFSafariViewController(href: url)
+                present(browser, animated: true)
+            } else {
+                UIApplication.shared.open(url, options: [:])
+            }
+        default:
+            break
+        }
     }
 }

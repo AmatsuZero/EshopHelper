@@ -8,8 +8,41 @@
 
 import PromiseKit
 
-fileprivate let wxkey = "wxb0010112234306ba"
-
-class UserService {
+class UserService: NSObject, WXApiDelegate {
     
+    static let shared = UserService()
+    
+    private var authorizeCode = ""
+    
+    func weChatLogin() {
+        
+        enum LoginError: Error {
+            case sendReqError
+        }
+    }
+    
+    private func fetchAuthorizeCode() -> Promise<String> {
+        return Promise(resolver: { resolver in
+            DispatchQueue.global().async {
+                while self.authorizeCode.isEmpty {}
+            }
+            resolver.fulfill(self.authorizeCode)
+        })
+    }
+    
+    private func loginRequest() -> Promise<Bool> {
+        let req = SendAuthReq()
+        req.scope = "snsapi_userinfo"
+        req.state = "App"
+        return Promise.value(WXApi.send(req))
+    }
+    
+    // MARK: WXApiDelegate
+    func onReq(_ req: BaseReq!) {
+        
+    }
+    
+    func onResp(_ resp: BaseResp!) {
+        print(resp)
+    }
 }
