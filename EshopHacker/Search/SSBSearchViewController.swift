@@ -18,7 +18,7 @@ class SSBSearchViewController: TabmanViewController {
         
         title = "发现游戏"
         tabBarItem = UITabBarItem(title: title!,
-                                  image: UIImage.fontAwesomeIcon(name: .thLarge,
+                                  image: UIImage.fontAwesomeIcon(name: .search,
                                                                  style: .solid,
                                                                  textColor: .eShopColor,
                                                                  size: .init(width: 40, height: 40)),

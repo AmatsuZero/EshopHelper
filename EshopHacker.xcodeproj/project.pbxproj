@@ -42,6 +42,7 @@
 		80573BA9220291990001F080 /* SSBCustomRefreshComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */; };
 		80573BB02202D9820001F080 /* ConfigHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BAF2202D9820001F080 /* ConfigHelper.swift */; };
 		80573BB22202DB7C0001F080 /* TodayRecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BB12202DB7C0001F080 /* TodayRecommendService.swift */; };
+		80573BE22203F4B30001F080 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BE12203F4B30001F080 /* Utils.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomRefreshComponents.swift; sourceTree = "<group>"; };
 		80573BAF2202D9820001F080 /* ConfigHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHelper.swift; sourceTree = "<group>"; };
 		80573BB12202DB7C0001F080 /* TodayRecommendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayRecommendService.swift; sourceTree = "<group>"; };
+		80573BE12203F4B30001F080 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +203,7 @@
 				801B806121FFE33A007DFCB5 /* CALayer+Extensions.swift */,
 				801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */,
 				801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */,
+				80573BE12203F4B30001F080 /* Utils.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
+				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
 				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,

@@ -9,6 +9,7 @@
 import SnapKit
 import Reusable
 import SDWebImage
+import FontAwesome_swift
 
 class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
     
@@ -17,6 +18,7 @@ class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
             guard let model = model else {
                 return
             }
+            setNeedsLayout()
             coverImageView.url = model.imageURL
         }
     }
@@ -25,14 +27,17 @@ class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        coverImageView.layer.cornerRadius = 15
+        
+        coverImageView.layer.cornerRadius = 14
         coverImageView.layer.masksToBounds = true
+        
         contentView.addSubview(coverImageView)
         
         coverImageView.snp.makeConstraints { make in
             make.left.equalTo(10)
             make.right.equalTo(-10)
             make.height.equalTo(196)
+            make.top.equalToSuperview()
         }
         
         bottomMask.backgroundColor = UIColor.black.withAlphaComponent(0.3)
@@ -41,6 +46,9 @@ class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
             make.left.bottom.right.equalToSuperview()
             make.height.equalTo(70)
         }
+        
+        backgroundColor = .clear
+        selectionStyle = .none
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,10 +58,119 @@ class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
 
 class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
     
+    private let conent = UILabel()
+    private let titleLabel = UILabel()
+    private let infoContainer = UIView()
+    private let userAvatar = SSBLoadingImageView()
+    private let userNameLabel = UILabel()
+    private let fakeButton = UIView()
+    private lazy var recommendLabel = UILabel()
+    
+    override var model: SSBtodayRecommendViewModel? {
+        didSet {
+            guard let data = model else {
+                return
+            }
+            self.conent.text = data.commentContent
+            self.userNameLabel.text = data.userNickName
+            self.userAvatar.url = data.avatarURL
+            self.titleLabel.text = data.gameName
+        }
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        titleLabel.textColor = .white
+        bottomMask.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalTo(10)
+            make.width.lessThanOrEqualTo(200)
+        }
+        
+        conent.font = UIFont.systemFont(ofSize: 14)
+        conent.textColor = .white
+        conent.numberOfLines = 2
+        conent.textAlignment = .left
+        bottomMask.addSubview(conent)
+        conent.snp.makeConstraints { make in
+            make.left.equalTo(titleLabel)
+            make.right.equalTo(-10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.bottom.equalTo(-10)
+        }
+        
+        contentView.addSubview(infoContainer)
+        infoContainer.snp.makeConstraints { make in
+            make.top.equalTo(coverImageView.snp.bottom)
+            make.right.left.equalTo(coverImageView)
+            make.bottom.equalToSuperview()
+        }
+        
+        userAvatar.layer.cornerRadius = 21 / 2
+        userAvatar.layer.masksToBounds = true
+        userAvatar.backgroundColor = .white
+        infoContainer.addSubview(userAvatar)
+        userAvatar.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(21)
+            make.left.equalTo(4)
+        }
+        
+        userNameLabel.font = UIFont.systemFont(ofSize: 13)
+        userNameLabel.textColor = .darkText
+        infoContainer.addSubview(userNameLabel)
+        userNameLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(userAvatar.snp.right).offset(8)
+        }
+        
+        recommendLabel.textColor = .lightGray
+        recommendLabel.font = userNameLabel.font
+        recommendLabel.text = "推荐"
+        infoContainer.addSubview(recommendLabel)
+        recommendLabel.snp.makeConstraints { make in
+            make.left.equalTo(userNameLabel.snp.right).offset(8)
+            make.centerY.equalToSuperview()
+        }
+        
+        fakeButton.backgroundColor = UIColor(r: 235, g: 236, b: 237)
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 13)
+        label.text = "查看评测"
+        fakeButton.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(4)
+        }
+        
+        let arrow = UIImageView(image: .fontAwesomeIcon(name: .angleRight, style: .solid, textColor: .lightGray, size: .init(width: 12, height: 12)))
+        fakeButton.addSubview(arrow)
+        arrow.snp.makeConstraints { make in
+            make.left.equalTo(label.snp.right)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(12)
+        }
+        fakeButton.layer.cornerRadius = 20 / 2
+        
+        infoContainer.addSubview(fakeButton)
+        fakeButton.snp.makeConstraints { make in
+            make.right.centerY.equalToSuperview()
+            make.width.equalTo(74)
+            make.height.equalTo(20)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
-
+    
     class DiscountLabel: UIView {
         
         private let cutoffLabel = UILabel()
@@ -77,12 +194,13 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
         override init(frame: CGRect) {
             super.init(frame: frame)
             backgroundColor = .white
-         
+            
             shapeLayer.strokeColor = UIColor.eShopColor.cgColor
             shapeLayer.fillColor = UIColor.eShopColor.cgColor
             shapeLayer.lineCap = .round
             shapeLayer.lineJoin = .round
             shapeLayer.lineWidth = 0.5
+            layer.addSublayer(shapeLayer)
             
             cutoffLabel.font = UIFont.boldSystemFont(ofSize: 15)
             cutoffLabel.textColor = .white
@@ -96,20 +214,20 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             let container = UIView()
             addSubview(container)
             container.snp.makeConstraints { make in
-                make.centerY.right.equalToSuperview()
+                make.top.bottom.right.equalToSuperview()
                 make.width.equalToSuperview().multipliedBy(0.5)
             }
             
             container.addSubview(currentPriceLabel)
             currentPriceLabel.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.top.equalTo(10)
+                make.right.equalTo(-4)
+                make.top.equalTo(8)
             }
             
             container.addSubview(rawPriceLabel)
             rawPriceLabel.snp.makeConstraints { make in
-                make.top.equalTo(currentPriceLabel.snp.bottom).offset(2)
-                make.centerX.equalToSuperview()
+                make.top.equalTo(currentPriceLabel.snp.bottom)
+                make.right.equalTo(currentPriceLabel)
             }
         }
         
@@ -124,7 +242,7 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             path.move(to: .init(x: bounds.minX, y: bounds.minY))
             path.addLine(to: .init(x: bounds.width * 0.4, y: bounds.minY))
             path.addLine(to: .init(x: bounds.width * 0.6, y: bounds.maxY))
-            path.addLine(to: .init(x: bounds.maxX, y: bounds.maxY))
+            path.addLine(to: .init(x: bounds.minX, y: bounds.maxY))
             shapeLayer.path = path.cgPath
         }
     }
@@ -134,7 +252,10 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
     
     override var model: SSBtodayRecommendViewModel? {
         didSet {
-            
+            guard let data = model else { return }
+            titleLabel.text = data.gameName
+            disCountLabel.cutOff = model?.cutOffString
+            disCountLabel.price = (model?.priceRaw, model?.priceCurrent)
         }
     }
     
@@ -145,25 +266,29 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
         disCountLabel.snp.makeConstraints { make in
             make.right.bottom.equalTo(-10)
             make.height.equalTo(40)
+            make.width.equalTo(114)
         }
-        disCountLabel.layer.cornerRadius = 20
+        disCountLabel.layer.cornerRadius = 8
         disCountLabel.layer.masksToBounds = true
         
         let label = UILabel()
         label.text = "热门折扣"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         bottomMask.addSubview(label)
         label.snp.makeConstraints { make in
-            make.top.left.equalToSuperview()
+            make.top.equalTo(disCountLabel)
+            make.width.lessThanOrEqualTo(200)
+            make.left.equalTo(10)
         }
         
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
         titleLabel.textColor = .white
         bottomMask.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.left.bottom.equalToSuperview()
+            make.bottom.equalTo(disCountLabel)
             make.width.lessThanOrEqualTo(164)
+            make.left.equalTo(label)
         }
     }
     
@@ -174,43 +299,76 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
 
 class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
     
-}
-
-class SSBTodayRecommendView: UIView {
+    private let bottomView = UIView()
+    private let titleLabel = UILabel()
+    private let timeLabel = UILabel()
     
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    override var model: SSBtodayRecommendViewModel? {
+        didSet {
+            guard let data = model else {
+                return
+            }
+            titleLabel.attributedText = data.headlineTitle
+            timeLabel.text = data.time
+        }
+    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        bottomMask.isHidden = true
         
-        addSubview(tableView)
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.backgroundView = SSBListBackgroundView(frame: .zero)
-        tableView.sectionHeaderHeight = 10
-        tableView.sectionFooterHeight = 10
-        
-        tableView.register(cellType: SSBTodayRecommendCommentCell.self)
-        tableView.register(cellType: SSBTodayRecommendHeadlineCell.self)
-        tableView.register(cellType: SSBTodayRecommendDiscountCell.self)
-        
-        // Title
-        let container = UIView()
-        
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = .darkText
-        label.text = "今日"
-        container.addSubview(label)
-        
-        label.snp.makeConstraints { make in
-            make.left.equalTo(10)
-            make.top.equalTo(20)
-            make.bottom.equalTo(-20)
+        contentView.addSubview(bottomView)
+        bottomView.snp.makeConstraints { make in
+            make.right.left.equalTo(coverImageView)
+            make.top.equalTo(coverImageView.snp.bottom).offset(10)
+            make.bottom.equalToSuperview()
         }
         
-        tableView.tableHeaderView = container
-        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        titleLabel.numberOfLines = 2
+        bottomView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.left.equalToSuperview().offset(2)
+            $0.right.equalToSuperview().offset(-2)
+        }
+        
+        timeLabel.font = UIFont.systemFont(ofSize: 13)
+        timeLabel.textColor = .lightGray
+        bottomView.addSubview(timeLabel)
+        timeLabel.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.left.equalTo(titleLabel)
+        }
+        
+        let fakeButton = UIView()
+        fakeButton.backgroundColor = UIColor(r: 235, g: 236, b: 237)
+        
+        let bookmark = UIImageView(image: .fontAwesomeIcon(name: .bookmark, style: .solid, textColor: .lightGray, size: .init(width: 12, height: 12)))
+        fakeButton.addSubview(bookmark)
+        bookmark.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(4)
+            make.width.height.equalTo(12)
+        }
+        
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 13)
+        label.text = "查看详情"
+        fakeButton.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(bookmark.snp.right)
+        }
+        
+        fakeButton.layer.cornerRadius = 20 / 2
+        bottomView.addSubview(fakeButton)
+        
+        fakeButton.snp.makeConstraints { make in
+            make.right.bottom.equalToSuperview()
+            make.width.equalTo(72)
+            make.height.equalTo(20)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -218,11 +376,152 @@ class SSBTodayRecommendView: UIView {
     }
 }
 
+class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
+    
+    private let titleLabel = UILabel()
+    
+    override var model: SSBtodayRecommendViewModel? {
+        didSet {
+            if let model = model {
+                titleLabel.text = model.gameName
+            }
+        }
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+      
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        titleLabel.textColor = .white
+        bottomMask.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(-10)
+            make.width.lessThanOrEqualTo(200)
+            make.left.equalTo(10)
+        }
+        
+        let mark = UILabel()
+        mark.text = "NEW"
+        mark.textColor = .white
+        mark.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        mark.backgroundColor = .red
+        mark.textAlignment = .center
+        mark.layer.cornerRadius = 5
+        mark.layer.masksToBounds = true
+        bottomMask.addSubview(mark)
+        mark.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel)
+            make.left.equalTo(titleLabel.snp.right).offset(8)
+            make.width.equalTo(34)
+            make.height.equalTo(17)
+        }
+        
+        let label = UILabel()
+        label.text = "热门折扣"
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        bottomMask.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.bottom.equalTo(titleLabel.snp.top).offset(-8)
+            make.width.lessThanOrEqualTo(200)
+            make.left.equalTo(10)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+protocol SSBTodayRecommendViewDelegate: class {
+    
+    func listViewBeginToRefresh(_ listView: SSBTodayRecommendView)
+    func listViewBeginToAppend(_ listView: SSBTodayRecommendView)
+}
+
+class SSBTodayRecommendView: UIView {
+    
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    weak var delegate : SSBTodayRecommendViewDelegate?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(tableView)
+        
+        tableView.estimatedRowHeight = 196
+        tableView.backgroundView = SSBListBackgroundView(frame: .zero)
+        tableView.sectionHeaderHeight = 10
+        tableView.sectionFooterHeight = 10
+        tableView.separatorStyle = .none
+        
+        tableView.register(cellType: SSBTodayRecommendCommentCell.self)
+        tableView.register(cellType: SSBTodayRecommendHeadlineCell.self)
+        tableView.register(cellType: SSBTodayRecommendDiscountCell.self)
+        tableView.register(cellType: SSBTodayRecommendNewReleasedCell.self)
+        
+        // Title
+        let contaier = UIView(frame: .init(origin: .zero,
+                                           size: .init(width: .screenWidth, height: 55)))
+        let label = UILabel(frame: .init(origin: .init(x: 10, y: 0),
+                                         size: .init(width: contaier.mj_w - 10, height: contaier.mj_h)))
+        contaier.addSubview(label)
+        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.textColor = .darkText
+        label.text = "今日"
+        
+        tableView.tableHeaderView = contaier
+        
+        // 下拉刷新
+        tableView.mj_header = SSBCustomRefreshHeader(refreshingTarget: self,
+                                                     refreshingAction: #selector(SSBTodayRecommendView.onRefresh(_:)))
+        // 上拉加载
+        let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(SSBTodayRecommendView.onAppend(_:)))
+        footer?.top = -15
+        tableView.mj_footer = footer
+        
+        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
+        if let delegate = self.delegate {
+            delegate.listViewBeginToRefresh(self)
+        }
+    }
+    
+    @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
+        if let delegate = self.delegate {
+            delegate.listViewBeginToAppend(self)
+        }
+    }
+}
+
 class SSBTodayRecommendViewController: UIViewController {
+    
+    private let dataSource = SSBtodayRecommendDataSource()
+    let todayRecommendView = SSBTodayRecommendView()
+    
+    private var lastPage = 1
+    
+    var isRunningTask: Bool {
+        return todayRecommendView.tableView.mj_header.isRefreshing || todayRecommendView.tableView.mj_footer.isRefreshing
+    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         title = "今日推荐"
+    }
+    
+    override func loadView() {
+        todayRecommendView.delegate = self
+        todayRecommendView.tableView.dataSource = dataSource
+        todayRecommendView.tableView.delegate = self
+        view = todayRecommendView
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -231,6 +530,83 @@ class SSBTodayRecommendViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        todayRecommendView.tableView.mj_header.isHidden = true
+        todayRecommendView.tableView.mj_footer.isHidden = true
+        listViewBeginToRefresh(todayRecommendView)
+    }
+}
 
+extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
+    
+    func listViewBeginToRefresh(_ listView: SSBTodayRecommendView) {
+        // 如果正在刷新中，则取消
+        guard !todayRecommendView.tableView.mj_footer.isRefreshing else {
+            view.makeToast("正在刷新中")
+            return
+        }
+        
+        lastPage = 1
+        let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
+        TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
+            guard let self = self, let source = data.data?.informationFlow else {
+                return
+            }
+            if source.isEmpty {
+                backgroundView?.state = .empty
+            }
+            self.todayRecommendView.tableView.mj_header.isHidden = false
+            self.todayRecommendView.tableView.mj_footer.isHidden = source.isEmpty
+            self.dataSource.bind(data: source, collectionView: self.todayRecommendView.tableView)
+            }.catch { [weak self] error in
+                backgroundView?.state = .error(self)
+                self?.view.makeToast(error.localizedDescription)
+                self?.todayRecommendView.tableView.reloadData()
+            }.finally { [weak self] in
+                self?.todayRecommendView.tableView.mj_header.endRefreshing()
+        }
+    }
+    
+    func listViewBeginToAppend(_ listView: SSBTodayRecommendView) {
+        // 没有下拉刷新的任务，也没有加载任务
+        guard isRunningTask else {
+            view.makeToast("正在刷新中")
+            return
+        }
+        
+        lastPage += 1 // 加一页
+        let originalCount = dataSource.count
+        
+        // 重置没有更多数据的状态
+        todayRecommendView.tableView.mj_footer.resetNoMoreData()
+        
+        TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
+            guard let self = self,
+                let source = data.data?.informationFlow else {
+                    return
+            }
+            self.dataSource.append(data: source, collectionView: self.todayRecommendView.tableView)
+            }.catch { [weak self] error in
+                self?.lastPage -= 1 // 如果失败，倒回原来页码
+                self?.view.makeToast("请求失败")
+            }.finally { [weak self] in
+                if originalCount == self?.dataSource.count {
+                    self?.todayRecommendView.tableView.mj_footer.endRefreshing()
+                } else {
+                    self?.todayRecommendView.tableView.mj_footer.endRefreshing()
+                }
+        }
+    }
+}
+
+extension SSBTodayRecommendViewController: SSBListBackgroundViewDelegate {
+    func retry(view: SSBListBackgroundView) {
+        listViewBeginToRefresh(todayRecommendView)
+    }
+}
+
+extension SSBTodayRecommendViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return dataSource.heightForRow(indexPath: indexPath)
     }
 }

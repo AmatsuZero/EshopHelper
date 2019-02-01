@@ -164,6 +164,7 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
 }
 
 protocol SSBSearchListViewDelegate: class {
+    
     func listViewBeginToRefresh(_ listView: SSBSearchListView)
     func listViewBeginToAppend(_ listView: SSBSearchListView)
 }
@@ -242,41 +243,11 @@ class SSBSearchListViewController: UIViewController {
         super.viewDidLoad()
         listView.tableView.mj_header.isHidden = true
         listView.tableView.mj_footer.isHidden = true
-        refresh()
+        listViewBeginToRefresh(listView)
     }
     
     var isRunningTask: Bool {
         return listView.tableView.mj_header.isRefreshing || listView.tableView.mj_footer.isRefreshing
-    }
-    
-    func refresh() {
-        // 如果正在刷新中，则取消
-        guard !listView.tableView.mj_footer.isRefreshing else {
-            view.makeToast("正在刷新中")
-            return
-        }
-        
-        lastPage = 1
-        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
-            guard let self = self,
-                let source = data.data?.games else {
-                    return
-            }
-            if source.isEmpty {
-                backgroundView?.state = .empty
-            }
-            self.listView.tableView.mj_header.isHidden = false
-            self.listView.tableView.mj_footer.isHidden = source.isEmpty
-            self.bannerViewController.fetchData()
-            self.dataSource.bind(data: source, tableView: self.listView.tableView)
-            }.catch { [weak self] error in
-                backgroundView?.state = .error(self)
-                self?.view.makeToast("\(error.localizedDescription)")
-                self?.listView.tableView.reloadData()
-            }.finally { [weak self] in
-                self?.listView.tableView.mj_header.endRefreshing()
-        }
     }
 }
 
@@ -300,7 +271,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
                 let source = data.data?.games else {
                     return
             }
-            self.dataSource.append(data: source, tableView: self.listView.tableView)
+            self.dataSource.append(data: source, collectionView: self.listView.tableView)
         }.catch { [weak self] error in
             self?.lastPage -= 1 // 如果失败，倒回原来页码
             self?.view.makeToast("请求失败")
@@ -314,12 +285,38 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
     }
     
     func listViewBeginToRefresh(_ listView: SSBSearchListView) {
-        refresh()
+        // 如果正在刷新中，则取消
+        guard !listView.tableView.mj_footer.isRefreshing else {
+            view.makeToast("正在刷新中")
+            return
+        }
+        
+        lastPage = 1
+        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
+        SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
+            guard let self = self,
+                let source = data.data?.games else {
+                    return
+            }
+            if source.isEmpty {
+                backgroundView?.state = .empty
+            }
+            self.listView.tableView.mj_header.isHidden = false
+            self.listView.tableView.mj_footer.isHidden = source.isEmpty
+            self.bannerViewController.fetchData()
+            self.dataSource.bind(data: source, collectionView: self.listView.tableView)
+            }.catch { [weak self] error in
+                backgroundView?.state = .error(self)
+                self?.view.makeToast(error.localizedDescription)
+                self?.listView.tableView.reloadData()
+            }.finally { [weak self] in
+                self?.listView.tableView.mj_header.endRefreshing()
+        }
     }
 }
 
 extension SSBSearchListViewController: SSBListBackgroundViewDelegate {
     func retry(view: SSBListBackgroundView) {
-        refresh()
+        listViewBeginToRefresh(listView)
     }
 }

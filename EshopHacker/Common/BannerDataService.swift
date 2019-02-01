@@ -39,17 +39,43 @@ protocol SSBBannerDataSourceDelegate: class {
                     onSelected model: BannerDataService.BannerData.Body.Banner)
 }
 
-class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDelegate {
-   
-    private(set) var dataSource = [BannerDataService.BannerData.Body.Banner]()
+protocol SSBDataSourceProtocol: class {
     
-    weak var delegate: SSBBannerDataSourceDelegate?
+    associatedtype DataType
+    associatedtype ViewType
+    associatedtype ViewModelType
+    
+    var dataSource: [ViewModelType] { get set }
+    
+    func clear()
+    
+    var count: Int { get }
+    
+    func bind(data: [DataType], collectionView: ViewType)
+    
+    func append(data: [DataType], collectionView: ViewType)
+}
+
+extension SSBDataSourceProtocol {
     
     func clear() {
         dataSource.removeAll()
     }
     
-    func bind(data: [BannerDataService.BannerData.Body.Banner], collectionView: UICollectionView) {
+    var count: Int { return dataSource.count }
+}
+
+class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDelegate, SSBDataSourceProtocol {
+   
+    typealias DataType = BannerDataService.BannerData.Body.Banner
+    typealias ViewType = UICollectionView
+    typealias ViewModelType = BannerDataService.BannerData.Body.Banner
+   
+    var dataSource = [BannerDataService.BannerData.Body.Banner]()
+    
+    weak var delegate: SSBBannerDataSourceDelegate?
+    
+    func bind(data: [DataType], collectionView: ViewType) {
         guard !data.isEmpty else {
             return
         }
@@ -57,6 +83,11 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
         dataSource = data
         dataSource.insert(data.last!, at: 0)
         dataSource.append(data.first!)
+        collectionView.reloadData()
+    }
+    
+    func append(data: [BannerDataService.BannerData.Body.Banner], collectionView: UICollectionView) {
+        dataSource += data
         collectionView.reloadData()
     }
     

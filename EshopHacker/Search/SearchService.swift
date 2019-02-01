@@ -282,32 +282,35 @@ struct SSBSearchListViewModel {
 }
 
 
-class SSBSearchListDataSource: NSObject, UITableViewDataSource {
+class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourceProtocol {
+    typealias DataType = SearchService.SearchResult.Data.Game
     
-    private var dataSource = [SSBSearchListViewModel]()
+    typealias ViewType = UITableView
+    
+    typealias ViewModelType = SSBSearchListViewModel
+    
+    
+    var dataSource = [SSBSearchListViewModel]()
+    
     var count: Int { return dataSource.count }
     
-    func clear()  {
-        dataSource.removeAll()
-    }
-    
-    func bind(data: [SearchService.SearchResult.Data.Game], tableView: UITableView) {
+    func bind(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
         clear()
-        dataSource = data.map { SSBSearchListViewModel(game: $0) }
+        dataSource += data.map { SSBSearchListViewModel(game: $0) }
         tableView.reloadData()
     }
     
-    func append(data: [SearchService.SearchResult.Data.Game], tableView: UITableView) {
+    func append(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
         dataSource += data.map { SSBSearchListViewModel(game: $0) }
         tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        tableView.backgroundView?.isHidden = !dataSource.isEmpty
         return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableView.backgroundView?.isHidden = !dataSource.isEmpty
         return 1
     }
     
