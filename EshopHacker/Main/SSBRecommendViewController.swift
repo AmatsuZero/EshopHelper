@@ -39,17 +39,19 @@ class SSBRecommendViewController: TabmanViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         bar.layout.contentMode = .fit
         bar.indicator.tintColor = .eShopColor
         bar.backgroundColor = .white
         bar.indicator.overscrollBehavior = .bounce
-        bar.indicator.customSize = .init(width: 100, height: 4)
-        
+        bar.indicator.customSize = .init(width: 100, height: 2)
         addBar(bar, dataSource: self, at: .top)
-        bar.buttons.all.forEach { button in
+
+        bar.buttons.customize { button in
             button.selectedTintColor = .eShopColor
             button.tintColor = UIColor(r: 101, g: 102, b: 103)
+            button.font = UIFont.boldSystemFont(ofSize: 14)
+            button.selectedFont = button.font
+            button.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         }
     }
 }
@@ -64,7 +66,7 @@ extension SSBRecommendViewController: PageboyViewControllerDataSource {
     }
     
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
-        return nil
+        return .at(index: 0)
     }
 }
 

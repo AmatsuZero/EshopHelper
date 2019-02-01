@@ -44,6 +44,10 @@
 		80573BB22202DB7C0001F080 /* TodayRecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BB12202DB7C0001F080 /* TodayRecommendService.swift */; };
 		80573BE22203F4B30001F080 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BE12203F4B30001F080 /* Utils.swift */; };
 		80573BE6220446BA0001F080 /* SSBSimpleBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BE5220446BA0001F080 /* SSBSimpleBrowser.swift */; };
+		80573BE822045E150001F080 /* SSBCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BE722045E150001F080 /* SSBCommentViewController.swift */; };
+		80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BE922045E710001F080 /* SSBGameDetailViewController.swift */; };
+		80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BEB22045FB70001F080 /* SSBGameInfoViewController.swift */; };
+		80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BED220460590001F080 /* SSBCommunityViewController.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +106,10 @@
 		80573BE12203F4B30001F080 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		80573BE3220438230001F080 /* EshopHacker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EshopHacker-Bridging-Header.h"; sourceTree = "<group>"; };
 		80573BE5220446BA0001F080 /* SSBSimpleBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSimpleBrowser.swift; sourceTree = "<group>"; };
+		80573BE722045E150001F080 /* SSBCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentViewController.swift; sourceTree = "<group>"; };
+		80573BE922045E710001F080 /* SSBGameDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameDetailViewController.swift; sourceTree = "<group>"; };
+		80573BEB22045FB70001F080 /* SSBGameInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameInfoViewController.swift; sourceTree = "<group>"; };
+		80573BED220460590001F080 /* SSBCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommunityViewController.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +167,7 @@
 		801B7F6921FD912D007DFCB5 /* EshopHacker */ = {
 			isa = PBXGroup;
 			children = (
+				80573BEF2204607F0001F080 /* Community */,
 				801B809E21FFF696007DFCB5 /* Common */,
 				801B806921FFEF65007DFCB5 /* Root */,
 				801B805C21FFE1CE007DFCB5 /* Launch */,
@@ -216,6 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */,
+				80573BE922045E710001F080 /* SSBGameDetailViewController.swift */,
+				80573BEB22045FB70001F080 /* SSBGameInfoViewController.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -235,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				801B7FFB21FEE19C007DFCB5 /* CommentService.swift */,
+				80573BE722045E150001F080 /* SSBCommentViewController.swift */,
 			);
 			path = Comment;
 			sourceTree = "<group>";
@@ -279,6 +291,14 @@
 				80573BE5220446BA0001F080 /* SSBSimpleBrowser.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		80573BEF2204607F0001F080 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				80573BED220460590001F080 /* SSBCommunityViewController.swift */,
+			);
+			path = Community;
 			sourceTree = "<group>";
 		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
@@ -495,7 +515,9 @@
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
+				80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */,
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
+				80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */,
 				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
@@ -510,6 +532,7 @@
 				801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */,
 				801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */,
 				80573BB22202DB7C0001F080 /* TodayRecommendService.swift in Sources */,
+				80573BE822045E150001F080 /* SSBCommentViewController.swift in Sources */,
 				80573BA9220291990001F080 /* SSBCustomRefreshComponents.swift in Sources */,
 				80573BB02202D9820001F080 /* ConfigHelper.swift in Sources */,
 				80573BE6220446BA0001F080 /* SSBSimpleBrowser.swift in Sources */,
@@ -519,6 +542,7 @@
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
+				80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,
 				801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */,
