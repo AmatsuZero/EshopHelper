@@ -15,7 +15,7 @@ target 'EshopHacker' do
   pod 'MJRefresh'
   pod 'Reusable'
   pod 'UIWindowTransitions'
-  pod 'NVActivityIndicatorView'
+  pod 'NVActivityIndicatorView', '~> 4.6.0'
   pod 'Toast-Swift', '~> 4.0.0'
   pod 'WechatOpenSDK'
 
@@ -25,3 +25,5 @@ target 'EshopHacker' do
   end
 
 end
+
+

@@ -24,9 +24,17 @@ class SSBLoadingImageView: UIImageView {
         addSubview(indicator)
         indicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.height.equalTo(40)
+            make.size.equalTo(CGSize(width: 40, height: 40))
         }
+        
         self.url = url
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        indicator.snp.updateConstraints { make in
+            make.size.equalTo(indicator.sizeThatFits(rect.size))
+        }
     }
     
     var url: String? {

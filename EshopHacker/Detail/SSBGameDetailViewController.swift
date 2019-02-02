@@ -111,18 +111,13 @@ class SSBGameDetailViewController: TabmanViewController {
     private var viewControllers = [UIViewController]()
     private let bar = TMBarView<TMHorizontalBarLayout, TMLabelBarButton, SSBLineIndicator>()
     
-    private let appid: String
-    
-    init(appid: String) {
-        self.appid = appid
+    init(appid: String, from: String? = nil) {
         super.init(nibName: nil, bundle: nil)
-        
-        let detail = SSBGameInfoViewController(nibName: nil, bundle: nil)
+        let detail = SSBGameInfoViewController(appid: appid, from: from)
         let comment = SSBCommentViewController(nibName: nil, bundle: nil)
         let community = SSBCommunityViewController(nibName: nil, bundle: nil)
         
         viewControllers += [detail, comment, community]
-        
         dataSource = self
     }
     
@@ -171,7 +166,6 @@ class SSBGameDetailViewController: TabmanViewController {
         navigationController?.toolbar.barTintColor = .white
         toolbarItems = [homePage, createSpaceItem(), collection, createSpaceItem(), share]
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

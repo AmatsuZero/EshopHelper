@@ -38,11 +38,11 @@ class UserService: NSObject, WXApiDelegate {
     }
     
     // MARK: WXApiDelegate
-    func onReq(_ req: BaseReq!) {
+    func onReq(_ req: BaseReq) {
         
     }
     
-    func onResp(_ resp: BaseResp!) {
+    func onResp(_ resp: BaseResp) {
         print(resp)
     }
 }

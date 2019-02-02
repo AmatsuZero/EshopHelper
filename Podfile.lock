@@ -1,37 +1,37 @@
 PODS:
   - Alamofire (4.8.1)
   - AutoInsetter (1.4.1)
-  - FontAwesome.swift (1.4.8)
+  - FontAwesome.swift (1.4.9)
   - MJRefresh (3.1.15.7)
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
   - NVActivityIndicatorView/Presenter (4.6.1)
   - Pageboy (3.0.1)
-  - PromiseKit/Alamofire (6.8.0):
+  - PromiseKit/Alamofire (6.8.2):
     - Alamofire (~> 4.0)
     - PromiseKit/CorePromise
-  - PromiseKit/CorePromise (6.8.0)
+  - PromiseKit/CorePromise (6.8.2)
   - Reusable (4.0.5):
     - Reusable/Storyboard (= 4.0.5)
     - Reusable/View (= 4.0.5)
   - Reusable/Storyboard (4.0.5)
   - Reusable/View (4.0.5)
-  - SDWebImage (4.4.4):
-    - SDWebImage/Core (= 4.4.4)
-  - SDWebImage/Core (4.4.4)
+  - SDWebImage (4.4.5):
+    - SDWebImage/Core (= 4.4.5)
+  - SDWebImage/Core (4.4.5)
   - SnapKit (4.0.1)
   - Tabman (2.1.3):
     - AutoInsetter (~> 1.4.1)
     - Pageboy (~> 3.0.1)
   - Toast-Swift (4.0.1)
   - UIWindowTransitions (0.2.0)
-  - WechatOpenSDK (1.8.3)
+  - WechatOpenSDK (1.8.4)
 
 DEPENDENCIES:
   - Alamofire
   - FontAwesome.swift
   - MJRefresh
-  - NVActivityIndicatorView
+  - NVActivityIndicatorView (~> 4.6.0)
   - PromiseKit/Alamofire
   - Reusable
   - SDWebImage (~> 4.0)
@@ -61,19 +61,19 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AutoInsetter: d0eafc611d686f83f925ded729084cf916a39863
-  FontAwesome.swift: fb8637bffb9a588c7e8c753c084565b27b20a39d
+  FontAwesome.swift: 7f831846e85b93d32ded5d86983804b749921760
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
   Pageboy: ec0170fd880ea6fa3589219edfd64b554443ff6e
-  PromiseKit: 02c93833283c37ce94ef7d25de63d48d62b0754e
+  PromiseKit: 8200c4555a5b433ac26f5143093cb792ee2c3426
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
-  SDWebImage: c00ec18ab25d10e5ffac109b0f78d1b4341c9691
+  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Tabman: 083741793bed532032b1a010f4af3725d49fa519
   Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
-  WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
+  WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
 
-PODFILE CHECKSUM: ea4bce167a4a3cd9066ed971eb2b0876c605f67a
+PODFILE CHECKSUM: 776c51695d2107f718c2d8559e8eeeba4b9cf528
 
 COCOAPODS: 1.6.0.beta.2
