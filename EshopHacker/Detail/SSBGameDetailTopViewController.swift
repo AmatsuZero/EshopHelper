@@ -70,7 +70,7 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
     var playerInfo: (cover: String, url: String)? {
         didSet {
             guard let addr = playerInfo?.url,
-                playerInfo?.url != oldValue?.url,
+                oldValue?.url != addr,
                 let url = URL(string: addr) else {
                 return
             }
@@ -78,11 +78,13 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
         }
     }
     
-    private let player = SSBPlayer()
+    fileprivate let player = SSBPlayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // 播放器Layer
+        // 播放器View
+        player.displayView.topView.isHidden = true
+        player.displayView.closeButton.isHidden = true
         contentView.addSubview(player.displayView)
         player.displayView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
@@ -212,7 +214,7 @@ class SSBGameShowCaseView: UIView, UICollectionViewDelegate {
     }
 }
 
-protocol SSBGameDetailTopViewDelegate: class {
+protocol SSBGameDetailTopViewDelegate: SSBPlayerViewDelegate {
     
 }
 
@@ -270,6 +272,7 @@ extension SSBGameDetailTopView: UICollectionViewDataSource {
                 cell = {
                     let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: SSBGameShowCasePlayerCell.self)
                     cell.playerInfo = (cover, url)
+                    cell.player.displayView.delegate = self
                     return cell
                 }()
             }
@@ -290,9 +293,31 @@ extension SSBGameDetailTopView: UICollectionViewDataSource {
     }
 }
 
+extension SSBGameDetailTopView: SSBPlayerViewDelegate {
+    
+    func oneExitFullScreen(_ player: SSBPlayerView) {
+        guard let delegate = self.delegate else { return }
+        delegate.oneExitFullScreen(player)
+    }
+    
+    func onEnterFullScreen(_ player: SSBPlayerView) {
+        guard let delegate = self.delegate else { return }
+        delegate.onEnterFullScreen(player)
+    }
+}
+
 class SSBGameDetailTopViewController: UIViewController {
     
     private let topView = SSBGameDetailTopView()
+    
+    fileprivate var isStatusBarHidden = false {
+        didSet {
+            UIView.animate(withDuration: 0.3) {
+                self.setNeedsFocusUpdate()
+            }
+        }
+    }
+    
     var dataSource: SSBGameInfoViewModel.HeadData? {
         didSet {
             topView.dataSource = dataSource
@@ -300,11 +325,31 @@ class SSBGameDetailTopViewController: UIViewController {
     }
     
     override func loadView() {
+        topView.delegate = self
         view = topView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+    }
+}
+
+extension SSBGameDetailTopViewController: SSBGameDetailTopViewDelegate {
+    
+    override var prefersStatusBarHidden: Bool {
+        return isStatusBarHidden
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
+    
+    func onEnterFullScreen(_ player: SSBPlayerView) {
+        isStatusBarHidden = true
+    }
+    
+    func oneExitFullScreen(_ player: SSBPlayerView) {
+        isStatusBarHidden = false
     }
 }

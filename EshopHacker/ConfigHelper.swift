@@ -49,6 +49,10 @@ class SSBConfigHelper {
         return weChatregiser()
     }
     
+    func dbInit()  {
+        
+    }
+    
     private func weChatregiser() -> Promise<Bool> {
         return Promise(resolver: { resolver in
             // 获取wxkey

@@ -232,7 +232,7 @@ class SSBPlayerView: UIView {
         UIView.animate(withDuration: 0.5, animations: {
             self.bottomView.alpha = 0
             self.topView.alpha = 0
-        }) { (completion) in
+        }) { _ in
             self.bottomView.isHidden = true
             self.topView.isHidden = true
         }
@@ -246,6 +246,7 @@ class SSBPlayerView: UIView {
                                                                 self.displayControlView(false)
             }, repeats: false)
     }
+    
     func addDeviceOrientationNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationWillChange(_:)), name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
     }
@@ -302,8 +303,8 @@ extension SSBPlayerView {
         // error
     }
     
-    public func formatSecondsToString(_ seconds: TimeInterval) -> String {
-        if seconds.isNaN{
+    func formatSecondsToString(_ seconds: TimeInterval) -> String {
+        if seconds.isNaN {
             return "00:00"
         }
         let interval = Int(seconds)
@@ -563,7 +564,7 @@ extension SSBPlayerView {
     
     func configurationTopView() {
         addSubview(topView)
-        titleLabel.text = "this is a title."
+        titleLabel.text = ""
         topView.addSubview(titleLabel)
         let closeImage = UIImage(named: "VGPlayer_ic_nav_back")
         closeButton.setImage(closeImage?.newImage(scaledToSize: .init(width: 15, height: 20)), for: .normal)

@@ -56,8 +56,11 @@
 		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
 		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
-		806FF9992205E96A0016B623 /* SSBRBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9982205E96A0016B623 /* SSBRBTree.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
+		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
+		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
+		80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */; };
+		80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -128,8 +131,11 @@
 		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
 		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
-		806FF9982205E96A0016B623 /* SSBRBTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRBTree.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
+		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
+		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
+		80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +218,7 @@
 		801B7F8121FD912F007DFCB5 /* EshopHackerTests */ = {
 			isa = PBXGroup;
 			children = (
+				80F054A42206E3C000F97CEC /* dictionary.txt */,
 				801B7F8221FD912F007DFCB5 /* EshopHackerTests.swift */,
 				801B7F9321FDA7A8007DFCB5 /* NetworkTests.swift */,
 				80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */,
@@ -223,9 +230,11 @@
 		801B7F8D21FD916D007DFCB5 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */,
+				80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */,
+				80F054A22206E1CF00F97CEC /* SSBTrie.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
-				806FF9982205E96A0016B623 /* SSBRBTree.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -436,6 +445,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80F054A52206E3C000F97CEC /* dictionary.txt in Resources */,
 				801B7F7821FD912E007DFCB5 /* LaunchScreen.storyboard in Resources */,
 				801B806821FFEF1D007DFCB5 /* eShop Load.wav in Resources */,
 				801B7F7521FD912E007DFCB5 /* Assets.xcassets in Resources */,
@@ -551,13 +561,13 @@
 			files = (
 				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
-				806FF9992205E96A0016B623 /* SSBRBTree.swift in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
 				80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */,
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
 				80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */,
 				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
+				80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
 				806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */,
@@ -580,9 +590,11 @@
 				80573BE6220446BA0001F080 /* SSBSimpleBrowser.swift in Sources */,
 				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
+				80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */,
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
 				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
 				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
+				80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */,
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,

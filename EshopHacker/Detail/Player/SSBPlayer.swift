@@ -48,28 +48,18 @@ class SSBPlayer: NSObject {
     
     public enum PlayerMediaFormat : String {
         case unknown
-        case mpeg4
-        case m3u8
-        case mov
-        case m4v
+        case mpeg4 = ".mp4"
+        case m3u8 = ".m3u8"
+        case mov = ".mov"
+        case m4v = ".m4v"
         case error
-        
-        init(_ URL: URL?) {
-            guard let path = URL?.absoluteString else {
-                self = .unknown
+    
+        init?(_ URL: URL?) {
+            guard let ext = URL?.pathExtension else {
+                self = .error
                 return
             }
-            if path.contains(".mp4") {
-                self = .mpeg4
-            } else if path.contains(".m3u8") {
-                self = .m3u8
-            } else if path.contains(".mov") {
-                self = .mov
-            } else if path.contains(".m4v") {
-                self = .m4v
-            } else {
-                self = .unknown
-            }
+            self.init(rawValue: ext)
         }
     }
     
@@ -149,7 +139,7 @@ class SSBPlayer: NSObject {
     fileprivate var seeking  = false
     
     init(URL: URL? = nil, playerView: SSBPlayerView? = nil) {
-        mediaFormat = PlayerMediaFormat(URL)
+        mediaFormat = PlayerMediaFormat(URL) ?? .error
         contentURL = URL
         displayView = playerView ?? SSBPlayerView()
         super.init()
@@ -172,14 +162,19 @@ class SSBPlayer: NSObject {
             let keys = ["tracks", "playable"];
             playerItem = AVPlayerItem(asset: playerAsset!, automaticallyLoadedAssetKeys: keys)
         } else {
-            // remote add cache
-            //            playerItem = resourceLoaderManager.playerItem(URL)
+            playerItem = AVPlayerItem(asset: .init(url: URL))
+            if #available(iOS 9.0, *) {
+                playerItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
+            }
         }
         player = AVPlayer(playerItem: playerItem)
         displayView.reloadPlayerView()
     }
     
     func addPlayerObservers() {
+        guard let player = self.player else {
+            return
+        }
         let block: (CMTime) -> Void = { [weak self] _ in
             guard let self = self,
                 let currentTime = self.player?.currentTime().seconds,
@@ -190,9 +185,9 @@ class SSBPlayer: NSObject {
             self.delegate?.player(self, playerDurationDidChange: currentTime, totalDuration: totalDuration)
             self.displayView.playerDurationDidChange(currentTime, totalDuration: totalDuration)
         }
-        timeObserver = player?.addPeriodicTimeObserver(forInterval: .init(value: 1, timescale: 1),
-                                                       queue: DispatchQueue.main,
-                                                       using: block)
+        timeObserver = player.addPeriodicTimeObserver(forInterval: .init(value: 1, timescale: 1),
+                                                      queue: DispatchQueue.main,
+                                                      using: block)
     }
     
     func removePlayerObservers() {
@@ -204,7 +199,7 @@ class SSBPlayer: NSObject {
     
     func replaceVideo(_ URL: URL) {
         reloadPlayer()
-        mediaFormat = SSBPlayer.PlayerMediaFormat(URL)
+        mediaFormat = SSBPlayer.PlayerMediaFormat(URL) ?? .error
         contentURL = URL
         configurationPlayer(URL)
     }
@@ -352,9 +347,9 @@ extension SSBPlayer {
     }
     
     @objc func applicationDidEnterBackground(_ notification: Notification) {
-        //        if let playerLayer = displayView.playerLayer  {
-        //            playerLayer.player = nil
-        //        }
+        if let playerLayer = displayView.playerLayer  {
+            playerLayer.player = nil
+        }
         switch self.backgroundMode {
         case .suspend:
             pause()
