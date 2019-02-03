@@ -78,7 +78,7 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
         }
     }
     
-    let player = SSBPlayer()
+    private let player = SSBPlayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,10 +89,6 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        
     }
     
     override var isSelected: Bool {

@@ -10,7 +10,7 @@ import XCTest
 import PromiseKit
 @testable import EshopHacker
 
-class Network: XCTestCase {
+class NetworkTests: XCTestCase {
     
     enum TestError: Error {
         case noAppId

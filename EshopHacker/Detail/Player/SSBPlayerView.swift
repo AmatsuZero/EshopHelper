@@ -11,19 +11,20 @@ import SnapKit
 import MediaPlayer
 
 protocol SSBPlayerViewDelegate: class {
-    
     func playerView(_ playerView: SSBPlayerView, willFullscreen isFullscreen: Bool)
-    
     func playerView(didTappedClose playerView: SSBPlayerView)
-    
     func playerView(didDisplayControl playerView: SSBPlayerView)
+    
+    func onEnterFullScreen(_ player: SSBPlayerView)
+    func oneExitFullScreen(_ player: SSBPlayerView)
 }
 
-// MARK: - delegate methods optional
 extension SSBPlayerViewDelegate {
     func playerView(_ playerView: SSBPlayerView, willFullscreen isFullscreen: Bool) {}
     func playerView(didTappedClose playerView: SSBPlayerView) {}
     func playerView(didDisplayControl playerView: SSBPlayerView) {}
+    func onEnterFullScreen(_ player: SSBPlayerView) {}
+    func oneExitFullScreen(_ player: SSBPlayerView) {}
 }
 
 class SSBPlayerView: UIView {
@@ -285,13 +286,16 @@ extension SSBPlayerView {
             viewFrame = self.frame
         }
         UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-        UIApplication.shared.statusBarOrientation = .landscapeRight
-        UIApplication.shared.setStatusBarHidden(false, with: .fade)
+        if let delegate = self.delegate {
+            delegate.onEnterFullScreen(self)
+        }
     }
     
     func exitFullscreen() {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        UIApplication.shared.statusBarOrientation = .portrait
+        if let delegate = self.delegate {
+            delegate.oneExitFullScreen(self)
+        }
     }
     
     func playFailed(_ error: SSBPlayer.PlayerError) {
@@ -375,7 +379,7 @@ extension SSBPlayerView {
         }
     }
     
-    @objc internal func onPlayerButton(_ sender: UIButton) {
+    @objc func onPlayerButton(_ sender: UIButton) {
         if !sender.isSelected {
             player?.play()
         } else {
@@ -383,7 +387,7 @@ extension SSBPlayerView {
         }
     }
     
-    @objc internal func onFullscreen(_ sender: UIButton) {
+    @objc func onFullscreen(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         isFullScreen = sender.isSelected
         if isFullScreen {

@@ -96,6 +96,12 @@ public class RedBlackTree<T: Comparable> {
     public init() {
         root = nullLeaf
     }
+    
+    subscript(_ key: T) -> RBNode? {
+        get {
+            return search(input: key)
+        }
+    }
 }
 
 // MARK: - Equatable protocol
@@ -161,6 +167,7 @@ extension RBTreeNode {
 }
 
 extension RedBlackTree {
+    
     /*
      * Returns the node with the given key |input| if existing
      */
