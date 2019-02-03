@@ -52,6 +52,11 @@
 		80573BF32204A5510001F080 /* SSBGamePriceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */; };
 		80573BF52204A84F0001F080 /* SSBGameLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF42204A84F0001F080 /* SSBGameLikeViewController.swift */; };
 		80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */; };
+		806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF98E2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift */; };
+		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
+		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
+		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
+		806FF9992205E96A0016B623 /* SSBRBTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9982205E96A0016B623 /* SSBRBTree.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +123,11 @@
 		80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePriceListViewController.swift; sourceTree = "<group>"; };
 		80573BF42204A84F0001F080 /* SSBGameLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameLikeViewController.swift; sourceTree = "<group>"; };
 		80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameCommentViewController.swift; sourceTree = "<group>"; };
+		806FF98E2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerLoadingIndicator.swift; sourceTree = "<group>"; };
+		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
+		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
+		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
+		806FF9982205E96A0016B623 /* SSBRBTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRBTree.swift; sourceTree = "<group>"; };
 		85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.release.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.release.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.release.xcconfig"; sourceTree = "<group>"; };
 		F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +222,7 @@
 			children = (
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
+				806FF9982205E96A0016B623 /* SSBRBTree.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -232,6 +243,7 @@
 		801B7F9821FDCABD007DFCB5 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				806FF98D2205B5BF0016B623 /* Player */,
 				801B7F9921FDCE09007DFCB5 /* GameInfoService.swift */,
 				80573BE922045E710001F080 /* SSBGameDetailViewController.swift */,
 				80573BEB22045FB70001F080 /* SSBGameInfoViewController.swift */,
@@ -311,6 +323,17 @@
 				80573BED220460590001F080 /* SSBCommunityViewController.swift */,
 			);
 			path = Community;
+			sourceTree = "<group>";
+		};
+		806FF98D2205B5BF0016B623 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				806FF98E2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift */,
+				806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */,
+				806FF9942205BBC90016B623 /* SSBPlayer.swift */,
+				806FF9962205BCBA0016B623 /* SSBPlayerView.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
@@ -525,6 +548,7 @@
 			files = (
 				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
+				806FF9992205E96A0016B623 /* SSBRBTree.swift in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
 				80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */,
@@ -533,7 +557,9 @@
 				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
+				806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */,
 				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,
+				806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */,
 				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
 				801B809D21FFF51C007DFCB5 /* SSBRootViewController.swift in Sources */,
 				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
@@ -552,7 +578,9 @@
 				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
+				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
 				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
+				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,

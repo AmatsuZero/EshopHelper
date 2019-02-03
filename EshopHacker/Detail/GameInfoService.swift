@@ -116,10 +116,31 @@ class GameInfoService {
 
 struct SSBGameInfoViewModel: SSBViewModelProtocol {
 
-    typealias T = GameInfoService.GameInfoData
-    var originalData: GameInfoService.GameInfoData
+    typealias T = GameInfoService.GameInfoData.Info
+    var originalData: T
+    
+    struct HeadData {
+        enum ShowCaseType {
+            case pic(url: String)
+            case video(cover: String, url: String)
+        }
+        
+        fileprivate(set) var showCaseDataSource = [ShowCaseType]()
+    }
+    
+    private(set) var headDataSource = HeadData()
     
     init(model: T) {
         originalData = model
+        // 拼接头部数据
+        if let video = model.game.videos?.first?.components(separatedBy: ","),
+            let url = video.first,
+            let cover = video.last {
+            headDataSource.showCaseDataSource.append(.video(cover: cover, url: url))
+        }
+        headDataSource.showCaseDataSource += model.game.pics.map {
+            HeadData.ShowCaseType.pic(url: $0)
+        }
+        
     }
 }

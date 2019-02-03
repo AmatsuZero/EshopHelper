@@ -24,3 +24,31 @@ extension UILabel {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
+
+extension UIImage {
+    func newImage(scaledToSize newSize: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage;
+    }
+}
+
+extension Timer {
+    
+    class func ssbPlayerScheduledTimerWithTimeInterval(_ timeInterval: TimeInterval, block: @escaping ()->(), repeats: Bool) -> Timer {
+        return scheduledTimer(timeInterval: timeInterval,
+                              target: self,
+                              selector: #selector(self.ssbPlayerBlcokInvoke(_:)),
+                              userInfo: block,
+                              repeats: repeats)
+    }
+    
+    @objc class func ssbPlayerBlcokInvoke(_ timer: Timer) {
+        if let block = timer.userInfo as? ()->() {
+             block()
+        }
+    }
+    
+}

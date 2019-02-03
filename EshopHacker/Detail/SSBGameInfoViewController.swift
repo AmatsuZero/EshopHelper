@@ -10,12 +10,36 @@ import SnapKit
 
 class SSBGameInfoViewController: UIViewController {
     
-    private var model: SSBGameInfoViewModel?
+    private var model: SSBGameInfoViewModel? {
+        didSet {
+            guard let model = self.model else {
+                return
+            }
+            // 绑定头部数据
+            if !children.contains(topViewController) {
+                addChild(topViewController)
+            }
+            topViewController.dataSource = model.headDataSource
+            // 绑定价格
+            if !children.contains(priceViewController) {
+                addChild(priceViewController)
+            }
+            tableView.reloadData()
+        }
+    }
     
-    private let topViewController = SSBGameDetailTopViewController()
-    private let priceViewController = SSBGamePriceListViewController()
-    private let likeViewController = SSBGameLikeViewController()
-    private let gameCommentViewController = SSBGameCommentViewController()
+    private lazy var topViewController: SSBGameDetailTopViewController = {
+        return SSBGameDetailTopViewController()
+    }()
+    private lazy var priceViewController:SSBGamePriceListViewController = {
+        return SSBGamePriceListViewController()
+    }()
+    private lazy var likeViewController: SSBGameLikeViewController = {
+        return SSBGameLikeViewController()
+    }()
+    private lazy var gameCommentViewController: SSBGameCommentViewController = {
+        return SSBGameCommentViewController()
+    }()
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let margin: CGFloat = 10
@@ -32,10 +56,7 @@ class SSBGameInfoViewController: UIViewController {
         self.from = from
         super.init(nibName: nil, bundle: nil)
         title = "游戏信息"
-        addChild(topViewController)
-        addChild(priceViewController)
-        addChild(likeViewController)
-        addChild(gameCommentViewController)
+ 
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -118,14 +139,14 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         GameInfoService.shared.gameInfo(appId: appid, fromName: from).done { [weak self] ret in
             guard let self = self else { return }
-            guard let detailData = ret.data?.game else {
+            guard let detailData = ret.data else {
                 self.shouldShow = false
                 backgroundView?.state = .empty
                 return
             }
             self.tableView.mj_header.isHidden = false
-            self.topViewController.bind(data: detailData)
             self.shouldShow = true
+            self.model = SSBGameInfoViewModel(model: detailData)
             self.tableView.reloadData()
         }.catch { [weak self] error in
             self?.shouldShow = false

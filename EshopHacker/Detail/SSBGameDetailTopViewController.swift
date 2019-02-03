@@ -9,29 +9,9 @@
 import SnapKit
 import Reusable
 import FontAwesome_swift
-import AVKit
-
-struct SSBGameDetailTopViewModel {
-    
-    enum ShowCaseType {
-        case pic(url: String)
-        case video(cover: String, url: String)
-    }
-    
-    private(set) var showCaseDataSource = [ShowCaseType]()
-    
-    init(model: GameInfoService.GameInfoData.Info.Game) {
-        if let video = model.videos?.first?.components(separatedBy: ","),
-            let url = video.first,
-            let cover = video.last {
-            showCaseDataSource.append(.video(cover: cover, url: url))
-        }
-        showCaseDataSource += model.pics.map { ShowCaseType.pic(url: $0) }
-    }
-}
 
 class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
-    var type: SSBGameDetailTopViewModel.ShowCaseType? {
+    var type: SSBGameInfoViewModel.HeadData.ShowCaseType? {
         didSet {
             guard let t = type else {
                 return
@@ -87,32 +67,24 @@ class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
 
 class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
     
-    var urlAsset: AVURLAsset?
     var playerInfo: (cover: String, url: String)? {
         didSet {
-            guard let info = playerInfo,
-                let url = URL(string: info.url),
-                urlAsset?.url != url else {// 资源没变，不发生变化
+            guard let addr = playerInfo?.url,
+                playerInfo?.url != oldValue?.url,
+                let url = URL(string: addr) else {
                 return
             }
-            
-            let asset = AVURLAsset(url: url)
-            let item = AVPlayerItem(asset: asset)
-            urlAsset = asset
-            player.replaceCurrentItem(with: item)
+            player.replaceVideo(url)
         }
     }
     
-    let player = AVPlayer()
+    let player = SSBPlayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         // 播放器Layer
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.contentsScale = UIScreen.main.scale
-        playerLayer.frame = bounds
-        contentView.layer.addSublayer(playerLayer)
+        contentView.addSubview(player.displayView)
+        player.displayView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -125,9 +97,6 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
     
     override var isSelected: Bool {
         didSet {
-            guard player.status == .readyToPlay else {
-                return
-            }
             if isSelected {
                 player.play()
             } else {
@@ -256,9 +225,15 @@ class SSBGameDetailTopView: UITableViewCell {
     let showCaseView = SSBGameShowCaseView()
     weak var delegate: SSBGameDetailTopViewDelegate?
     
-    var dataSource: SSBGameDetailTopViewModel? {
+    var dataSource: SSBGameInfoViewModel.HeadData? {
         didSet {
+            guard dataSource?.showCaseDataSource.count ?? 0 > 0 else {
+                return
+            }
             showCaseView.previewView.reloadData()
+            // 默认选中第一个
+            showCaseView.previewView.selectItem(at: IndexPath(row: 0, section: 0),
+                                                animated: false, scrollPosition: [])
         }
     }
     
@@ -322,6 +297,11 @@ extension SSBGameDetailTopView: UICollectionViewDataSource {
 class SSBGameDetailTopViewController: UIViewController {
     
     private let topView = SSBGameDetailTopView()
+    var dataSource: SSBGameInfoViewModel.HeadData? {
+        didSet {
+            topView.dataSource = dataSource
+        }
+    }
     
     override func loadView() {
         view = topView
@@ -330,9 +310,5 @@ class SSBGameDetailTopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-    }
-    
-    func bind(data: GameInfoService.GameInfoData.Info.Game) {
-        topView.dataSource = SSBGameDetailTopViewModel(model: data)
     }
 }
