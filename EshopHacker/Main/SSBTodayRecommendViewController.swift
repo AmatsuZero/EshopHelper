@@ -513,9 +513,7 @@ class SSBTodayRecommendViewController: UIViewController {
     
     private var lastPage = 1
     
-    var isRunningTask: Bool {
-        return todayRecommendView.tableView.mj_header.isRefreshing || todayRecommendView.tableView.mj_footer.isRefreshing
-    }
+    private var isRunningTask = false
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -545,12 +543,14 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
     
     func listViewBeginToRefresh(_ listView: SSBTodayRecommendView) {
         // 如果正在刷新中，则取消
-        guard !todayRecommendView.tableView.mj_footer.isRefreshing else {
+        guard !isRunningTask else {
             view.makeToast("正在刷新中")
             return
         }
         
         lastPage = 1
+        isRunningTask = true
+        
         let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
         TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
             guard let self = self, let source = data.data?.informationFlow else {
@@ -567,38 +567,40 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 self?.view.makeToast(error.localizedDescription)
                 self?.todayRecommendView.tableView.reloadData()
             }.finally { [weak self] in
-                self?.todayRecommendView.tableView.mj_header.endRefreshing()
+                self?.isRunningTask = false
         }
     }
     
     func listViewBeginToAppend(_ listView: SSBTodayRecommendView) {
         // 没有下拉刷新的任务，也没有加载任务
-        guard isRunningTask else {
+        guard !isRunningTask else {
             view.makeToast("正在刷新中")
             return
         }
         
-        lastPage += 1 // 加一页
         let originalCount = dataSource.count
-        
+        isRunningTask = true
         // 重置没有更多数据的状态
         todayRecommendView.tableView.mj_footer.resetNoMoreData()
         
-        TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
+        TodayRecommendService.shared.mainPage(page: lastPage + 1).done { [weak self] data in
             guard let self = self,
                 let source = data.data?.informationFlow else {
                     return
             }
+            self.lastPage += 1
             self.dataSource.append(data: source, collectionView: self.todayRecommendView.tableView)
+            if originalCount == self.dataSource.count {
+                self.todayRecommendView.tableView.mj_footer.endRefreshingWithNoMoreData()
+            } else {
+                self.todayRecommendView.tableView.mj_footer.endRefreshing()
+            }
             }.catch { [weak self] error in
                 self?.lastPage -= 1 // 如果失败，倒回原来页码
                 self?.view.makeToast("请求失败")
+                self?.todayRecommendView.tableView.mj_footer.endRefreshing()
             }.finally { [weak self] in
-                if originalCount == self?.dataSource.count {
-                    self?.todayRecommendView.tableView.mj_footer.endRefreshing()
-                } else {
-                    self?.todayRecommendView.tableView.mj_footer.endRefreshing()
-                }
+                self?.isRunningTask = false
         }
     }
     

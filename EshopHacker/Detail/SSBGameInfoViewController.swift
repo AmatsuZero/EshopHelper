@@ -40,6 +40,9 @@ class SSBGameInfoViewController: UIViewController {
     private lazy var gameCommentViewController: SSBGameCommentViewController = {
         return SSBGameCommentViewController()
     }()
+    private lazy var unlockInfoViewController: SSBUnlockInfoViewController = {
+        return SSBUnlockInfoViewController()
+    }()
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let margin: CGFloat = 10

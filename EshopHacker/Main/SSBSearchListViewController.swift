@@ -245,52 +245,54 @@ class SSBSearchListViewController: UIViewController {
         listViewBeginToRefresh(listView)
     }
     
-    var isRunningTask: Bool {
-        return listView.tableView.mj_header.isRefreshing || listView.tableView.mj_footer.isRefreshing
-    }
+    var isRunningTask: Bool = false
 }
 
 extension SSBSearchListViewController: SSBSearchListViewDelegate {
     
     func listViewBeginToAppend(_ listView: SSBSearchListView) {
         // 没有下拉刷新的任务，也没有加载任务
-        guard isRunningTask else {
+        guard !isRunningTask else {
             view.makeToast("正在刷新中")
             return
         }
         
-        lastPage += 1 // 加一页
+        isRunningTask = true
         let originalCount = dataSource.count
         
         // 重置没有更多数据的状态
         listView.tableView.mj_footer.resetNoMoreData()
         
-        SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
+        SearchService.shared.mainIndex(page: lastPage + 1).done { [weak self] data in
             guard let self = self,
                 let source = data.data?.games else {
                     return
             }
+            self.lastPage += 1
             self.dataSource.append(data: source, collectionView: self.listView.tableView)
-        }.catch { [weak self] error in
-            self?.lastPage -= 1 // 如果失败，倒回原来页码
-            self?.view.makeToast("请求失败")
-        }.finally { [weak self] in
-            if originalCount == self?.dataSource.count {
-                self?.listView.tableView.mj_footer.endRefreshing()
+            if originalCount == self.dataSource.count {
+                self.listView.tableView.mj_footer.endRefreshingWithNoMoreData()
             } else {
-                self?.listView.tableView.mj_footer.endRefreshing()
+                self.listView.tableView.mj_footer.endRefreshing()
             }
+        }.catch { [weak self] error in
+            self?.view.makeToast("请求失败")
+            self?.listView.tableView.mj_footer.endRefreshing()
+        }.finally { [weak self] in
+            self?.isRunningTask = false
         }
     }
     
     func listViewBeginToRefresh(_ listView: SSBSearchListView) {
         // 如果正在刷新中，则取消
-        guard !listView.tableView.mj_footer.isRefreshing else {
+        guard !isRunningTask else {
             view.makeToast("正在刷新中")
             return
         }
         
         lastPage = 1
+        isRunningTask = true
+        
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
             guard let self = self,
@@ -309,7 +311,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
                 self?.view.makeToast(error.localizedDescription)
                 self?.listView.tableView.reloadData()
             }.finally { [weak self] in
-                self?.listView.tableView.mj_header.endRefreshing()
+                self?.isRunningTask = false
         }
     }
 }

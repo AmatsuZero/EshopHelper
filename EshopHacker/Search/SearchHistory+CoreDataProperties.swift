@@ -7,7 +7,7 @@
 //
 //
 
-import Foundation
+import PromiseKit
 import CoreData
 
 extension SearchHistory {
@@ -26,12 +26,22 @@ extension SearchHistory {
 
     @NSManaged public var word: String?
     @NSManaged public var time: NSDate?
-    
-    class func find(text: String) {
-        _ = context
-    }
 }
 
 extension SSBTrie {
-    
+    @nonobjc class func historyTrie() -> Promise<SSBTrie> {
+        return Promise(resolver: { resolver in
+            do {
+                let tree = SSBTrie()
+                // 取出历史记录
+                let request: NSFetchRequest<SearchHistory> = SearchHistory.fetchRequest()
+                try SearchHistory.context.fetch(request)
+                    .filter { $0.word != nil }
+                    .forEach { tree.insert(word: $0.word!) }
+                resolver.fulfill(tree)
+            } catch {
+                resolver.reject(error)
+            }
+        })
+    }
 }

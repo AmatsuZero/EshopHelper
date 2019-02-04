@@ -12,5 +12,12 @@ import CoreData
 
 @objc(SearchHistory)
 public class SearchHistory: NSManagedObject {
-
+    
+    class func add(text: String) {
+        
+    }
+    
+    class func find(text: String) {
+        
+    }
 }

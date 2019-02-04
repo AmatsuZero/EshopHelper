@@ -7,6 +7,7 @@
 //
 
 import PromiseKit
+import Toast_Swift
 
 protocol SSBViewModelProtocol {
     associatedtype T: Codable
@@ -46,6 +47,8 @@ class SSBConfigHelper {
     static let shared = SSBConfigHelper()
     
     func initialization() -> Promise<Bool> {
+        // 修改Toast默认时长
+        ToastManager.shared.duration = 1
         return weChatregiser()
     }
     
