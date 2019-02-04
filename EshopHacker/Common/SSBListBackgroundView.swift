@@ -26,9 +26,11 @@ class SSBListBackgroundView: UIView {
     
     var state = State.loading {
         didSet {
-            reset()
+            sholudStop = true
+            retryImageView.layer.removeAllAnimations() // 移除原来的动画
             setNeedsLayout()
             delegate = nil
+            
             switch state {
             case .loading:
                 loadingIndicator.isHidden = false
@@ -232,7 +234,7 @@ class SSBListBackgroundView: UIView {
     
     private func reset() {
         isRotating = false
-        sholudStop = true
+        sholudStop = false
     }
 }
 

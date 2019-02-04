@@ -52,6 +52,7 @@ class SSBCustomRefreshHeader: MJRefreshHeader, CAAnimationDelegate {
                 reset()
                 label.text = "松手开始"
             case .refreshing:
+                imageView.layer.removeAllAnimations()
                 label.text = "刷新中"
                 startAnimation()
             case .willRefresh:
@@ -92,7 +93,7 @@ class SSBCustomRefreshHeader: MJRefreshHeader, CAAnimationDelegate {
     
     private func reset() {
         isRotating = false
-        sholudStop = true
+        sholudStop = false
     }
 }
 
@@ -142,6 +143,7 @@ class SSBCustomAutoFooter: MJRefreshAutoFooter, CAAnimationDelegate {
                 reset()
                 label.text = "松手开始"
             case .refreshing:
+                imageView.layer.removeAllAnimations()
                 label.text = "刷新中"
                 startAnimation()
             case .willRefresh:
@@ -178,7 +180,7 @@ class SSBCustomAutoFooter: MJRefreshAutoFooter, CAAnimationDelegate {
     
     private func reset() {
         isRotating = false
-        sholudStop = true
+        sholudStop = false
     }
 }
 

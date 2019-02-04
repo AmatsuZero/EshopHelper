@@ -253,7 +253,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
     func listViewBeginToAppend(_ listView: SSBSearchListView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
-            view.makeToast("正在刷新中")
+         //   view.makeToast("正在刷新中")
             return
         }
         
@@ -286,7 +286,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
     func listViewBeginToRefresh(_ listView: SSBSearchListView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
-            view.makeToast("正在刷新中")
+           // view.makeToast("正在刷新中")
             return
         }
         
