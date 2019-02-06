@@ -406,11 +406,33 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             hasMore = prices.count > 3
             self.prices = prices.sorted { Double($0.price) ?? 0 < Double($1.price) ?? 0 }
         }
-     }
+    }
+    struct UnlockInfoData {
+        let data: [T.Game.UnlockInfo]
+        let releaseDate: String
+        
+        init(releaseDate: String, data: [T.Game.UnlockInfo]) {
+            // 转换日期格式
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-DD"
+            formatter.locale = Locale(identifier: "zh_CN")
+            if let date = formatter.date(from: releaseDate) {
+                let components = Calendar.current.dateComponents([.month, .day], from: date)
+                if let month = components.month, let day = components.day {
+                    self.releaseDate = "\(month)月\(day)日"
+                } else {
+                    self.releaseDate = releaseDate
+                }
+            } else {
+                self.releaseDate = releaseDate
+            }
+           self.data = data
+        }
+    }
     /// 头部视图信息
     private(set) var headDataSource: HeadData
     /// 解锁信息
-    private(set) var unlockInfo: [T.Game.UnlockInfo]?
+    private(set) var unlockInfo: UnlockInfoData?
     /// 价格信息
     private(set) var priceData: PriceData?
     
@@ -420,8 +442,9 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         headDataSource = HeadData(model.game, commentCount: model.commentCount)
         // 拼接价格数据
         priceData = PriceData(lowestPrice: model.game.lowestPrice, prices: model.prices)
-        
-        unlockInfo = model.game.unlockInfo
+        if let info = model.game.unlockInfo {
+            unlockInfo = UnlockInfoData(releaseDate: model.game.pubDate, data: info)
+        }
     }
     
 }

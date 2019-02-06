@@ -122,7 +122,7 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         case is SSBGamePriceListViewController: return 300
         case is SSBGameLikeViewController: return 200
         case is SSBGameCommentViewController: return 400
-        case is SSBUnlockInfoViewController: return 181
+        case is SSBUnlockInfoViewController: return 123
         default:
             return 0
         }
@@ -139,7 +139,7 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         case is SSBGameCommentViewController:
             return 400
         case is SSBUnlockInfoViewController:
-            return 181
+            return 123
         default:
             return 0
         }
