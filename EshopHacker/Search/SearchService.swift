@@ -234,7 +234,7 @@ struct SSBSearchListViewModel: SSBViewModelProtocol {
             case -1: //不推荐
                 recommendLabel = createLabel(style: .thumbsDown, color: .black)
             case 2, 3, 4: // 推荐
-                recommendLabel = createLabel(style: .thumbsUp, color: .red)
+                recommendLabel = createLabel(style: .thumbsUp, color: .eShopColor)
             default:
                 recommendLabel = nil
             }

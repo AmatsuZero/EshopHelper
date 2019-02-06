@@ -100,14 +100,31 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     // /MARK: TableView Delegate
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let controller = children[indexPath.section]
         switch controller {
         case is SSBGameDetailTopViewController: return 460
         case is SSBGamePriceListViewController: return 300
         case is SSBGameLikeViewController: return 200
         case is SSBGameCommentViewController: return 400
+        case is SSBUnlockInfoViewController: return 181
         default: return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let controller = children[indexPath.section]
+        switch controller {
+        case is SSBGameDetailTopViewController:
+            return UITableView.automaticDimension
+        case is SSBGamePriceListViewController:
+            return 300
+        case is SSBGameLikeViewController:
+            return 200
+        case is SSBGameCommentViewController:
+            return 400
+        default:
+            return 0
         }
     }
     
@@ -129,6 +146,10 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
         view.backgroundColor = .clear
         return view
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
     }
 }
 

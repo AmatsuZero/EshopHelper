@@ -135,14 +135,21 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         /// 推荐
         let recommendView = UIView()
         /// 简介
-        fileprivate(set) var brief: String?
+        fileprivate(set) var brief: NSAttributedString?
         /// 游玩模式
         fileprivate(set) var playMode = [UIView]()
+        /// 会员标志
+        fileprivate(set) var shouldShowOnlineMark = false
+        /// 语言
+        fileprivate(set) var languageRegion = [GameInfoService.GameInfoData.Info.Game.LanguageRegion]()
+        fileprivate(set) var basicDescription = [UIControl]()
+    
     }
     
     private(set) var headDataSource = HeadData()
     /// 解锁信息
     private(set) var unlockInfo: [T.Game.UnlockInfo]?
+    
     
     init(model: T) {
         originalData = model
@@ -157,16 +164,18 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         }
         headDataSource.title = NSAttributedString(string: "\(model.game.titleZh) \(model.game.title ?? "")", attributes: [
             .font: UIFont.boldSystemFont(ofSize: 19),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.darkText
         ])
-        headDataSource.developer = NSAttributedString(string: "\(model.game.developer ?? "")", attributes: [
+        headDataSource.developer = NSAttributedString(string: "\(model.game.pubDate)/\(model.game.publisher)/\(model.game.developer ?? "未知")", attributes: [
             .font: UIFont.boldSystemFont(ofSize: 12),
             .foregroundColor: UIColor.gray
         ])
         
-        func createMarkLabel(_ text: String, backgroundColor: UIColor = .red) -> UIView {
+        func createMarkLabel(_ text: String, backgroundColor: UIColor = .eShopColor) -> UIView {
             
             let container = UIView()
+            container.layer.cornerRadius = 4
+            container.layer.masksToBounds = true
             container.backgroundColor = backgroundColor
             
             let label = UILabel()
@@ -177,6 +186,8 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             label.snp.makeConstraints { make in
                 make.left.equalTo(7)
                 make.right.equalTo(-7)
+                make.top.equalTo(2)
+                make.bottom.equalTo(-2)
             }
             return container
         }
@@ -206,9 +217,11 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             let upContainer = UIView()
             switch level {
             case 2,3,4: // 特别推荐
-                upContainer.backgroundColor = .red
+                upContainer.backgroundColor = .eShopColor
             case 0:
                 upContainer.backgroundColor = UIColor(r: 255, g: 215, b:0)
+            case -1:
+                upContainer.backgroundColor = .white
             default:
                 break
             }
@@ -236,15 +249,12 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
                 make.height.equalToSuperview().multipliedBy(0.58)
             }
             
-            let downContainer = UIStackView()
-            downContainer.axis = .vertical
-            downContainer.alignment = .center
-            downContainer.distribution = .equalCentering
-            downContainer.spacing = 1
-            downContainer.backgroundColor = UIColor(r: 71, g: 151, b: 145)
+            let downContainer = UIView()
+            downContainer.backgroundColor = UIColor(r: 246, g: 246, b: 246)
             recommendView.addSubview(downContainer)
             downContainer.snp.makeConstraints { make in
-                make.top.left.right.equalToSuperview()
+                make.left.right.equalToSuperview()
+                make.top.equalTo(upContainer.snp.bottom)
                 make.height.equalToSuperview().multipliedBy(0.42)
             }
             
@@ -252,34 +262,54 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             rate.text = "推荐率\(recommendRate)%"
             rate.font = UIFont.systemFont(ofSize: 8)
             rate.textColor = .white
-            downContainer.addArrangedSubview(rate)
+            downContainer.addSubview(rate)
+            rate.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.top.equalTo(2)
+            }
             
             let peopleCount = UILabel()
             peopleCount.text = "\(model.commentCount)人评测"
             peopleCount.font = rate.font
             peopleCount.textColor = rate.textColor
-            downContainer.addArrangedSubview(peopleCount)
+            downContainer.addSubview(peopleCount)
+            peopleCount.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalTo(-2)
+            }
+            
         } else {
             let label = UILabel()
             label.text = "评价人数不足"
             label.font = UIFont.systemFont(ofSize: 8)
-            label.textColor = .white
+            label.textColor = .gray
             recommendView.addSubview(label)
             label.snp.makeConstraints { $0.center.equalToSuperview() }
         }
-        headDataSource.brief = model.game.brief
+        
+        headDataSource.brief = NSAttributedString(string: model.game.brief ?? "无简介", attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.darkText
+        ])
         
         if let modes = model.game.playMode {
             headDataSource.playMode += modes.map { mode in
                 let view = UIView()
-                let checkCircle = UIImageView(image: UIImage.fontAwesomeIcon(name: .checkCircle,
+                
+                let checkCircle = UIImageView(image: UIImage.fontAwesomeIcon(name: .check,
                                                                              style: .solid,
                                                                              textColor: .eShopColor,
-                                                                             size: .init(width: 12, height: 12)))
+                                                                             size: .init(width: 14, height: 14)))
+                checkCircle.layer.cornerRadius = 8
+                checkCircle.layer.masksToBounds = true
+                checkCircle.layer.borderColor = UIColor.eShopColor.cgColor
+                checkCircle.layer.borderWidth = 1
+                checkCircle.contentMode = .center
+                
                 view.addSubview(checkCircle)
                 checkCircle.snp.makeConstraints { make in
-                    make.left.centerY.equalToSuperview()
-                    make.width.height.equalTo(12)
+                    make.left.top.bottom.equalToSuperview()
+                    make.width.equalTo(16)
                 }
                 
                 let label = UILabel()
@@ -287,10 +317,84 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
                 label.textColor = .darkText
                 label.font = .systemFont(ofSize: 13)
                 view.addSubview(label)
-                label.snp.makeConstraints { $0.right.centerY.equalToSuperview() }
+                label.snp.makeConstraints { make in
+                    make.left.equalTo(checkCircle.snp.right).offset(2)
+                    make.centerY.equalTo(checkCircle)
+                    make.right.equalToSuperview()
+                }
                 return view
             }
         }
+        
+        headDataSource.shouldShowOnlineMark = model.game.playMode?.contains("线上联机(需会员)") ?? false
+        headDataSource.languageRegion = model.game.languageRegion
+        
+        func createBasicLabel(title: String, desc: String, needTriangle: Bool = false, tag: Int) -> UIControl {
+            let view = UIControl()
+            view.tag = tag
+            
+            let descLabel = UILabel()
+            descLabel.text = desc
+            descLabel.textColor = .darkText
+            descLabel.font = .systemFont(ofSize: 13)
+            view.addSubview(descLabel)
+            descLabel.snp.makeConstraints { make in
+                make.centerX.bottom.equalToSuperview()
+            }
+            
+            let titleLabel = UILabel()
+            titleLabel.text = title
+            titleLabel.textColor = .lightGray
+            titleLabel.font = .systemFont(ofSize: 12)
+            view.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.centerX.top.equalToSuperview()
+            }
+            
+            if needTriangle {
+                let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .caretRight,
+                                                                           style: .solid,
+                                                                           textColor: .lightGray,
+                                                                           size: .init(width: 8, height: 8)))
+                view.addSubview(imageView)
+                imageView.snp.makeConstraints { make in
+                    make.centerY.equalTo(titleLabel)
+                    make.left.equalTo(titleLabel.snp.right).offset(4)
+                }
+            }
+            
+            if tag != 5 {
+                let line = UIView()
+                line.backgroundColor = UIColor(r: 237, g: 237, b: 237)
+                view.addSubview(line)
+                line.snp.makeConstraints { make in
+                    make.width.equalTo(1)
+                    make.right.centerY.equalToSuperview()
+                    make.height.equalTo(17)
+                }
+            }
+            
+            return view
+        }
+        
+        if model.game.chinese_all == 1 {
+            headDataSource.basicDescription.append(createBasicLabel(title: "中文", desc: "全区中文", needTriangle: true, tag: 1))
+        } else if model.game.chinese_japan == 1 {
+            headDataSource.basicDescription.append(createBasicLabel(title: "中文", desc: "日区", needTriangle: true, tag: 1))
+        } else if model.game.chinese_hongkong == 1 {
+            headDataSource.basicDescription.append(createBasicLabel(title: "中文", desc: "港区", needTriangle: true, tag: 1))
+        } else if model.game.chinese_europe == 1 {
+            headDataSource.basicDescription.append(createBasicLabel(title: "中文", desc: "欧区", needTriangle: true, tag: 1))
+        } else {
+            headDataSource.basicDescription.append(createBasicLabel(title: "中文", desc: "无", needTriangle: true, tag: 1))
+        }
+        headDataSource.basicDescription.append(createBasicLabel(title: "容量", desc: model.game.size ?? " 未知", tag: 2))
+        headDataSource.basicDescription.append(createBasicLabel(title: "玩家人数",
+                                                                desc: model.game.players > model.game.playersMin
+                                                                    ? "\(model.game.players)-\(model.game.playersMin)人"
+                                                                    : "\(model.game.playersMin)人", tag: 3))
+        headDataSource.basicDescription.append(createBasicLabel(title: "实体卡带", desc: model.game.entity == true ? "有" : "无", tag: 4))
+        headDataSource.basicDescription.append(createBasicLabel(title: "试玩", desc: model.game.demo == 1 ? "有" : "无", tag: 5))
         
         unlockInfo = model.game.unlockInfo
     }

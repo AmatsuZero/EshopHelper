@@ -215,19 +215,74 @@ class SSBGameShowCaseView: UIView, UICollectionViewDelegate {
 }
 
 protocol SSBGameDetailTopViewDelegate: SSBPlayerViewDelegate {
-    
+    func onBottomViewClicked(tag: Int)
 }
 
 class SSBGameDetailTopView: UITableViewCell {
     
-    let showCaseView = SSBGameShowCaseView()
+    fileprivate let showCaseView = SSBGameShowCaseView()
+    fileprivate let gameTitleLabel = UILabel()
+    fileprivate let developerLabel = UILabel()
+    fileprivate let categoryStackView = UIStackView()
+    fileprivate let recommendContainer = UIView()
+    fileprivate let descriptionLabel = UILabel()
+    fileprivate let basicInfoStackView = UIStackView()
+    fileprivate let markView = UIView()
+    fileprivate let gameInfoStackView = UIStackView()
+    
     weak var delegate: SSBGameDetailTopViewDelegate?
     
     var dataSource: SSBGameInfoViewModel.HeadData? {
         didSet {
-            guard dataSource?.showCaseDataSource.count ?? 0 > 0 else {
+            guard let dataSource = dataSource else {
                 return
             }
+            
+            setNeedsLayout()
+            
+            gameTitleLabel.attributedText = dataSource.title
+            developerLabel.attributedText = dataSource.developer
+            
+            recommendContainer.subviews.forEach { $0.removeFromSuperview() }
+            recommendContainer.addSubview(dataSource.recommendView)
+            dataSource.recommendView.snp.makeConstraints { $0.edges.equalToSuperview() }
+            
+            categoryStackView.arrangedSubviews.forEach {
+                categoryStackView.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+            dataSource.categoryLabels.forEach { categoryStackView.addArrangedSubview($0) }
+            
+            descriptionLabel.attributedText = dataSource.brief
+            markView.isHidden = !dataSource.shouldShowOnlineMark
+            
+            if dataSource.playMode.isEmpty {
+                basicInfoStackView.snp.updateConstraints {
+                    $0.height.equalTo(0)
+                }
+            } else {
+                basicInfoStackView.snp.updateConstraints {
+                    $0.height.equalTo(16)
+                }
+                basicInfoStackView.arrangedSubviews.forEach {
+                    basicInfoStackView.removeArrangedSubview($0)
+                    $0.removeFromSuperview()
+                }
+                dataSource.playMode.forEach { basicInfoStackView.addArrangedSubview($0) }
+            }
+           
+            let selector = #selector(SSBGameDetailTopView.bottomViewClicked(_:))
+            gameInfoStackView.arrangedSubviews.forEach {
+                gameInfoStackView.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+                ($0 as? UIControl)?.removeTarget(self, action: selector, for: .touchUpInside)
+            }
+            
+            dataSource.basicDescription.forEach {
+                $0.addTarget(self, action: selector, for: .touchUpInside)
+                gameInfoStackView.addArrangedSubview($0)
+            }
+    
             showCaseView.previewView.reloadData()
             // 默认选中第一个
             showCaseView.previewView.selectItem(at: IndexPath(row: 0, section: 0),
@@ -246,11 +301,129 @@ class SSBGameDetailTopView: UITableViewCell {
             make.top.left.right.equalToSuperview()
             make.height.equalTo(252)
         }
+        
+        contentView.addSubview(gameTitleLabel)
+        gameTitleLabel.numberOfLines = 3
+        gameTitleLabel.snp.makeConstraints { make in
+            make.left.equalTo(10)
+            make.top.equalTo(showCaseView.snp.bottom).offset(10)
+            make.height.lessThanOrEqualTo(60)
+            make.width.equalTo(230)
+        }
+        
+        contentView.addSubview(recommendContainer)
+        recommendContainer.snp.makeConstraints { make in
+            make.top.equalTo(showCaseView.snp.bottom).offset(19)
+            make.right.equalTo(-10)
+            make.height.equalTo(57)
+            make.width.equalTo(71)
+        }
+        
+        contentView.addSubview(developerLabel)
+        developerLabel.snp.makeConstraints { make in
+            make.top.equalTo(gameTitleLabel.snp.bottom).offset(10)
+            make.left.equalTo(gameTitleLabel)
+        }
+        
+        categoryStackView.axis = .horizontal
+        categoryStackView.distribution = .fill
+        categoryStackView.alignment = .leading
+        categoryStackView.spacing = 2
+        
+        contentView.addSubview(categoryStackView)
+        categoryStackView.snp.makeConstraints { make in
+            make.left.equalTo(gameTitleLabel)
+            make.top.equalTo(developerLabel.snp.bottom).offset(10)
+        }
+        
+        descriptionLabel.numberOfLines = 0
+        contentView.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(categoryStackView.snp.bottom).offset(10)
+            make.right.equalTo(-10)
+            make.left.equalTo(gameTitleLabel)
+        }
+        
+        basicInfoStackView.axis = .horizontal
+        basicInfoStackView.distribution = .fill
+        basicInfoStackView.alignment = .leading
+        basicInfoStackView.spacing = 4
+        contentView.addSubview(basicInfoStackView)
+        basicInfoStackView.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(10)
+            make.left.equalTo(gameTitleLabel)
+            make.height.equalTo(0)
+        }
+        
+        let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .nintendoSwitch, style: .brands,
+                                                                   textColor: .eShopColor, size: .init(width: 14, height: 14)))
+        markView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.top.left.bottom.equalToSuperview()
+        }
+        
+        let label = UILabel()
+        label.textColor = .eShopColor
+        label.text = "ONLINE会员"
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        markView.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.left.equalTo(imageView.snp.right).offset(2)
+            make.top.right.centerY.equalToSuperview()
+        }
+        
+        markView.isHidden = true
+        contentView.addSubview(markView)
+        markView.snp.makeConstraints { make in
+            make.right.equalTo(recommendContainer)
+            make.centerY.equalTo(basicInfoStackView)
+        }
+        
+        let lineView = UIView()
+        lineView.backgroundColor = UIColor(r: 239, g: 239, b: 239)
+        contentView.addSubview(lineView)
+        lineView.snp.makeConstraints { make in
+            make.top.equalTo(basicInfoStackView.snp.bottom).offset(10)
+            make.width.right.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
+        gameInfoStackView.axis = .horizontal
+        gameInfoStackView.alignment = .center
+        gameInfoStackView.distribution = .fillEqually
+        contentView.addSubview(gameInfoStackView)
+        gameInfoStackView.snp.makeConstraints { make in
+            make.top.equalTo(lineView.snp.bottom)
+            make.right.left.bottom.equalToSuperview()
+            make.height.equalTo(39)
+        }
+        
         selectionStyle = .none
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if gameInfoStackView.frame.contains(point) {
+            let pt = convert(point, to: gameInfoStackView)
+            for (index, view) in gameInfoStackView.arrangedSubviews.enumerated() {
+                let frame = CGRect(origin: CGPoint(x: CGFloat(index) * view.mj_w, y: 0),
+                                   size: CGSize(width: view.mj_w, height: gameInfoStackView.mj_h))
+                if frame.contains(pt) {
+                    return view
+                }
+            }
+        }
+        return super.hitTest(point, with: event)
+    }
+    
+    @objc private func bottomViewClicked(_ sender: UIControl) {
+        guard let delegate = self.delegate else {
+            return
+        }
+        delegate.onBottomViewClicked(tag: sender.tag)
     }
 }
 
@@ -351,5 +524,9 @@ extension SSBGameDetailTopViewController: SSBGameDetailTopViewDelegate {
     
     func oneExitFullScreen(_ player: SSBPlayerView) {
         isStatusBarHidden = false
+    }
+    
+    func onBottomViewClicked(tag: Int) {
+        print(tag)
     }
 }

@@ -39,6 +39,7 @@
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
+		8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8057364B220960D100D69929 /* SSBLRUCache.swift */; };
 		80573BA9220291990001F080 /* SSBCustomRefreshComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */; };
 		80573BB02202D9820001F080 /* ConfigHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BAF2202D9820001F080 /* ConfigHelper.swift */; };
 		80573BB22202DB7C0001F080 /* TodayRecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BB12202DB7C0001F080 /* TodayRecommendService.swift */; };
@@ -114,6 +115,7 @@
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
+		8057364B220960D100D69929 /* SSBLRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLRUCache.swift; sourceTree = "<group>"; };
 		80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomRefreshComponents.swift; sourceTree = "<group>"; };
 		80573BAF2202D9820001F080 /* ConfigHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHelper.swift; sourceTree = "<group>"; };
 		80573BB12202DB7C0001F080 /* TodayRecommendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayRecommendService.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */,
 				80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */,
 				80F054A22206E1CF00F97CEC /* SSBTrie.swift */,
+				8057364B220960D100D69929 /* SSBLRUCache.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
 			);
@@ -596,6 +599,7 @@
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
 				80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */,
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
+				8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */,
 				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
 				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
 				80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */,
