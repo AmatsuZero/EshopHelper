@@ -52,3 +52,34 @@ extension Timer {
     }
     
 }
+
+extension NumberFormatter {
+    static var rmbCurrencyFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: "zh_CN")
+        return formatter
+    }
+}
+
+extension String {
+    func rmbExpression() -> String? {
+        guard let price = Double(self) else {
+            return nil
+        }
+        return NumberFormatter.rmbCurrencyFormatter.string(from: price as NSNumber)
+    }
+}
+
+extension Array {
+    func take(_ num: Int) -> [Element] {
+        guard !isEmpty else {
+            return []
+        }
+        var ret = [Element]()
+        for i in 0..<Swift.min(self.count, num) {
+            ret.append(self[i])
+        }
+        return ret
+    }
+}

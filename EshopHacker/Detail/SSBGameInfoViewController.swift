@@ -15,15 +15,30 @@ class SSBGameInfoViewController: UIViewController {
             guard let model = self.model else {
                 return
             }
+
             // 绑定头部数据
             if !children.contains(topViewController) {
                 addChild(topViewController)
             }
+            
             topViewController.dataSource = model.headDataSource
-            // 绑定价格
-            if !children.contains(priceViewController) {
-                addChild(priceViewController)
+            
+            // 绑定解锁信息
+            if let unlockInfo = model.unlockInfo {
+                if !children.contains(unlockInfoViewController) {
+                    addChild(unlockInfoViewController)
+                }
+                unlockInfoViewController.dataSource = unlockInfo
             }
+            
+            if let priceData = model.priceData {
+                // 绑定价格
+                if !children.contains(priceViewController) {
+                    addChild(priceViewController)
+                }
+                priceViewController.dataSource = priceData
+            }
+            
             tableView.reloadData()
         }
     }
@@ -108,21 +123,23 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         case is SSBGameLikeViewController: return 200
         case is SSBGameCommentViewController: return 400
         case is SSBUnlockInfoViewController: return 181
-        default: return 0
+        default:
+            return 0
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let controller = children[indexPath.section]
         switch controller {
-        case is SSBGameDetailTopViewController:
+        case is SSBGameDetailTopViewController,
+             is SSBGamePriceListViewController:
             return UITableView.automaticDimension
-        case is SSBGamePriceListViewController:
-            return 300
         case is SSBGameLikeViewController:
             return 200
         case is SSBGameCommentViewController:
             return 400
+        case is SSBUnlockInfoViewController:
+            return 181
         default:
             return 0
         }
@@ -160,6 +177,8 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
     }
     
     @objc private func onRefresh() {
+        // 移除所有自控制器
+        children.forEach { $0.removeFromParent() }
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         GameInfoService.shared.gameInfo(appId: appid, fromName: from).done { [weak self] ret in
             guard let self = self else { return }

@@ -380,7 +380,7 @@ class SSBGameDetailTopView: UITableViewCell {
         }
         
         let lineView = UIView()
-        lineView.backgroundColor = UIColor(r: 239, g: 239, b: 239)
+        lineView.backgroundColor = .lineColor
         contentView.addSubview(lineView)
         lineView.snp.makeConstraints { make in
             make.top.equalTo(basicInfoStackView.snp.bottom).offset(10)

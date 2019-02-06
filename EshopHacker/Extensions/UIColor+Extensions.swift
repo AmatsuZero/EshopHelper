@@ -14,4 +14,5 @@ extension UIColor {
     }
     
     static var eShopColor: UIColor { return .init(r: 255, g: 120, b: 45) }
+    static var lineColor: UIColor { return .init(r: 239, g: 239, b: 239) }
 }

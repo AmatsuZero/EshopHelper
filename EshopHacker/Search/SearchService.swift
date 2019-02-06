@@ -186,9 +186,7 @@ struct SSBSearchListViewModel: SSBViewModelProtocol {
         }
 
         // 价格字符串
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "zh_CN")
+        let formatter = NumberFormatter.rmbCurrencyFormatter
         if let price = formatter.string(from: game.price as NSNumber) {
             let priceStr = NSMutableAttributedString(string: "\(price) ", attributes: [
                 .foregroundColor: UIColor.red,

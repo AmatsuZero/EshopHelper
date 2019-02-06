@@ -105,9 +105,7 @@ struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
         type = CellType(rawValue: model.type)
         imageURL = model.pic
         
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "zh_CN")
+        let formatter = NumberFormatter.rmbCurrencyFormatter
         
         if let raw = model.priceRaw, let rawPrice = formatter.string(from: raw as NSNumber) { // 原价
             priceRaw = NSAttributedString(string: rawPrice, attributes: [
