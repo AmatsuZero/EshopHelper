@@ -8,7 +8,7 @@
 
 import Reusable
 
-protocol SSBGamePriceListViewDelegate: class {
+protocol SSBGamePriceListViewDelegate: class, UITableViewDataSource, UITableViewDelegate {
     func onMoreButtonClicked(view: SSBGamePriceListView)
 }
 
@@ -152,7 +152,12 @@ class SSBGamePriceListView: UITableViewCell {
     private let moreButton = UIButton()
     private let lineView = UIView()
     private let buttonHeight: CGFloat = 33
-    weak var delegate: SSBGamePriceListViewDelegate?
+    weak var delegate: SSBGamePriceListViewDelegate? {
+        didSet {
+            listTableView.delegate = delegate
+            listTableView.dataSource = delegate
+        }
+    }
     
     var dataSource: SSBGameInfoViewModel.PriceData? {
         didSet {
@@ -254,6 +259,16 @@ class SSBGamePriceListView: UITableViewCell {
 class SSBGamePriceListViewController: UIViewController {
     
     private let listCell = SSBGamePriceListView()
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        listCell.delegate = self
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     var dataSource: SSBGameInfoViewModel.PriceData? {
         didSet {
             listCell.dataSource = dataSource
@@ -261,9 +276,6 @@ class SSBGamePriceListViewController: UIViewController {
     }
     
     override func loadView() {
-        listCell.listTableView.dataSource = self
-        listCell.listTableView.delegate = self
-        listCell.delegate = self
         view = listCell
     }
 
@@ -272,7 +284,11 @@ class SSBGamePriceListViewController: UIViewController {
     }
 }
 
-extension SSBGamePriceListViewController: UITableViewDataSource, UITableViewDelegate {
+extension SSBGamePriceListViewController: SSBGamePriceListViewDelegate {
+    func onMoreButtonClicked(view: SSBGamePriceListView) {
+        print("ss")
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return min(dataSource?.prices.count ?? 0, 3)
     }
@@ -281,11 +297,5 @@ extension SSBGamePriceListViewController: UITableViewDataSource, UITableViewDele
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBGamePriceListView.GamePriceListCell.self)
         cell.data = dataSource?.prices[indexPath.row]
         return cell
-    }
-}
-
-extension SSBGamePriceListViewController: SSBGamePriceListViewDelegate {
-    func onMoreButtonClicked(view: SSBGamePriceListView) {
-        print("ss")
     }
 }

@@ -8,6 +8,10 @@
 
 import SnapKit
 
+protocol SSBGameInfoViewControllerReloadDelegate: class {
+    func needReload(_ viewController: UIViewController)
+}
+
 class SSBGameInfoViewController: UIViewController {
     
     private var model: SSBGameInfoViewModel? {
@@ -31,14 +35,20 @@ class SSBGameInfoViewController: UIViewController {
                 unlockInfoViewController.dataSource = unlockInfo
             }
             
+            // 绑定价格
             if let priceData = model.priceData {
-                // 绑定价格
                 if !children.contains(priceViewController) {
                     addChild(priceViewController)
                 }
                 priceViewController.dataSource = priceData
             }
-            
+            // 绑定DLC
+            if let dlcs = model.dlcs {
+                if !children.contains(dlcViewController) {
+                    addChild(dlcViewController)
+                }
+                dlcViewController.dataSource = dlcs
+            }
             tableView.reloadData()
         }
     }
@@ -47,7 +57,12 @@ class SSBGameInfoViewController: UIViewController {
         return SSBGameDetailTopViewController()
     }()
     private lazy var priceViewController:SSBGamePriceListViewController = {
-        return SSBGamePriceListViewController()
+        return SSBGamePriceListViewController(nibName: nil, bundle: nil)
+    }()
+    private lazy var dlcViewController: SSBGameDLCViewController = {
+        let viewController = SSBGameDLCViewController(nibName: nil, bundle: nil)
+        viewController.delegate = self
+        return viewController
     }()
     private lazy var likeViewController: SSBGameLikeViewController = {
         return SSBGameLikeViewController()
@@ -132,7 +147,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         let controller = children[indexPath.section]
         switch controller {
         case is SSBGameDetailTopViewController,
-             is SSBGamePriceListViewController:
+             is SSBGamePriceListViewController,
+             is SSBGameDLCViewController:
             return UITableView.automaticDimension
         case is SSBGameLikeViewController:
             return 200
@@ -199,5 +215,16 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
         }.finally { [weak self] in
             self?.tableView.mj_header.endRefreshing()
         }
+    }
+}
+
+extension SSBGameInfoViewController: SSBGameInfoViewControllerReloadDelegate {
+    func needReload(_ viewController: UIViewController) {
+        guard let index = children.firstIndex(where: { $0 == viewController}) else {
+            return
+        }
+        let indexPath = IndexPath(row: 0, section: index)
+        tableView.reloadRows(at: [indexPath], with: .bottom)
+       // tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
     }
 }

@@ -407,6 +407,7 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             self.prices = prices.sorted { Double($0.price) ?? 0 < Double($1.price) ?? 0 }
         }
     }
+    
     struct UnlockInfoData {
         let data: [T.Game.UnlockInfo]
         let releaseDate: String
@@ -435,6 +436,7 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
     private(set) var unlockInfo: UnlockInfoData?
     /// 价格信息
     private(set) var priceData: PriceData?
+    private(set) var dlcs: [T.Game]?
     
     init(model: T) {
         originalData = model
@@ -445,6 +447,8 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         if let info = model.game.unlockInfo {
             unlockInfo = UnlockInfoData(releaseDate: model.game.pubDate, data: info)
         }
+        /// DLC数据
+        dlcs = model.dlcs
     }
     
 }
