@@ -37,6 +37,7 @@
 		801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */; };
 		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
+		802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802393F7220C2F68003FCD5B /* SSBWidgets.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
 		8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8057364B220960D100D69929 /* SSBLRUCache.swift */; };
@@ -52,7 +53,6 @@
 		80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BED220460590001F080 /* SSBCommunityViewController.swift */; };
 		80573BF1220499350001F080 /* SSBGameDetailTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF0220499350001F080 /* SSBGameDetailTopViewController.swift */; };
 		80573BF32204A5510001F080 /* SSBGamePriceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */; };
-		80573BF52204A84F0001F080 /* SSBGameLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF42204A84F0001F080 /* SSBGameLikeViewController.swift */; };
 		80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */; };
 		806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF98E2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift */; };
 		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
@@ -114,6 +114,7 @@
 		801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLineIndicator.swift; sourceTree = "<group>"; };
 		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
+		802393F7220C2F68003FCD5B /* SSBWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBWidgets.swift; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
 		8057364B220960D100D69929 /* SSBLRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLRUCache.swift; sourceTree = "<group>"; };
@@ -130,7 +131,6 @@
 		80573BED220460590001F080 /* SSBCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommunityViewController.swift; sourceTree = "<group>"; };
 		80573BF0220499350001F080 /* SSBGameDetailTopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameDetailTopViewController.swift; sourceTree = "<group>"; };
 		80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePriceListViewController.swift; sourceTree = "<group>"; };
-		80573BF42204A84F0001F080 /* SSBGameLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameLikeViewController.swift; sourceTree = "<group>"; };
 		80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameCommentViewController.swift; sourceTree = "<group>"; };
 		806FF98E2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerLoadingIndicator.swift; sourceTree = "<group>"; };
 		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
@@ -270,8 +270,8 @@
 				80573BF0220499350001F080 /* SSBGameDetailTopViewController.swift */,
 				80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */,
 				805736A9220BB50800D69929 /* SSBGameDLCViewController.swift */,
-				80573BF42204A84F0001F080 /* SSBGameLikeViewController.swift */,
 				80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */,
+				802393F7220C2F68003FCD5B /* SSBWidgets.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -581,6 +581,7 @@
 				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
 				806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */,
+				802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */,
 				801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */,
 				806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */,
 				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
@@ -615,7 +616,6 @@
 				80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,
-				80573BF52204A84F0001F080 /* SSBGameLikeViewController.swift in Sources */,
 				801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

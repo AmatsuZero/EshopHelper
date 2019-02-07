@@ -83,3 +83,39 @@ extension Array {
         return ret
     }
 }
+
+extension NSAttributedString {
+    
+    class func create(from richText: String, from: Int, to: Int, color: UIColor) -> NSAttributedString {
+        let attrStr = NSMutableAttributedString(string: richText)
+        attrStr.addAttribute(.foregroundColor, value: color, range: .init(location: from, length: to))
+        return attrStr
+    }
+}
+
+extension UILabel {
+    func linesOfString() -> [String] {
+        guard let string = self.text else {
+            return []
+        }
+        let rect = CGRect(origin: frame.origin, size: .init(width: .screenWidth, height: frame.height))
+        let myFont = CTFontCreateWithName(font.fontName as CFString, font.pointSize, nil)
+        let attrStr = NSMutableAttributedString(string: string)
+        attrStr.addAttributes([
+            kCTFontAttributeName as NSAttributedString.Key: myFont
+        ],range: NSRange.init(location: 0, length: attrStr.length))
+        let frameSetter = CTFramesetterCreateWithAttributedString(attrStr as CFAttributedString)
+        let path = CGMutablePath()
+        path.addRect(.init(origin: .zero, size: .init(width: rect.width, height: .greatestFiniteMagnitude)))
+        let myFrame = CTFramesetterCreateFrame(frameSetter, .init(location: 0, length: 0), path, nil)
+        let lines = (CTFrameGetLines(myFrame) as NSArray).map {  line -> String in
+            let value = line as! CTLine
+            let lineRange = CTLineGetStringRange(value)
+            let range = NSRange(location: lineRange.location, length: lineRange.length)
+            let str = (string as NSString).substring(with: range)
+            CFAttributedStringSetAttribute(attrStr as CFMutableAttributedString, lineRange, kCTKernAttributeName, 0 as CFTypeRef)
+            return str
+        }
+        return lines
+    }
+}

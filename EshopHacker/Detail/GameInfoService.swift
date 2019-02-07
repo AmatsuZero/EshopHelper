@@ -382,9 +382,9 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             }
             basicDescription.append(createBasicLabel(title: "容量", desc: game.size ?? " 未知", tag: 2))
             basicDescription.append(createBasicLabel(title: "玩家人数",
-                                                                    desc: game.players > game.playersMin
-                                                                        ? "\(game.players)-\(game.playersMin)人"
-                                                                        : "\(game.playersMin)人", tag: 3))
+                                                     desc: game.players > game.playersMin
+                                                        ? "\(game.players)-\(game.playersMin)人"
+                                                        : "\(game.playersMin)人", tag: 3))
             basicDescription.append(createBasicLabel(title: "实体卡带", desc: game.entity == true ? "有" : "无", tag: 4))
             basicDescription.append(createBasicLabel(title: "试玩", desc: game.demo == 1 ? "有" : "无", tag: 5))
         }
@@ -400,7 +400,7 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
                 self.lowestPrice = NSAttributedString(string: "历史最低：\(price)", attributes: [
                     .font: UIFont.boldSystemFont(ofSize: 14),
                     .foregroundColor: UIColor.darkText
-                ])
+                    ])
             }
             
             hasMore = prices.count > 3
@@ -427,7 +427,58 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             } else {
                 self.releaseDate = releaseDate
             }
-           self.data = data
+            self.data = data
+        }
+    }
+    
+    struct DetailDescriptionData {
+        
+        let originalText: String
+        let attributes: [NSAttributedString.Key : Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.darkText,
+            ]
+        fileprivate let unFoldText = NSAttributedString(string: "...【展开】", attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.eShopColor
+            ])
+        fileprivate let foldText = NSAttributedString(string: "【收起】", attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.eShopColor
+            ])
+        
+        private(set) var isExpandable = false
+        
+        init(_ string: String) {
+            originalText = string
+        }
+        
+        func convert(from label: UILabel) -> Bool {
+            label.text = originalText
+            let lines = label.linesOfString()
+            if lines.count > 6 {
+                let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: attributes)
+                attrStr.append(unFoldText)
+                label.attributedText = attrStr
+                return true
+            } else {
+                label.attributedText = NSAttributedString(string: originalText, attributes: attributes)
+                return false
+            }
+        }
+        
+        func expand(_ flag: Bool, label: UILabel) {
+            label.text = originalText
+            if flag {
+                let lines = label.linesOfString()
+                let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: attributes)
+                attrStr.append(unFoldText)
+                label.attributedText = attrStr
+            } else {
+                let attrStr = NSMutableAttributedString(string: originalText, attributes: attributes)
+                attrStr.append(foldText)
+                label.attributedText = attrStr
+            }
         }
     }
     /// 头部视图信息
@@ -436,7 +487,12 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
     private(set) var unlockInfo: UnlockInfoData?
     /// 价格信息
     private(set) var priceData: PriceData?
+    /// DLC
     private(set) var dlcs: [T.Game]?
+    /// Metacritic评分
+    private(set) var rate: String?
+    /// 详情
+    private(set) var description: DetailDescriptionData?
     
     init(model: T) {
         originalData = model
@@ -447,8 +503,13 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         if let info = model.game.unlockInfo {
             unlockInfo = UnlockInfoData(releaseDate: model.game.pubDate, data: info)
         }
-        /// DLC数据
         dlcs = model.dlcs
+        if model.game.rate != 0 {
+            rate = "\(model.game.rate)"
+        }
+        if let detail = model.game.detail {
+            description = DetailDescriptionData(detail)
+        }
     }
     
 }

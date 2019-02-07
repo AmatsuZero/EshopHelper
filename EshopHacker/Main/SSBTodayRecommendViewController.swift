@@ -596,7 +596,6 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 self.todayRecommendView.tableView.mj_footer.endRefreshing()
             }
             }.catch { [weak self] error in
-                self?.lastPage -= 1 // 如果失败，倒回原来页码
                 self?.view.makeToast("请求失败")
                 self?.todayRecommendView.tableView.mj_footer.endRefreshing()
             }.finally { [weak self] in
@@ -617,7 +616,10 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 present(browser, animated: true)
             }
         default:
-            break
+            let id = model.originalData.appid
+            let viewController = SSBGameDetailViewController(appid: id, pageIndex: type == .comment ? 1 : 0)
+            viewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

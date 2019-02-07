@@ -85,7 +85,7 @@ class SSBUnlockInfoView: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         unlockInfoCollectionView.register(cellType: SSBUnlockInfoCollectiViewCell.self)
         
-        titleLabel.font = .boldSystemFont(ofSize: 14)
+        titleLabel.font = .boldSystemFont(ofSize: 19)
         titleLabel.textColor = .darkText
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

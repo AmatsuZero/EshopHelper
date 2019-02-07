@@ -323,6 +323,7 @@ class SSBGameDetailTopView: UITableViewCell {
         developerLabel.snp.makeConstraints { make in
             make.top.equalTo(gameTitleLabel.snp.bottom).offset(10)
             make.left.equalTo(gameTitleLabel)
+            make.width.lessThanOrEqualTo(248)
         }
         
         categoryStackView.axis = .horizontal

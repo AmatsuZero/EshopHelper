@@ -83,11 +83,20 @@ class SSBCustomRefreshHeader: MJRefreshHeader, CAAnimationDelegate {
     
     override var pullingPercent: CGFloat {
         willSet {
+            let animationGroup = CAAnimationGroup()
+            
+            let alpha = CABasicAnimation(keyPath: "alpha")
+            alpha.fromValue = imageView.alpha
+            alpha.toValue = pullingPercent
+            alpha.fillMode = .forwards
+            
             let rotate = CABasicAnimation(keyPath: "transform.rotation")
             rotate.fromValue = pullingPercent * .pi * 2
             rotate.toValue = newValue * .pi * 2
             rotate.fillMode = .forwards
-            imageView.layer.add(rotate, forKey: nil)
+            
+            animationGroup.animations = [rotate, alpha]
+            imageView.layer.add(animationGroup, forKey: nil)
         }
     }
     
@@ -125,16 +134,26 @@ class SSBCustomAutoFooter: MJRefreshAutoFooter, CAAnimationDelegate {
     
     override var pullingPercent: CGFloat {
         willSet {
+            let animationGroup = CAAnimationGroup()
+            
+            let alpha = CABasicAnimation(keyPath: "alpha")
+            alpha.fromValue = imageView.alpha
+            alpha.toValue = pullingPercent
+            alpha.fillMode = .forwards
+            
             let rotate = CABasicAnimation(keyPath: "transform.rotation")
             rotate.fromValue = pullingPercent * .pi * 2
             rotate.toValue = newValue * .pi * 2
             rotate.fillMode = .forwards
-            imageView.layer.add(rotate, forKey: nil)
+            
+            animationGroup.animations = [rotate, alpha]
+            imageView.layer.add(animationGroup, forKey: nil)
         }
     }
     
     override var state: MJRefreshState {
         didSet {
+            imageView.isHidden = false
             switch state {
             case .idle:
                 reset()
@@ -151,6 +170,7 @@ class SSBCustomAutoFooter: MJRefreshAutoFooter, CAAnimationDelegate {
                 label.text = "即将刷新"
             case .noMoreData:
                 reset()
+                imageView.isHidden = true
                 label.text = "没有更多数据了"
             }
         }

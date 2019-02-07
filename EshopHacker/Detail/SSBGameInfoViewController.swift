@@ -9,7 +9,7 @@
 import SnapKit
 
 protocol SSBGameInfoViewControllerReloadDelegate: class {
-    func needReload(_ viewController: UIViewController)
+    func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation)
 }
 
 class SSBGameInfoViewController: UIViewController {
@@ -19,7 +19,7 @@ class SSBGameInfoViewController: UIViewController {
             guard let model = self.model else {
                 return
             }
-
+            
             // 绑定头部数据
             if !children.contains(topViewController) {
                 addChild(topViewController)
@@ -49,6 +49,20 @@ class SSBGameInfoViewController: UIViewController {
                 }
                 dlcViewController.dataSource = dlcs
             }
+            // 绑定评分
+            if let rate = model.rate {
+                if !children.contains(rateViewController) {
+                    addChild(rateViewController)
+                }
+                rateViewController.rate = rate
+            }
+            // 绑定详情
+            if let description = model.description {
+                if !children.contains(descriptionViewController) {
+                    addChild(descriptionViewController)
+                }
+                descriptionViewController.dataSource = description
+            }
             tableView.reloadData()
         }
     }
@@ -73,6 +87,14 @@ class SSBGameInfoViewController: UIViewController {
     private lazy var unlockInfoViewController: SSBUnlockInfoViewController = {
         return SSBUnlockInfoViewController()
     }()
+    private lazy var rateViewController: SSBGameRateViewController = {
+        return SSBGameRateViewController()
+    }()
+    private lazy var descriptionViewController: SSBGameDetailDescriptionViewController = {
+        let viewController = SSBGameDetailDescriptionViewController()
+        viewController.delegate = self
+        return viewController
+    }()
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let margin: CGFloat = 10
@@ -89,7 +111,6 @@ class SSBGameInfoViewController: UIViewController {
         self.from = from
         super.init(nibName: nil, bundle: nil)
         title = "游戏信息"
- 
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -138,6 +159,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         case is SSBGameLikeViewController: return 200
         case is SSBGameCommentViewController: return 400
         case is SSBUnlockInfoViewController: return 123
+        case is SSBGameRateViewController: return 54
+        case is SSBGameDetailDescriptionViewController: return 100
         default:
             return 0
         }
@@ -148,6 +171,7 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         switch controller {
         case is SSBGameDetailTopViewController,
              is SSBGamePriceListViewController,
+             is SSBGameDetailDescriptionViewController,
              is SSBGameDLCViewController:
             return UITableView.automaticDimension
         case is SSBGameLikeViewController:
@@ -156,6 +180,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
             return 400
         case is SSBUnlockInfoViewController:
             return 123
+        case is SSBGameRateViewController:
+            return 54
         default:
             return 0
         }
@@ -219,12 +245,12 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
 }
 
 extension SSBGameInfoViewController: SSBGameInfoViewControllerReloadDelegate {
-    func needReload(_ viewController: UIViewController) {
+    func needReload(_ viewController: UIViewController, reloadStyle: UITableView.RowAnimation) {
+        tableView.reloadData()
         guard let index = children.firstIndex(where: { $0 == viewController}) else {
             return
         }
         let indexPath = IndexPath(row: 0, section: index)
-        tableView.reloadRows(at: [indexPath], with: .bottom)
-       // tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        tableView.reloadRows(at: [indexPath], with: reloadStyle)
     }
 }

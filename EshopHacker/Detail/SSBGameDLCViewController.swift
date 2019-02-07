@@ -136,7 +136,7 @@ class SSBGameDLCView: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let titleLabel = UILabel()
         titleLabel.text = "DLC"
-        titleLabel.font = .boldSystemFont(ofSize: 17)
+        titleLabel.font = .boldSystemFont(ofSize: 19)
         titleLabel.textColor = .darkText
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -150,7 +150,7 @@ class SSBGameDLCView: UITableViewCell {
         tableView.separatorStyle = .none
         contentView.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom).priority(.high)
             make.left.right.equalToSuperview()
             make.height.equalTo(0).priority(.high)
         }
@@ -171,7 +171,7 @@ class SSBGameDLCView: UITableViewCell {
             make.top.equalTo(lineSeparator.snp.bottom)
             make.left.right.equalToSuperview()
             make.height.equalTo(buttonHeight)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().priority(.high)
         }
         moreButton.addTarget(self, action: #selector(onMoreButtonClicked(_:)), for: .touchUpInside)
         selectionStyle = .none
@@ -193,9 +193,7 @@ class SSBGameDLCView: UITableViewCell {
         } else {
             moreButton.setTitle("查看更多", for: .normal)
         }
-        if let delegate = self.delegate {
-            delegate.onMoreButtonClicked(self, tableView: tableView)
-        }
+        delegate?.onMoreButtonClicked(self, tableView: tableView)
         tableView.reloadData()
     }
 }
@@ -237,7 +235,7 @@ extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
     func onMoreButtonClicked(_ view: SSBGameDLCView, tableView: UITableView) {
         // 刷新高度
         if let delegate = self.delegate {
-            delegate.needReload(self)
+            delegate.needReload(self, reloadStyle: .bottom)
         }
     }
     

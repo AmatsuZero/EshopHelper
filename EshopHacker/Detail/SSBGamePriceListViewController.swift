@@ -168,9 +168,11 @@ class SSBGamePriceListView: UITableViewCell {
             let height = listTableView.rowHeight * CGFloat(min(data.prices.count, 3))
             listTableView.snp.updateConstraints { $0.height.equalTo(height) }
             if data.hasMore {
+                moreButton.isHidden = false
                 moreButton.snp.updateConstraints { $0.height.equalTo(buttonHeight) }
                 lineView.snp.updateConstraints { $0.height.equalTo(1) }
             } else {
+                moreButton.isHidden = true
                 moreButton.snp.updateConstraints { $0.height.equalTo(0) }
                 lineView.snp.updateConstraints { $0.height.equalTo(0) }
             }
@@ -250,9 +252,7 @@ class SSBGamePriceListView: UITableViewCell {
     }
     
     @objc private func onMoreButtonClicked(_ sender: UIButton)  {
-        if let delegate = self.delegate {
-            delegate.onMoreButtonClicked(view: self)
-        }
+        delegate?.onMoreButtonClicked(view: self)
     }
 }
 

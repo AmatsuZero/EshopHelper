@@ -109,9 +109,11 @@ class SSBGameDetailViewController: TabmanViewController {
     }
     
     private var viewControllers = [UIViewController]()
+    private let defaultPage: Int
     private let bar = TMBarView<TMHorizontalBarLayout, TMLabelBarButton, SSBLineIndicator>()
     
-    init(appid: String, from: String? = nil) {
+    init(appid: String, from: String? = nil, pageIndex: Int = 0) {
+        defaultPage = pageIndex
         super.init(nibName: nil, bundle: nil)
         let detail = SSBGameInfoViewController(appid: appid, from: from)
         let comment = SSBCommentViewController(nibName: nil, bundle: nil)
@@ -200,7 +202,7 @@ extension SSBGameDetailViewController: PageboyViewControllerDataSource {
     }
     
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
-        return .at(index: 0)
+        return .at(index: defaultPage)
     }
 }
 
