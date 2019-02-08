@@ -187,7 +187,7 @@ struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
     }
 }
 
-class SSBtodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewDataSource {
+class SSBTodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewDataSource {
 
     typealias DataType = TodayRecommendService.Response.Data.FlowInfo
     typealias ViewType = UITableView

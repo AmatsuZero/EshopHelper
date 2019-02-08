@@ -65,11 +65,15 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
         var originalData: DataType
         let pic: String
         let type: BannerType?
+        fileprivate(set) var appid: String?
         
         init(model: DataType) {
             type = BannerType(rawValue: model.type)
             originalData = model
             pic = originalData.pic
+            if type == .gameInfo, let components = URLComponents(string: originalData.content) {
+                 appid = components.queryItems?.first { $0.name == "appid" }?.value
+            }
         }
     }
    

@@ -294,6 +294,15 @@ extension SSBBannerViewController: SSBBannerDataSourceDelegate {
             } else {
                 UIApplication.shared.open(url, options: [:])
             }
+        case .gameInfo:
+            guard let id = model.appid else {
+                let parentView = parent?.view ?? view
+                parentView?.makeToast("没有找到该游戏")
+                return
+            }
+            let viewController = SSBGameDetailViewController(appid: id)
+            viewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(viewController, animated: true)
         default:
             break
         }

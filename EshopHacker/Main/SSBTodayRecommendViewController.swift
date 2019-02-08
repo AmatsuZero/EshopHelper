@@ -508,7 +508,7 @@ class SSBTodayRecommendView: UIView {
 
 class SSBTodayRecommendViewController: UIViewController {
     
-    private let dataSource = SSBtodayRecommendDataSource()
+    private let dataSource = SSBTodayRecommendDataSource()
     let todayRecommendView = SSBTodayRecommendView()
     
     private var lastPage = 1

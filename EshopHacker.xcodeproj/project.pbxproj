@@ -34,7 +34,7 @@
 		801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */; };
 		801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */; };
 		801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */; };
-		801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */; };
+		801B80DC220043E1007DFCB5 /* SSBCustomTabmanComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBCustomTabmanComponents.swift */; };
 		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802393F7220C2F68003FCD5B /* SSBWidgets.swift */; };
@@ -111,7 +111,7 @@
 		801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchListViewController.swift; sourceTree = "<group>"; };
 		801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchViewController.swift; sourceTree = "<group>"; };
 		801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTodayRecommendViewController.swift; sourceTree = "<group>"; };
-		801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLineIndicator.swift; sourceTree = "<group>"; };
+		801B80DB220043E1007DFCB5 /* SSBCustomTabmanComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomTabmanComponents.swift; sourceTree = "<group>"; };
 		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		802393F7220C2F68003FCD5B /* SSBWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBWidgets.swift; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 			children = (
 				801B809A21FFF4BF007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift */,
 				801B809F21FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift */,
-				801B80DB220043E1007DFCB5 /* SSBLineIndicator.swift */,
+				801B80DB220043E1007DFCB5 /* SSBCustomTabmanComponents.swift */,
 				801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */,
 				801B7FCA21FED17C007DFCB5 /* BannerDataService.swift */,
 				805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */,
@@ -578,7 +578,7 @@
 				80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */,
 				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
 				80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */,
-				801B80DC220043E1007DFCB5 /* SSBLineIndicator.swift in Sources */,
+				801B80DC220043E1007DFCB5 /* SSBCustomTabmanComponents.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
 				806FF98F2205B5E40016B623 /* SSBPlayerLoadingIndicator.swift in Sources */,
 				802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */,

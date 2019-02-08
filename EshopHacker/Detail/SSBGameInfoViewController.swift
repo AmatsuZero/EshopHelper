@@ -12,6 +12,10 @@ protocol SSBGameInfoViewControllerReloadDelegate: class {
     func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation)
 }
 
+protocol SSBGameInfoViewControllerDelegate: class {
+    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int)
+}
+
 class SSBGameInfoViewController: UIViewController {
     
     private var model: SSBGameInfoViewModel? {
@@ -100,6 +104,8 @@ class SSBGameInfoViewController: UIViewController {
     private let margin: CGFloat = 10
     private let appid: String
     private let from: String?
+    weak var delegate: SSBGameInfoViewControllerDelegate?
+    
     private var shouldShow = false {
         didSet {
             tableView.backgroundView?.isHidden = shouldShow
@@ -229,6 +235,7 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
                 backgroundView?.state = .empty
                 return
             }
+            self.delegate?.onReceive(self, commentCount: detailData.commentCount, postCount: detailData.postCount)
             self.tableView.mj_header.isHidden = false
             self.shouldShow = true
             self.model = SSBGameInfoViewModel(model: detailData)

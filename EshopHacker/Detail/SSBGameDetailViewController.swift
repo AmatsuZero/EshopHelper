@@ -110,12 +110,14 @@ class SSBGameDetailViewController: TabmanViewController {
     
     private var viewControllers = [UIViewController]()
     private let defaultPage: Int
-    private let bar = TMBarView<TMHorizontalBarLayout, TMLabelBarButton, SSBLineIndicator>()
+    private let bar = TMBarView<TMHorizontalBarLayout, SSBLabelBarButton, SSBLineIndicator>()
     
     init(appid: String, from: String? = nil, pageIndex: Int = 0) {
         defaultPage = pageIndex
         super.init(nibName: nil, bundle: nil)
         let detail = SSBGameInfoViewController(appid: appid, from: from)
+        detail.delegate = self
+        
         let comment = SSBCommentViewController(nibName: nil, bundle: nil)
         let community = SSBCommunityViewController(nibName: nil, bundle: nil)
         
@@ -209,5 +211,45 @@ extension SSBGameDetailViewController: PageboyViewControllerDataSource {
 extension SSBGameDetailViewController: TMBarDataSource {
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
         return TMBarItem(title: viewControllers[index].title ?? "Unknwon")
+    }
+}
+
+extension SSBGameDetailViewController: SSBGameInfoViewControllerDelegate {
+    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int) {
+        if commentCount != 0,
+            let title = viewControllers[1].title {
+            bar.buttons.all[1].setAttributedString(title: title, exponent: "\(commentCount)")
+        }
+        if postCount != 0,
+            let title = viewControllers[2].title {
+            bar.buttons.all[2].setAttributedString(title: title, exponent: "\(postCount)")
+        }
+    }
+}
+
+extension SSBLabelBarButton {
+    
+    fileprivate func setAttributedString(title: String, exponent: String) {
+        
+        func createAttr(title:String, exponent: String, isSelected: Bool) -> NSAttributedString {
+            
+            let font = isSelected ? (selectedFont ?? self.font) : self.font
+            let color = (isSelected ? selectedTintColor : tintColor) ?? .darkText
+            
+            let attrTitle = NSMutableAttributedString(string: "\(title)", attributes: [
+                .font: font,
+                .foregroundColor: color
+            ])
+            let exponent = NSAttributedString(string: "\(exponent)", attributes: [
+                .font: UIFont.systemFont(ofSize: font.pointSize / 2),
+                .foregroundColor: color,
+                .baselineOffset: font.pointSize / 2
+            ])
+            attrTitle.append(exponent)
+            return attrTitle
+        }
+        
+        attributedString = (createAttr(title: title, exponent: exponent, isSelected: false),
+                            createAttr(title: title, exponent: exponent, isSelected: true))
     }
 }
