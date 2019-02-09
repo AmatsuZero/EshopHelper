@@ -72,8 +72,10 @@ class CommentService {
         let data: Int?
     }
     
-    func getGameComment(by appid: String) -> Promise<CommentData>  {
+    func getGameComment(by appid: String, page: Int = 0, limit: Int = 7) -> Promise<CommentData>  {
         var option = FetchCommentsOption()
+        option.limit = limit
+        option.offset = (page - 1) * limit
         option.acceptor = appid
         return getComment(option: option)
     }
@@ -95,5 +97,35 @@ class CommentService {
     
     private func postComment(option: PostCommentOption) -> Promise<PostCommentData> {
         return sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
+    }
+}
+
+class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource {
+    
+    typealias T = CommentService.CommentData.CommentInfo
+    var originalData: T
+    
+    var myCommnets = [T.Comment]()
+    var comments = [T.Comment]()
+    
+    required init(model: T) {
+        originalData = model
+        super.init()
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        let count = comments.count
+        tableView.backgroundView?.isHidden = count != 0
+        return count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommentTableViewCell.self)
+        cell.model = comments[indexPath.section]
+        return cell
     }
 }

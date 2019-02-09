@@ -103,7 +103,7 @@ class SSBListBackgroundView: UIView {
     private let errorView = UIView()
     private let emptyView = UIView()
     private let retryButton = UIButton(type: .custom)
-    private let emptyImageView = UIImageView()
+    let emptyImageView = UIImageView()
     private let emptyLabel = UILabel()
     
     private let needImage: Bool

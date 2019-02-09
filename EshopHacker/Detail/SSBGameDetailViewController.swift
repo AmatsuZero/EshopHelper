@@ -11,6 +11,10 @@ import Pageboy
 import FontAwesome_swift
 import SnapKit
 
+protocol SSBGameDetailViewControllerDelegate: class {
+    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int)
+}
+
 class SSBGameDetailViewController: TabmanViewController {
     
     class HomePageButton: UIControl {
@@ -115,11 +119,15 @@ class SSBGameDetailViewController: TabmanViewController {
     init(appid: String, from: String? = nil, pageIndex: Int = 0) {
         defaultPage = pageIndex
         super.init(nibName: nil, bundle: nil)
+        
         let detail = SSBGameInfoViewController(appid: appid, from: from)
         detail.delegate = self
         
-        let comment = SSBCommentViewController(nibName: nil, bundle: nil)
+        let comment = SSBCommentViewController(appid: appid)
+        comment.delegate = self
+        
         let community = SSBCommunityViewController(nibName: nil, bundle: nil)
+        community.delegate = self
         
         viewControllers += [detail, comment, community]
         dataSource = self
@@ -171,8 +179,8 @@ class SSBGameDetailViewController: TabmanViewController {
         toolbarItems = [homePage, createSpaceItem(), collection, createSpaceItem(), share]
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(false, animated: animated)
     }
     
@@ -209,20 +217,25 @@ extension SSBGameDetailViewController: PageboyViewControllerDataSource {
 }
 
 extension SSBGameDetailViewController: TMBarDataSource {
+    
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
         return TMBarItem(title: viewControllers[index].title ?? "Unknwon")
     }
 }
 
-extension SSBGameDetailViewController: SSBGameInfoViewControllerDelegate {
+extension SSBGameDetailViewController: SSBGameDetailViewControllerDelegate {
     func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int) {
+       
         if commentCount != 0,
-            let title = viewControllers[1].title {
-            bar.buttons.all[1].setAttributedString(title: title, exponent: "\(commentCount)")
+            let index = viewControllers.firstIndex(where: { $0 is SSBCommentViewController }),
+            let title = viewControllers[index].title {
+            bar.buttons.all[index].setAttributedString(title: title, exponent: "\(commentCount)")
         }
+        
         if postCount != 0,
-            let title = viewControllers[2].title {
-            bar.buttons.all[2].setAttributedString(title: title, exponent: "\(postCount)")
+            let index = viewControllers.firstIndex(where: { $0 is SSBCommunityViewController }),
+            let title = viewControllers[index].title {
+            bar.buttons.all[index].setAttributedString(title: title, exponent: "\(postCount)")
         }
     }
 }

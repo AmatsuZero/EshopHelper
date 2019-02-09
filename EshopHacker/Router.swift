@@ -117,7 +117,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .banner, .getComment, .postComment:
             request.setValue(Router.cookieString, forHTTPHeaderField: "Cookie")
         default:
-            request.httpMethod = "GET"
+            break
         }
         return request
     }

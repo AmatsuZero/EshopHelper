@@ -537,6 +537,11 @@ class SSBTodayRecommendViewController: UIViewController {
         todayRecommendView.tableView.mj_footer.isHidden = true
         listViewBeginToRefresh(todayRecommendView)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        changeTabBar(hidden: false, animated: animated)
+    }
 }
 
 extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
@@ -616,8 +621,11 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 present(browser, animated: true)
             }
         default:
-            let id = model.originalData.appid
-            let viewController = SSBGameDetailViewController(appid: id, pageIndex: type == .comment ? 1 : 0)
+            guard let appid = model.originalData.acceptorId else {
+                view.makeToast("没有找到该游戏")
+                return
+            }
+            let viewController = SSBGameDetailViewController(appid: appid, pageIndex: type == .comment ? 1 : 0)
             viewController.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(viewController, animated: true)
         }
@@ -625,6 +633,34 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return dataSource.heightForRow(indexPath: indexPath)
+    }
+    
+    // MARK: 滚动时隐藏Tabbar
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 { // 向下滚动隐藏
+            changeTabBar(hidden: true, animated: true)
+        } else {  // 向上滚动显示
+            changeTabBar(hidden: false, animated: true)
+        }
+    }
+    
+    func changeTabBar(hidden:Bool, animated: Bool) {
+        guard let tabBar = tabBarController?.tabBar else { return }
+        if tabBar.isHidden == hidden { return }
+        let frame = tabBar.frame
+        let offset = hidden ? frame.size.height : -frame.size.height
+        let duration:TimeInterval = (animated ? 0.5 : 0.0)
+        tabBar.isHidden = false
+        if animated {
+            UIView.animate(withDuration: duration, animations: {
+                tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+            }) { _ in
+                tabBar.isHidden = hidden
+            }
+        } else {
+            tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+            tabBar.isHidden = hidden
+        }
     }
 }
 

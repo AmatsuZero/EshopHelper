@@ -6,9 +6,15 @@
 //  Copyright © 2019 Daubert. All rights reserved.
 //
 
-import UIKit
+import Reusable
+
+class SSBCommunityView: UIView {
+    
+}
 
 class SSBCommunityViewController: UIViewController {
+    
+    weak var delegate: SSBGameDetailViewControllerDelegate?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

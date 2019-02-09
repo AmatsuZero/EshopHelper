@@ -12,10 +12,6 @@ protocol SSBGameInfoViewControllerReloadDelegate: class {
     func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation)
 }
 
-protocol SSBGameInfoViewControllerDelegate: class {
-    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int)
-}
-
 class SSBGameInfoViewController: UIViewController {
     
     private var model: SSBGameInfoViewModel? {
@@ -104,7 +100,7 @@ class SSBGameInfoViewController: UIViewController {
     private let margin: CGFloat = 10
     private let appid: String
     private let from: String?
-    weak var delegate: SSBGameInfoViewControllerDelegate?
+    weak var delegate: SSBGameDetailViewControllerDelegate?
     
     private var shouldShow = false {
         didSet {
@@ -225,7 +221,7 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
     }
     
     @objc private func onRefresh() {
-        // 移除所有自控制器
+        // 移除所有子控制器
         children.forEach { $0.removeFromParent() }
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         GameInfoService.shared.gameInfo(appId: appid, fromName: from).done { [weak self] ret in

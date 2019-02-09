@@ -58,6 +58,7 @@
 		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
 		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
+		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
 		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
@@ -136,6 +137,7 @@
 		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
 		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
+		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
 		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				805452522201693A002F04D7 /* SSBLoadingImageView.swift */,
 				80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */,
 				80573BE5220446BA0001F080 /* SSBSimpleBrowser.swift */,
+				80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
 				80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */,
 				80573BE22203F4B30001F080 /* Utils.swift in Sources */,
+				80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */,
 				80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */,
 				801B80DC220043E1007DFCB5 /* SSBCustomTabmanComponents.swift in Sources */,
 				801B806021FFE30F007DFCB5 /* SSBLaunchView.swift in Sources */,
