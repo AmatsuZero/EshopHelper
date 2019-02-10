@@ -45,4 +45,8 @@ class SSBLaunchViewController: UIViewController {
         audioPlayer?.stop()
         audioPlayer = nil
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }

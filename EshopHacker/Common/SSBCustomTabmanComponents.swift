@@ -93,7 +93,7 @@ class SSBLabelBarButton: TMBarButton {
     var attributedString: (normal: NSAttributedString, selected: NSAttributedString)? {
         didSet {
             calculateFontIntrinsicContentSize()
-            label.attributedText = attributedString?.normal
+            label.attributedText = isSelected ? attributedString?.selected : attributedString?.normal
         }
     }
     

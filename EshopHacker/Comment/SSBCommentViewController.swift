@@ -7,6 +7,7 @@
 //
 
 import Reusable
+import FontAwesome_swift
 
 protocol SSBCommentViewDelegate: UITableViewDelegate {
     func listViewBeginToRefresh(_ listView: SSBCommentView)
@@ -15,22 +16,171 @@ protocol SSBCommentViewDelegate: UITableViewDelegate {
 
 class SSBCommentTableViewCell: UITableViewCell, Reusable {
     
-    var model: CommentService.CommentData.CommentInfo.Comment? {
+    var model: SSBCommentViewModel.Comment? {
         didSet {
+            guard let model = model else {
+                return
+            }
             
+            model.convert(from: contentLabel)
+            avatarImageView.url = model.originalData.avatarUrl
+            nickName.text = model.originalData.nickname
+            timeStampLabel.text = model.originalData.createTime
+            
+            let attr: [NSAttributedString.Key : Any] = [
+                .font: UIFont.systemFont(ofSize: 12)
+            ]
+            let padding: CGFloat = 40
+            var title = model.postiveString
+            var width = (title as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 16), options: .usesFontLeading, attributes: attr, context: nil).width
+            happyButton.setTitle(title, for: .normal)
+            happyButton.snp.updateConstraints { make in
+                make.width.equalTo(width + padding)
+            }
+            
+            title = model.praiseString
+            width = (title as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 16), options: .usesFontLeading, attributes: attr, context: nil).width
+            praiseButton.setTitle(title, for: .normal)
+            praiseButton.snp.updateConstraints { make in
+                make.width.equalTo(width + padding)
+            }
+            title = model.negativeString
+            width = (title as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 16), options: .usesFontLeading, attributes: attr, context: nil).width
+            negativeButton.setTitle(title, for: .normal)
+            negativeButton.snp.updateConstraints { make in
+                make.width.equalTo(width + padding)
+            }
+            
+            switch model.originalData.attitude {
+            case 0: // 不推荐
+                rateButton.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                rateButton.setTitle("不推荐", for: .normal)
+                rateButton.setTitleColor(.gray, for: .normal)
+                rateButton.setImage(UIImage.fontAwesomeIcon(name: .thumbsDown, style: .solid, textColor: .gray,
+                                                            size: .init(width: 15, height: 15)), for: .normal)
+            case 1: // 推荐
+                rateButton.backgroundColor = UIColor.eShopColor.withAlphaComponent(0.3)
+                rateButton.setTitle("推荐", for: .normal)
+                rateButton.setTitleColor(.eShopColor, for: .normal)
+                rateButton.setImage(UIImage.fontAwesomeIcon(name: .thumbsUp, style: .solid, textColor: .eShopColor,
+                                                            size: .init(width: 15, height: 15)), for: .normal)
+            default:
+                break
+            }
         }
     }
     
     private let avatarImageView = SSBLoadingImageView()
     private let nickName = UILabel()
     private let timeStampLabel = UILabel()
-    private let rateStackView = UIStackView()
-    private let contentLabel = UILabel()
-    private let happyButton = UIButton()
-    private let praiseButton = UIButton()
-    private let negativeButton = UIButton()
+    private let rateButton = SSBCustomButton()
+    let contentLabel = UILabel()
+    private let happyButton = SSBCustomButton.makeButton(.smile)
+    private let praiseButton = SSBCustomButton.makeButton(.thumbsUp)
+    private let negativeButton = SSBCustomButton.makeButton(.thumbsDown)
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(avatarImageView)
+        avatarImageView.layer.cornerRadius = 19
+        avatarImageView.layer.masksToBounds = true
+        avatarImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(38)
+            make.left.top.equalTo(10)
+        }
+        
+        nickName.font = .systemFont(ofSize: 14)
+        nickName.textColor = .darkText
+        nickName.textAlignment = .left
+        contentView.addSubview(nickName)
+        nickName.snp.makeConstraints { make in
+            make.top.equalTo(avatarImageView).offset(2)
+            make.left.equalTo(avatarImageView.snp.right).offset(10)
+        }
+        
+        timeStampLabel.font = .systemFont(ofSize: 12)
+        timeStampLabel.textColor = UIColor.darkGray.withAlphaComponent(0.8)
+        timeStampLabel.textAlignment = .left
+        contentView.addSubview(timeStampLabel)
+        timeStampLabel.snp.makeConstraints { make in
+            make.left.equalTo(nickName)
+            make.bottom.equalTo(avatarImageView).offset(-2)
+        }
+        
+        contentLabel.textAlignment = .natural
+        contentLabel.numberOfLines = 0
+        contentLabel.font = .systemFont(ofSize: 14)
+        contentLabel.textColor = .darkText
+        contentView.addSubview(contentLabel)
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(avatarImageView.snp.bottom).offset(9)
+            make.left.equalTo(avatarImageView)
+            make.right.equalTo(-10)
+        }
+        
+        rateButton.adjustsTitleTintColorAutomatically = true
+        rateButton.titleLabel?.font = .systemFont(ofSize: 13)
+        rateButton.layer.cornerRadius = 4
+        contentView.addSubview(rateButton)
+        rateButton.snp.makeConstraints { make in
+            make.width.equalTo(62)
+            make.height.equalTo(29)
+            make.right.equalTo(-10)
+            make.top.equalTo(15)
+        }
+        
+        let bottomView = UIView()
+        bottomView.backgroundColor = UIColor(r: 250, g: 250, b: 250)
+        contentView.addSubview(bottomView)
+        bottomView.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(10)
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(32)
+        }
+        
+        let label = UILabel()
+        label.textAlignment = .left
+        label.text = "评测是否有价值："
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor(r: 204, g: 204, b: 204)
+        bottomView.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.left.equalTo(avatarImageView)
+            make.centerY.equalToSuperview()
+        }
+        
+        bottomView.addSubview(negativeButton)
+        negativeButton.snp.makeConstraints { make in
+            make.right.equalTo(rateButton)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(0)
+        }
+        
+        bottomView.addSubview(praiseButton)
+        praiseButton.snp.makeConstraints { make in
+            make.centerY.equalTo(negativeButton)
+            make.right.equalTo(negativeButton.snp.left).offset(16).priority(.high)
+            make.width.equalTo(0)
+        }
+        
+        bottomView.addSubview(happyButton)
+        happyButton.snp.makeConstraints { make in
+            make.centerY.equalTo(negativeButton)
+            make.right.equalTo(praiseButton.snp.left).offset(16).priority(.high)
+            make.width.equalTo(0)
+        }
+        
+        backgroundColor = .white
+        selectionStyle = .none
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func toggle()  {
+        model?.toggleState(label: contentLabel)
+    }
 }
 
 class SSBCommentView: UIView {
@@ -54,7 +204,7 @@ class SSBCommentView: UIView {
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableView.automaticDimension
         
-        let backgroundView = SSBListBackgroundView(frame: .zero, type: .lineScale)
+        let backgroundView = SSBListBackgroundView(frame: .zero, type: .orbit)
         backgroundView.emptyDescription = "成为第一个评论的人吧"
         backgroundView.emptyImageView.image = UIImage.fontAwesomeIcon(name: .comments,
                                                                       style: .solid,
@@ -94,6 +244,12 @@ class SSBCommentViewController: UIViewController {
     var dataSource: SSBCommentViewModel? {
         didSet {
             listView.tableView.dataSource = dataSource
+            let isEmpty = dataSource?.comments.isEmpty ?? true
+            if isEmpty {
+                (listView.tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
+            }
+            listView.tableView.mj_header.isHidden = false
+            listView.tableView.mj_footer.isHidden = isEmpty
             listView.tableView.reloadData()
         }
     }
@@ -123,7 +279,7 @@ class SSBCommentViewController: UIViewController {
         super.viewDidLoad()
         listView.tableView.mj_header.isHidden = true
         listView.tableView.mj_footer.isHidden = true
-        listViewBeginToAppend(listView)
+        listViewBeginToRefresh(listView)
     }
 }
 
@@ -136,7 +292,6 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     func listViewBeginToRefresh(_ listView: SSBCommentView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
-            //  view.makeToast("正在刷新中")
             return
         }
         
@@ -149,8 +304,10 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
             guard let self = self, let data = ret.data else {
                 return
             }
-            self.dataSource = nil
-            self.dataSource = SSBCommentViewModel(model: data)
+            let model = SSBCommentViewModel(model: data)
+            self.dataSource = model
+            // 刷新数量
+            self.delegate?.onReceive(self, commentCount: model.totalCount, postCount: 0)
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
@@ -161,10 +318,60 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     }
     
     func listViewBeginToAppend(_ listView: SSBCommentView) {
+        // 如果正在刷新中，则取消
+        guard !isRunningTask else {
+            return
+        }
         
+        isRunningTask = true
+        // 重置没有更多数据的状态
+        listView.tableView.mj_footer.resetNoMoreData()
+        
+        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
+        
+        CommentService.shared.getGameComment(by: appId, page: lastPage + 1).done { [weak self] ret in
+            guard let self = self, let data = ret.data else {
+                return
+            }
+            self.dataSource?.append(model: data, tableView: listView.tableView)
+            // 刷新数量
+            self.delegate?.onReceive(self, commentCount: self.dataSource?.totalCount ?? 0, postCount: 0)
+        }.catch { [weak self] error in
+            backgroundView?.state = .error(self)
+            self?.view.makeToast(error.localizedDescription)
+            listView.tableView.reloadData()
+        }.finally { [weak self] in
+            if self?.dataSource?.comments.count != self?.dataSource?.totalCount {
+                self?.lastPage += 1
+            }
+            self?.isRunningTask = false
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return nil
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? SSBCommentTableViewCell else {
+            return
+        }
+        if cell.model?.isExpandable ?? false {
+            cell.toggle()
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+    }
+}
+
+fileprivate extension SSBCustomButton {
+    
+    class func makeButton(_ style: FontAwesome) -> SSBCustomButton {
+        let button = SSBCustomButton()
+        button.setImage(UIImage.fontAwesomeIcon(name: style, style: .regular, textColor: .gray,
+                                                size: CGSize(width: 15, height: 15)), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.setTitleColor(.gray, for: .normal)
+        return button
+    }
+    
 }

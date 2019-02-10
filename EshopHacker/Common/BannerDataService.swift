@@ -49,6 +49,8 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
     typealias ViewType = UICollectionView
     typealias ViewModelType = SSBBannerViewModel
     
+    var totalCount = 0
+    
     struct SSBBannerViewModel: SSBViewModelProtocol {
         /// 类型
         enum BannerType: Int {
@@ -81,7 +83,8 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
     
     weak var delegate: SSBBannerDataSourceDelegate?
     
-    func bind(data: [DataType], collectionView: ViewType) {
+    func bind(data: [DataType], totalCount: Int, collectionView: ViewType) {
+        self.totalCount = count
         guard !data.isEmpty else {
             return
         }
@@ -93,7 +96,7 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
         collectionView.reloadData()
     }
     
-    func append(data: [DataType], collectionView: ViewType) {
+    func append(data: [DataType], totalCount: Int, collectionView: ViewType) {
        
     }
     

@@ -285,17 +285,30 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourcePro
     typealias DataType = SearchService.SearchResult.Data.Game
     typealias ViewType = UITableView
     typealias ViewModelType = SSBSearchListViewModel
+    var totalCount = 0
     
     var dataSource = [SSBSearchListViewModel]()
     
-    func bind(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
+    func bind(data: [SearchService.SearchResult.Data.Game], totalCount: Int, collectionView tableView: UITableView) {
+        self.totalCount = totalCount
         clear()
         dataSource += data.map { SSBSearchListViewModel(model: $0) }
+        if data.isEmpty {
+            (tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
+        }
+        tableView.mj_header.isHidden = false
+        tableView.mj_footer.isHidden = dataSource.isEmpty
         tableView.reloadData()
     }
     
-    func append(data: [SearchService.SearchResult.Data.Game], collectionView tableView: UITableView) {
+    func append(data: [SearchService.SearchResult.Data.Game], totalCount:Int, collectionView tableView: UITableView) {
+        self.totalCount = totalCount
         dataSource += data.map { SSBSearchListViewModel(model: $0) }
+        if count == totalCount {
+            tableView.mj_footer.endRefreshingWithNoMoreData()
+        } else {
+            tableView.mj_footer.endRefreshing()
+        }
         tableView.reloadData()
     }
     

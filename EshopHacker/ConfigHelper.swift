@@ -15,6 +15,81 @@ protocol SSBViewModelProtocol {
     init(model: T)
 }
 
+class SSBToggleModel {
+    
+    var isExpanded = false
+    var isExpandable: Bool?
+    var lines = [String]()
+    let content: String
+    
+    init(content: String) {
+        self.content = content
+    }
+    
+    static var unFoldText: NSAttributedString = {
+        return NSAttributedString(string: "...【展开】", attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.eShopColor
+            ])
+    }()
+    
+    static var foldText: NSAttributedString = {
+        return NSAttributedString(string: "【收起】", attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.eShopColor
+            ])
+    }()
+    
+    static var attributes: [NSAttributedString.Key : Any] = {
+        return [
+            .font:  UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.darkText
+        ]
+    }()
+    
+    func convert(from label: UILabel) {
+        guard isExpandable == nil else {
+            expand(!isExpanded, label: label)
+            return
+        }
+        label.text = content
+        lines += label.linesOfString()
+        isExpandable = lines.count > 6
+        if isExpandable! {
+            let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel.attributes)
+            attrStr.append(SSBToggleModel.unFoldText)
+            label.attributedText = attrStr
+        } else {
+            label.attributedText = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
+        }
+    }
+    
+    func toggleState(label: UILabel) {
+        guard isExpandable ?? false else {
+            return
+        }
+        expand(isExpanded, label: label)
+        isExpanded.toggle()
+    }
+    
+    func expand(_ flag: Bool, label: UILabel) {
+        guard isExpandable! else {
+            label.attributedText = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
+            return
+        }
+        if flag {
+            let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel .attributes)
+            attrStr.append(SSBToggleModel.unFoldText)
+            label.attributedText = attrStr
+            
+        } else {
+            let attrStr = NSMutableAttributedString(string: content, attributes: SSBToggleModel.attributes)
+            attrStr.append(SSBToggleModel.foldText)
+            label.attributedText = attrStr
+        }
+    }
+}
+
 protocol SSBDataSourceProtocol: class {
     
     associatedtype DataType: Codable
@@ -26,9 +101,10 @@ protocol SSBDataSourceProtocol: class {
     func clear()
     
     var count: Int { get }
+    var totalCount: Int { get set }
     
-    func bind(data: [DataType], collectionView: ViewType)
-    func append(data: [DataType], collectionView: ViewType)
+    func bind(data: [DataType], totalCount: Int, collectionView: ViewType)
+    func append(data: [DataType], totalCount: Int, collectionView: ViewType)
 }
 
 extension SSBDataSourceProtocol {

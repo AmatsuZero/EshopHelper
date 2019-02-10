@@ -82,7 +82,7 @@ class SSBCustomButton: UIButton {
         didSet {
             if isHighlighted, originBorderColor == nil {
                 // 手指在按钮上会不断触发highted的setter方法，所以这里设置了保护，设置过一次就不再设置了
-                originBorderColor = UIColor(cgColor: originBorderColor!.cgColor)
+                originBorderColor = UIColor(cgColor: layer.borderColor!)
             }
             
             // 渲染背景颜色

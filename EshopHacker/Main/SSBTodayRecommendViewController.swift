@@ -558,15 +558,12 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
         
         let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
         TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
-            guard let self = self, let source = data.data?.informationFlow else {
+            guard let self = self, let source = data.data else {
                 return
             }
-            if source.isEmpty {
-                backgroundView?.state = .empty
-            }
-            self.todayRecommendView.tableView.mj_header.isHidden = false
-            self.todayRecommendView.tableView.mj_footer.isHidden = source.isEmpty
-            self.dataSource.bind(data: source, collectionView: self.todayRecommendView.tableView)
+            self.dataSource.bind(data: source.informationFlow ?? [],
+                                 totalCount: source.allSize,
+                                 collectionView: self.todayRecommendView.tableView)
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
@@ -579,31 +576,28 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
     func listViewBeginToAppend(_ listView: SSBTodayRecommendView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
-          //  view.makeToast("正在刷新中")
             return
         }
         
-        let originalCount = dataSource.count
         isRunningTask = true
         // 重置没有更多数据的状态
         todayRecommendView.tableView.mj_footer.resetNoMoreData()
         
         TodayRecommendService.shared.mainPage(page: lastPage + 1).done { [weak self] data in
             guard let self = self,
-                let source = data.data?.informationFlow else {
+                let source = data.data else {
                     return
             }
-            self.lastPage += 1
-            self.dataSource.append(data: source, collectionView: self.todayRecommendView.tableView)
-            if originalCount == self.dataSource.count {
-                self.todayRecommendView.tableView.mj_footer.endRefreshingWithNoMoreData()
-            } else {
-                self.todayRecommendView.tableView.mj_footer.endRefreshing()
-            }
+            self.dataSource.append(data: source.informationFlow ?? [],
+                                   totalCount:source.allSize,
+                collectionView: self.todayRecommendView.tableView)
             }.catch { [weak self] error in
                 self?.view.makeToast("请求失败")
                 self?.todayRecommendView.tableView.mj_footer.endRefreshing()
             }.finally { [weak self] in
+                if self?.dataSource.totalCount != self?.dataSource.count {
+                    self?.lastPage += 1
+                }
                 self?.isRunningTask = false
         }
     }

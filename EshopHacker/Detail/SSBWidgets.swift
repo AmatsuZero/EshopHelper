@@ -87,16 +87,14 @@ protocol SSBGameDetailDescriptionViewDelegate: class {
 
 class SSBGameDetailDescriptionView: UITableViewCell {
     private let descriptionLabel = UILabel()
-    fileprivate var isExpanded = false
-    fileprivate var isExpandable = false
     fileprivate weak var delegate: SSBGameDetailDescriptionViewDelegate?
-    fileprivate var dataSource: SSBGameInfoViewModel.DetailDescriptionData? {
+    fileprivate var dataSource: SSBToggleModel? {
         didSet {
             guard let data = dataSource else {
                 return
             }
             setNeedsLayout()
-            isExpandable = data.convert(from: descriptionLabel)
+            data.convert(from: descriptionLabel)
         }
     }
     
@@ -135,17 +133,13 @@ class SSBGameDetailDescriptionView: UITableViewCell {
     }
     
     @objc func toggleState(_ sender: UITapGestureRecognizer) {
-        guard isExpandable else {
-            return
-        }
-        dataSource?.expand(isExpanded, label: descriptionLabel)
-        isExpanded.toggle()
+        dataSource?.toggleState(label: descriptionLabel)
         delegate?.needRefresh()
     }
 }
 
 class SSBGameDetailDescriptionViewController: UIViewController {
-    var dataSource: SSBGameInfoViewModel.DetailDescriptionData? {
+    var dataSource: SSBToggleModel? {
         didSet {
             detailView.dataSource = dataSource
         }

@@ -262,7 +262,7 @@ class SSBBannerViewController: UIViewController {
             if source.isEmpty {
                 backgroundView?.state = .empty
             }
-            self.dataSouce.bind(data: source, collectionView: self.bannerView.collectionView)
+            self.dataSouce.bind(data: source, totalCount: source.count, collectionView: self.bannerView.collectionView)
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
         }

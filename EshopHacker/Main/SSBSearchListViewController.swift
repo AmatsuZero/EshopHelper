@@ -263,27 +263,24 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         }
         
         isRunningTask = true
-        let originalCount = dataSource.count
-        
         // 重置没有更多数据的状态
         listView.tableView.mj_footer.resetNoMoreData()
         
         SearchService.shared.mainIndex(page: lastPage + 1).done { [weak self] data in
             guard let self = self,
-                let source = data.data?.games else {
+                let source = data.data else {
                     return
             }
-            self.lastPage += 1
-            self.dataSource.append(data: source, collectionView: self.listView.tableView)
-            if originalCount == self.dataSource.count {
-                self.listView.tableView.mj_footer.endRefreshingWithNoMoreData()
-            } else {
-                self.listView.tableView.mj_footer.endRefreshing()
-            }
+            self.dataSource.append(data: source.games,
+                                   totalCount:source.hits,
+                                   collectionView: self.listView.tableView)
         }.catch { [weak self] error in
             self?.view.makeToast("请求失败")
             self?.listView.tableView.mj_footer.endRefreshing()
         }.finally { [weak self] in
+            if self?.dataSource.totalCount != self?.dataSource.count {
+                self?.lastPage += 1
+            }
             self?.isRunningTask = false
         }
     }
@@ -301,16 +298,14 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
             guard let self = self,
-                let source = data.data?.games else {
+                let source = data.data else {
                     return
             }
-            if source.isEmpty {
-                backgroundView?.state = .empty
-            }
-            self.listView.tableView.mj_header.isHidden = false
-            self.listView.tableView.mj_footer.isHidden = source.isEmpty
+           
             self.bannerViewController.fetchData()
-            self.dataSource.bind(data: source, collectionView: self.listView.tableView)
+            self.dataSource.bind(data: source.games,
+                                 totalCount: source.hits,
+                                 collectionView: self.listView.tableView)
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)

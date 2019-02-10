@@ -431,56 +431,6 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
         }
     }
     
-    struct DetailDescriptionData {
-        
-        let originalText: String
-        let attributes: [NSAttributedString.Key : Any] = [
-            .font: UIFont.systemFont(ofSize: 14),
-            .foregroundColor: UIColor.darkText,
-            ]
-        fileprivate let unFoldText = NSAttributedString(string: "...【展开】", attributes: [
-            .font: UIFont.systemFont(ofSize: 14),
-            .foregroundColor: UIColor.eShopColor
-            ])
-        fileprivate let foldText = NSAttributedString(string: "【收起】", attributes: [
-            .font: UIFont.systemFont(ofSize: 14),
-            .foregroundColor: UIColor.eShopColor
-            ])
-        
-        private(set) var isExpandable = false
-        
-        init(_ string: String) {
-            originalText = string
-        }
-        
-        func convert(from label: UILabel) -> Bool {
-            label.text = originalText
-            let lines = label.linesOfString()
-            if lines.count > 6 {
-                let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: attributes)
-                attrStr.append(unFoldText)
-                label.attributedText = attrStr
-                return true
-            } else {
-                label.attributedText = NSAttributedString(string: originalText, attributes: attributes)
-                return false
-            }
-        }
-        
-        func expand(_ flag: Bool, label: UILabel) {
-            label.text = originalText
-            if flag {
-                let lines = label.linesOfString()
-                let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: attributes)
-                attrStr.append(unFoldText)
-                label.attributedText = attrStr
-            } else {
-                let attrStr = NSMutableAttributedString(string: originalText, attributes: attributes)
-                attrStr.append(foldText)
-                label.attributedText = attrStr
-            }
-        }
-    }
     /// 头部视图信息
     private(set) var headDataSource: HeadData
     /// 解锁信息
@@ -492,7 +442,7 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
     /// Metacritic评分
     private(set) var rate: String?
     /// 详情
-    private(set) var description: DetailDescriptionData?
+    private(set) var description: SSBToggleModel?
     
     init(model: T) {
         originalData = model
@@ -508,7 +458,7 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
             rate = "\(model.game.rate)"
         }
         if let detail = model.game.detail {
-            description = DetailDescriptionData(detail)
+            description = SSBToggleModel(content: detail)
         }
     }
     

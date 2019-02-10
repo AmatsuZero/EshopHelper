@@ -192,6 +192,7 @@ class SSBTodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewD
     typealias DataType = TodayRecommendService.Response.Data.FlowInfo
     typealias ViewType = UITableView
     typealias ViewModelType = SSBtodayRecommendViewModel
+    var totalCount: Int  = 0
     
     var dataSource = [ViewModelType]()
     
@@ -220,20 +221,32 @@ class SSBTodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewD
         }
     }
     
-    func bind(data: [DataType], collectionView: ViewType) {
+    func bind(data: [DataType], totalCount: Int, collectionView: ViewType) {
         clear()
+        collectionView.mj_header.isHidden = false
+        collectionView.mj_footer.isHidden = data.isEmpty
+        self.totalCount = totalCount
         dataSource += data.map { ViewModelType(model: $0) }.filter { $0.type != nil }
+        if dataSource.isEmpty {
+            (collectionView.backgroundView as? SSBListBackgroundView)?.state = .empty
+        }
         collectionView.reloadData()
     }
   
-    func append(data: [DataType], collectionView: ViewType) {
+    func append(data: [DataType], totalCount: Int, collectionView: ViewType) {
+        self.totalCount = totalCount
         dataSource += data.map { ViewModelType(model: $0) }.filter { $0.type != nil }
+        if count == totalCount {
+            collectionView.mj_footer.endRefreshingWithNoMoreData()
+        } else {
+            collectionView.mj_footer.endRefreshing()
+        }
         collectionView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         tableView.backgroundView?.isHidden = !dataSource.isEmpty
-        return dataSource.count
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

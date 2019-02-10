@@ -12,7 +12,7 @@ import FontAwesome_swift
 import SnapKit
 
 protocol SSBGameDetailViewControllerDelegate: class {
-    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int)
+    func onReceive(_ viewController: UIViewController, commentCount: Int, postCount: Int)
 }
 
 class SSBGameDetailViewController: TabmanViewController {
@@ -224,7 +224,7 @@ extension SSBGameDetailViewController: TMBarDataSource {
 }
 
 extension SSBGameDetailViewController: SSBGameDetailViewControllerDelegate {
-    func onReceive(_ viewController: SSBGameInfoViewController, commentCount: Int, postCount: Int) {
+    func onReceive(_ viewController: UIViewController, commentCount: Int, postCount: Int) {
        
         if commentCount != 0,
             let index = viewControllers.firstIndex(where: { $0 is SSBCommentViewController }),

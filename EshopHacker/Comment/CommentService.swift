@@ -51,10 +51,10 @@ class CommentService {
                 let commentId: String
                 let content: String
                 let createTime: String
-                let happyNum: Int
-                let negativeNum: Int
+                let happyNum: Int?
+                let negativeNum: Int?
                 let nickname: String
-                let positiveNum: Int
+                let positiveNum: Int?
             }
             let count: Int?
             let hits: Int
@@ -102,20 +102,69 @@ class CommentService {
 
 class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource {
     
+    class Comment: SSBToggleModel, SSBViewModelProtocol {
+        typealias T = CommentService.CommentData.CommentInfo.Comment
+        var originalData: T
+        
+        var postiveString: String {
+            return "欢乐\(originalData.happyNum != nil && originalData.happyNum != 0 ? " \(originalData.happyNum!)" : "")"
+        }
+        
+        var praiseString: String {
+            return "是\(originalData.positiveNum != nil && originalData.positiveNum != 0 ? " \(originalData.positiveNum!)" : "")"
+        }
+        
+        var negativeString: String {
+            return "否\(originalData.negativeNum != nil && originalData.negativeNum != 0 ? " \(originalData.negativeNum!)" : "")"
+        }
+        
+        required init(model: T) {
+            originalData = model
+            super.init(content: originalData.content)
+        }
+    }
+    
     typealias T = CommentService.CommentData.CommentInfo
     var originalData: T
     
-    var myCommnets = [T.Comment]()
-    var comments = [T.Comment]()
+    var myCommnets = [Comment]()
+    var comments = [Comment]()
+    private(set) var totalCount = 0
     
     required init(model: T) {
         originalData = model
         super.init()
+        if let comments = model.comment {
+            self.comments += comments.map { Comment(model: $0) }
+        }
+        if let selfComments = model.selfComment {
+            myCommnets += selfComments.map { Comment(model: $0) }
+        }
+        totalCount = model.count ?? 0
+    }
+    
+    func append(model: T, tableView: UITableView) {
+        if let comments = model.comment {
+            self.comments += comments.map { Comment(model: $0) }
+        }
+        if let selfComments = model.selfComment {
+            myCommnets += selfComments.map { Comment(model: $0) }
+        }
+        totalCount = model.count ?? 0
+        if totalCount == comments.count {// 已经取得全部数据
+            tableView.mj_footer.endRefreshingWithNoMoreData()
+        } else {
+            tableView.mj_footer.endRefreshing()
+        }
+        tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         let count = comments.count
         tableView.backgroundView?.isHidden = count != 0
+        if let backgroundView = tableView.backgroundView as? SSBListBackgroundView, count == 0 {
+            backgroundView.state = .empty
+        }
         return count
     }
     
@@ -125,6 +174,7 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommentTableViewCell.self)
+        // 重置状态
         cell.model = comments[indexPath.section]
         return cell
     }
