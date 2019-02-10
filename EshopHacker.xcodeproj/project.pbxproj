@@ -272,7 +272,6 @@
 				80573BF0220499350001F080 /* SSBGameDetailTopViewController.swift */,
 				80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */,
 				805736A9220BB50800D69929 /* SSBGameDLCViewController.swift */,
-				80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */,
 				802393F7220C2F68003FCD5B /* SSBWidgets.swift */,
 			);
 			path = Detail;
@@ -294,6 +293,7 @@
 			children = (
 				801B7FFB21FEE19C007DFCB5 /* CommentService.swift */,
 				80573BE722045E150001F080 /* SSBCommentViewController.swift */,
+				80573BF62204A9A10001F080 /* SSBGameCommentViewController.swift */,
 			);
 			path = Comment;
 			sourceTree = "<group>";

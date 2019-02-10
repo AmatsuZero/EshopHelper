@@ -183,6 +183,74 @@ class SSBCommentTableViewCell: UITableViewCell, Reusable {
     }
 }
 
+class SSBCommentSectionHeaderView: UIView  {
+    
+    var totalCount = 0 {
+        didSet {
+            label.text = "玩家评测" + (totalCount != 0 ? " (\(totalCount))" : "")
+        }
+    }
+    
+    private let label = UILabel()
+    private let button = SSBCustomButton()
+    
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let color = UIColor.darkGray.withAlphaComponent(0.8)
+        
+        let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .commentDots,
+                                                                   style: .regular,
+                                                                   textColor: color,
+                                                                   size: CGSize(width: 14, height: 14)))
+        addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(10)
+        }
+        
+        label.textColor = color
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.text = "玩家评测"
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.left.equalTo(imageView.snp.right).offset(4)
+            make.centerY.equalToSuperview()
+        }
+        
+        button.setImage(UIImage.fontAwesomeIcon(name: .caretDown,
+                                                style: .solid,
+                                                textColor: color,
+                                                size: .init(width: 10, height: 10)), for: .normal)
+        button.setTitle("默认排序", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        button.setTitleColor(color, for: .normal)
+        button.buttonImagePosition = .right
+        button.imageEdgeInsets = .init(top: 0, left: 30, bottom: 0, right: 0)
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.right.equalTo(-10)
+            make.centerY.equalToSuperview()
+        }
+        
+        let line = UIView()
+        line.backgroundColor = .lineColor
+        addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
+        backgroundColor = .white
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class SSBCommentView: UIView {
     
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
@@ -200,7 +268,6 @@ class SSBCommentView: UIView {
         }
         tableView.separatorStyle = .none
         tableView.sectionFooterHeight = 5
-        tableView.sectionHeaderHeight = 5
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableView.automaticDimension
         
@@ -258,6 +325,7 @@ class SSBCommentViewController: UIViewController {
     private let listView = SSBCommentView()
     private var isRunningTask = false
     private let appId: String
+    fileprivate let sectionHeader = SSBCommentSectionHeaderView()
     
     init(appid: String) {
         appId = appid
@@ -297,6 +365,8 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         
         lastPage = 1
         isRunningTask = true
+        // 重置没有更多数据的状态
+        listView.tableView.mj_footer.resetNoMoreData()
         
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         
@@ -311,8 +381,11 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
+            listView.tableView.mj_header.isHidden = true
+            listView.tableView.mj_footer.isHidden = true
             listView.tableView.reloadData()
         }.finally { [weak self] in
+            listView.tableView.mj_header.endRefreshing()
             self?.isRunningTask = false
         }
     }
@@ -324,8 +397,6 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }
         
         isRunningTask = true
-        // 重置没有更多数据的状态
-        listView.tableView.mj_footer.resetNoMoreData()
         
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         
@@ -339,6 +410,7 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
+            listView.tableView.mj_footer.endRefreshing()
             listView.tableView.reloadData()
         }.finally { [weak self] in
             if self?.dataSource?.comments.count != self?.dataSource?.totalCount {
@@ -349,7 +421,12 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
+        sectionHeader.totalCount = dataSource?.totalCount ?? 0
+        return section == 0 ? sectionHeader : nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 40 : 3
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

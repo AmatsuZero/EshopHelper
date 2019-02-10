@@ -263,8 +263,6 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         }
         
         isRunningTask = true
-        // 重置没有更多数据的状态
-        listView.tableView.mj_footer.resetNoMoreData()
         
         SearchService.shared.mainIndex(page: lastPage + 1).done { [weak self] data in
             guard let self = self,
@@ -294,6 +292,8 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         
         lastPage = 1
         isRunningTask = true
+        // 重置没有更多数据的状态
+        listView.tableView.mj_footer.resetNoMoreData()
         
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
@@ -309,8 +309,11 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
-                self?.listView.tableView.reloadData()
+                listView.tableView.mj_header.isHidden = true
+                listView.tableView.mj_footer.isHidden = true
+                listView.tableView.reloadData()
             }.finally { [weak self] in
+                listView.tableView.mj_header.endRefreshing()
                 self?.isRunningTask = false
         }
     }

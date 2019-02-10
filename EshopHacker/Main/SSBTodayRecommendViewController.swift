@@ -555,6 +555,8 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
         
         lastPage = 1
         isRunningTask = true
+        // 重置没有更多数据的状态
+        todayRecommendView.tableView.mj_footer.resetNoMoreData()
         
         let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
         TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
@@ -567,8 +569,11 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
+                listView.tableView.mj_header.isHidden = true
+                listView.tableView.mj_footer.isHidden = true
                 self?.todayRecommendView.tableView.reloadData()
             }.finally { [weak self] in
+                listView.tableView.mj_header.endRefreshing()
                 self?.isRunningTask = false
         }
     }
@@ -580,8 +585,6 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
         }
         
         isRunningTask = true
-        // 重置没有更多数据的状态
-        todayRecommendView.tableView.mj_footer.resetNoMoreData()
         
         TodayRecommendService.shared.mainPage(page: lastPage + 1).done { [weak self] data in
             guard let self = self,

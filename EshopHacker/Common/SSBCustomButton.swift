@@ -281,25 +281,30 @@ class SSBCustomButton: UIButton {
                 imageFrame.origin.x = bounds.width - contentEdgeInsets.right - imageEdgeInsets.right - imageFrame.width
                 titleFrame.origin.x = imageFrame.minX - imageEdgeInsets.left - titleEdgeInsets.right - titleFrame.width
             case .fill: // 图片按自身大小显示，剩余空间由标题占满
-                switch contentVerticalAlignment {
-                case .top:
-                    titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top
-                    imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top
-                case .center:
-                    titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top + contentSize.height.center(titleFrame.height + titleEdgeInsets.vertical)
-                    imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top + contentSize.height.center(imageFrame.height + imageEdgeInsets.vertical)
-                case .bottom:
-                    titleFrame.origin.y = bounds.height  - contentEdgeInsets.bottom - titleEdgeInsets.bottom - titleFrame.height
-                    imageFrame.origin.y = bounds.height - contentEdgeInsets.bottom - imageEdgeInsets.bottom - imageFrame.height
-                case .fill:
-                    titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top
-                    titleFrame.size.height = bounds.height - contentEdgeInsets.bottom - titleEdgeInsets.bottom - titleFrame.minY
-                    imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top
-                    imageFrame.size.height = bounds.height - contentEdgeInsets.bottom - imageEdgeInsets.bottom - imageFrame.minY
-                }
+                imageFrame.origin.x = bounds.width - contentEdgeInsets.right - imageEdgeInsets.right - imageFrame.width
+                titleFrame.origin.x = contentEdgeInsets.left + titleEdgeInsets.left
+                titleFrame.size.width = imageFrame.minX - imageEdgeInsets.left - titleEdgeInsets.right - titleFrame.minX
             default:
                 break
             }
+            
+            switch contentVerticalAlignment {
+            case .top:
+                titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top
+                imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top
+            case .center:
+                titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top + contentSize.height.center(titleFrame.height + titleEdgeInsets.vertical)
+                imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top + contentSize.height.center(imageFrame.height + imageEdgeInsets.vertical)
+            case .bottom:
+                titleFrame.origin.y = bounds.height - contentEdgeInsets.bottom - titleEdgeInsets.bottom - titleFrame.height
+                imageFrame.origin.y = bounds.height - contentEdgeInsets.bottom - imageEdgeInsets.bottom - imageFrame.height
+            case .fill:
+                titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top
+                titleFrame.size.height = bounds.height - contentEdgeInsets.bottom - titleEdgeInsets.bottom - titleFrame.minY
+                imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top
+                imageFrame.size.height = bounds.height - contentEdgeInsets.bottom - imageEdgeInsets.bottom - imageFrame.minY
+            }
+            
             imageView?.frame = imageFrame.flatted()
             titleLabel?.frame = titleFrame.flatted()
         }
