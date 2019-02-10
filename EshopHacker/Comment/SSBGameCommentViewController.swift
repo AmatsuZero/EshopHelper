@@ -47,10 +47,6 @@ class SSBGameCommentView: UITableViewCell {
     }
 }
 
-class SSBGameSelfCommentViewController: UIViewController {
-    
-}
-
 class SSBGameCommentViewController: UIViewController {
     
     private let commentView = SSBGameCommentView()

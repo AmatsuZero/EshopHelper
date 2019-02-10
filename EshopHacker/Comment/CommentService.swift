@@ -118,7 +118,16 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
             return "否\(originalData.negativeNum != nil && originalData.negativeNum != 0 ? " \(originalData.negativeNum!)" : "")"
         }
         
+        let isMyComment: Bool
+        
+        init(model:T, isMyComment: Bool = false) {
+            self.isMyComment = isMyComment
+            originalData = model
+            super.init(content: originalData.content)
+        }
+        
         required init(model: T) {
+            isMyComment = false
             originalData = model
             super.init(content: originalData.content)
         }
@@ -138,7 +147,7 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
             self.comments += comments.map { Comment(model: $0) }
         }
         if let selfComments = model.selfComment {
-            myCommnets += selfComments.map { Comment(model: $0) }
+            myCommnets += selfComments.map { Comment(model: $0, isMyComment: true)  }
         }
         totalCount = model.count ?? 0
     }
@@ -146,9 +155,6 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
     func append(model: T, tableView: UITableView) {
         if let comments = model.comment {
             self.comments += comments.map { Comment(model: $0) }
-        }
-        if let selfComments = model.selfComment {
-            myCommnets += selfComments.map { Comment(model: $0) }
         }
         totalCount = model.count ?? 0
         if totalCount == comments.count {// 已经取得全部数据
@@ -160,22 +166,29 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let count = comments.count
-        tableView.backgroundView?.isHidden = count != 0
-        if let backgroundView = tableView.backgroundView as? SSBListBackgroundView, count == 0 {
-            backgroundView.state = .empty
-        }
-        return count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        let isEmpty = myCommnets.isEmpty && comments.isEmpty
+        tableView.backgroundView?.isHidden = !isEmpty
+        if let backgroundView = tableView.backgroundView as? SSBListBackgroundView, isEmpty {
+            backgroundView.state = .empty
+        }
+        return section == 0 ? myCommnets.count : comments.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommentTableViewCell.self)
-        // 重置状态
-        cell.model = comments[indexPath.section]
-        return cell
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBMyCommentTableViewCell.self)
+            cell.model = myCommnets[indexPath.row]
+            cell.separatorView.isHidden = indexPath.row == myCommnets.count - 1
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommentTableViewCell.self)
+            cell.model = comments[indexPath.row]
+            cell.separatorView.isHidden = indexPath.row == comments.count - 1
+            return cell
+        }
     }
 }
