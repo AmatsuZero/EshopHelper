@@ -7,6 +7,7 @@
 //
 
 import Reusable
+import Alamofire
 
 @objc
 protocol SSBCommentViewDelegate: UITableViewDelegate {
@@ -22,6 +23,7 @@ class SSBCommentView: UITableViewCell {
             tableView.delegate = delegate
         }
     }
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -83,20 +85,25 @@ class SSBCommentViewController: UIViewController {
             } else {
                 listView.tableView.mj_footer.isHidden = isEmpty
             }
-            listView.tableView.mj_header.isHidden = false
-   
+            listView.tableView.mj_header?.isHidden = false
             listView.tableView.reloadData()
         }
     }
     weak var delegate: SSBGameDetailViewControllerDelegate?
     var lastPage = 1
     let listView = SSBCommentView()
-    var isRunningTask = false
+    var isRunningTask: Bool {
+        guard let state = request?.task?.state else {
+            return false
+        }
+        return state == .running
+    }
     let appId: String
     var sectionHeader = SSBCommentSectionHeaderView()
     var myCommentSectionHeader = SSBMyCommentsSectionHeader()
     var margin: CGFloat = 5
     var emptyMyCommentView = SSBMyCommentEmptyView()
+    var request: DataRequest?
     
     init(appid: String) {
         appId = appid
@@ -115,8 +122,8 @@ class SSBCommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        listView.tableView.mj_header.isHidden = true
-        listView.tableView.mj_footer.isHidden = true
+        listView.tableView.mj_header?.isHidden = true
+        listView.tableView.mj_footer?.isHidden = true
         listViewBeginToRefresh(listView)
     }
 }
@@ -134,13 +141,14 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }
         
         lastPage = 1
-        isRunningTask = true
         // 重置没有更多数据的状态
         listView.tableView.mj_footer.resetNoMoreData()
         
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
         
-        CommentService.shared.getGameComment(by: appId, page: lastPage).done { [weak self] ret in
+        let (req, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
+        self.request = req
+        promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {
                 return
             }
@@ -151,12 +159,12 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
-            listView.tableView.mj_header.isHidden = true
-            listView.tableView.mj_footer.isHidden = true
+            listView.tableView.mj_header?.isHidden = true
+            listView.tableView.mj_footer?.isHidden = true
             listView.tableView.reloadData()
         }.finally { [weak self] in
-            listView.tableView.mj_header.endRefreshing()
-            self?.isRunningTask = false
+            listView.tableView.mj_header?.endRefreshing()
+            self?.request = nil
         }
     }
     
@@ -166,11 +174,10 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
             return
         }
         
-        isRunningTask = true
-        
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        
-        CommentService.shared.getGameComment(by: appId, page: lastPage + 1).done { [weak self] ret in
+        let ret = CommentService.shared.getGameComment(by: appId, page: lastPage + 1)
+        request = ret.request
+        ret.promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {
                 return
             }
@@ -186,7 +193,7 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
             if self?.dataSource?.comments.count != self?.dataSource?.totalCount {
                 self?.lastPage += 1
             }
-            self?.isRunningTask = false
+            self?.request = nil
         }
     }
     //MARK: UITableView Delegate

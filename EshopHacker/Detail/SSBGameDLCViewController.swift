@@ -193,8 +193,8 @@ class SSBGameDLCView: UITableViewCell {
         } else {
             moreButton.setTitle("查看更多", for: .normal)
         }
-        delegate?.onMoreButtonClicked(self, tableView: tableView)
         tableView.reloadData()
+        delegate?.onMoreButtonClicked(self, tableView: tableView)
     }
 }
 
@@ -229,7 +229,11 @@ extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
     func onMoreButtonClicked(_ view: SSBGameDLCView, tableView: UITableView) {
         // 刷新高度
         if let delegate = self.delegate {
-            delegate.needReload(self, reloadStyle: .none)
+            if view.isExpaned {
+                delegate.needReload(self, reloadStyle: .none, needScrollTo: false)
+            } else {
+                delegate.needReload(self, reloadStyle: .none, needScrollTo: true)
+            }
         }
     }
     

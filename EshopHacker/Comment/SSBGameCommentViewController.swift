@@ -24,8 +24,8 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     
     override var dataSource: SSBCommentViewModel? {
         didSet {
-            listView.tableView.mj_header = nil
-            listView.tableView.mj_footer = nil
+            listView.tableView.mj_header?.isHidden = true
+            listView.tableView.mj_footer?.isHidden = true
          
             guard let model = dataSource else {
                 return
@@ -35,12 +35,6 @@ class SSBGameCommentViewController: SSBCommentViewController  {
                 listView.tableView.tableFooterView = moreButton
             } else {
                 listView.tableView.tableFooterView = nil
-            }
-            // 这里刷新两遍是为了解决父视图的scrollView在滑动过程中，导致tableView的contentSize计算不正确的问题
-            self.reloadDelegate?.needReloadData(self)
-            DispatchQueue.main.asyncAfter(deadline: 0.1) { [weak self] in
-                guard let self = self else { return }
-                self.reloadDelegate?.needReloadData(self)
             }
         }
     }
@@ -58,30 +52,45 @@ class SSBGameCommentViewController: SSBCommentViewController  {
        return listView.tableView.contentSize.height == 0 ? 110 : listView.tableView.contentSize.height
     }
     
-    // MARK: 刷新
-    override func listViewBeginToRefresh(_ listView: SSBCommentView) {
+    func fetchData() {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
         }
         
         lastPage = 1
-        isRunningTask = true
         
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        
-        CommentService.shared.getGameComment(by: appId, page: lastPage).done { [weak self] ret in
+        let ret = CommentService.shared.getGameComment(by: appId, page: lastPage)
+        request = ret.request
+        ret.promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {
                 return
             }
             let model = SSBCommentViewModel(model: data)
             self.dataSource = model
-        }.catch { [weak self] error in
-            backgroundView?.state = .error(self)
-            self?.view.makeToast(error.localizedDescription)
-            listView.tableView.reloadData()
-        }.finally { [weak self] in
-            self?.isRunningTask = false
+            }.catch { [weak self] error in
+                backgroundView?.state = .error(self)
+                self?.view.makeToast(error.localizedDescription)
+                self?.listView.tableView.reloadData()
+            }.finally { [weak self] in
+                self?.request = nil
+        }
+    }
+    
+    // MARK: 刷新
+    override func listViewBeginToRefresh(_ listView: SSBCommentView) {
+        
+    }
+    
+    var isReloadOnce = false
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isReloadOnce {
+            // Cell开始显示了，刷新一下改行实际高度, 因为前面也有有可能自动计算的，所以这里全部刷新
+            self.reloadDelegate?.needReloadData(self)
+            isReloadOnce = true
         }
     }
     
@@ -93,7 +102,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
         }
         if cell.model?.isExpandable ?? false {
             // 刷新自身在父控制器的高度
-            reloadDelegate?.needReload(self, reloadStyle: .none)
+            reloadDelegate?.needReload(self, reloadStyle: .none, needScrollTo: false)
         }
     }
     

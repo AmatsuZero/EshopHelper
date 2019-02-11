@@ -11,6 +11,7 @@ import Reusable
 import SDWebImage
 import FontAwesome_swift
 import SafariServices
+import Alamofire
 
 class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
     
@@ -512,8 +513,13 @@ class SSBTodayRecommendViewController: UIViewController {
     let todayRecommendView = SSBTodayRecommendView()
     
     private var lastPage = 1
-    
-    private var isRunningTask = false
+    var request: DataRequest?
+    private var isRunningTask: Bool {
+        guard let state = request?.task?.state else {
+            return false
+        }
+        return state == .running
+    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -533,8 +539,8 @@ class SSBTodayRecommendViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        todayRecommendView.tableView.mj_header.isHidden = true
-        todayRecommendView.tableView.mj_footer.isHidden = true
+        todayRecommendView.tableView.mj_header?.isHidden = true
+        todayRecommendView.tableView.mj_footer?.isHidden = true
         listViewBeginToRefresh(todayRecommendView)
     }
     
@@ -554,12 +560,12 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
         }
         
         lastPage = 1
-        isRunningTask = true
         // 重置没有更多数据的状态
         todayRecommendView.tableView.mj_footer.resetNoMoreData()
-        
+        let ret = TodayRecommendService.shared.mainPage(page: lastPage)
+        request = ret.requset
         let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
-        TodayRecommendService.shared.mainPage(page: lastPage).done { [weak self] data in
+        ret.promise.done { [weak self] data in
             guard let self = self, let source = data.data else {
                 return
             }
@@ -569,12 +575,12 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
-                listView.tableView.mj_header.isHidden = true
-                listView.tableView.mj_footer.isHidden = true
+                listView.tableView.mj_header?.isHidden = true
+                listView.tableView.mj_footer?.isHidden = true
                 self?.todayRecommendView.tableView.reloadData()
             }.finally { [weak self] in
-                listView.tableView.mj_header.endRefreshing()
-                self?.isRunningTask = false
+                listView.tableView.mj_header?.endRefreshing()
+                self?.request = nil
         }
     }
     
@@ -584,9 +590,9 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
             return
         }
         
-        isRunningTask = true
-        
-        TodayRecommendService.shared.mainPage(page: lastPage + 1).done { [weak self] data in
+        let ret = TodayRecommendService.shared.mainPage(page: lastPage + 1)
+        request = ret.requset
+        ret.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data else {
                     return
@@ -601,7 +607,7 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
                 if self?.dataSource.totalCount != self?.dataSource.count {
                     self?.lastPage += 1
                 }
-                self?.isRunningTask = false
+                self?.request = nil
         }
     }
     

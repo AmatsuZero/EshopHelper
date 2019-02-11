@@ -59,14 +59,16 @@ class TodayRecommendService {
         var result: ResponseResult
     }
     
-    func mainPage(page: Int = 1, limit: Int = 10) -> Promise<Response> {
+    typealias Ret = (requset: DataRequest, promise: Promise<Response>)
+    
+    func mainPage(page: Int = 1, limit: Int = 10) -> Ret {
         var option = RequsetOption()
         option.offset = (page - 1) * limit
         option.limit = limit
         return todayRecommend(option)
     }
     
-    func todayRecommend(_ option: RequsetOption) -> Promise<Response> {
+    func todayRecommend(_ option: RequsetOption) -> Ret {
         return sessionManager.request(Router.todayRecommend(option)).customResponse(Response.self)
     }
 }
@@ -223,8 +225,8 @@ class SSBTodayRecommendDataSource: NSObject, SSBDataSourceProtocol, UITableViewD
     
     func bind(data: [DataType], totalCount: Int, collectionView: ViewType) {
         clear()
-        collectionView.mj_header.isHidden = false
-        collectionView.mj_footer.isHidden = data.isEmpty
+        collectionView.mj_header?.isHidden = false
+        collectionView.mj_footer?.isHidden = data.isEmpty
         self.totalCount = totalCount
         dataSource += data.map { ViewModelType(model: $0) }.filter { $0.type != nil }
         if dataSource.isEmpty {

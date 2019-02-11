@@ -93,14 +93,16 @@ class SearchService {
         let data: Data?
     }
     
-    func mainIndex(page: Int, limit: Int = 10) -> Promise<SearchResult> {
+    typealias Result = (request: DataRequest, promise: Promise<SearchResult>)
+    
+    func mainIndex(page: Int, limit: Int = 10) -> Result {
         var option = SearchOption()
         option.limit = limit
         option.offset = (page - 1) * limit
         return search(option: option)
     }
     
-    func find(text: String, page: Int, limit: Int = 10) -> Promise<SearchResult>  {
+    func find(text: String, page: Int, limit: Int = 10) -> Result  {
         var option = SearchOption()
         option.title = text
         option.limit = limit
@@ -108,8 +110,8 @@ class SearchService {
         return search(option: option)
     }
     
-    func search(option: SearchOption) -> Promise<SearchResult> {
-        return sessionManager.request(Router.search(option)).responseDecodable(SearchResult.self)
+    func search(option: SearchOption) -> Result {
+        return sessionManager.request(Router.search(option)).customResponse(SearchResult.self)
     }
 }
 
@@ -296,8 +298,8 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourcePro
         if data.isEmpty {
             (tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
         }
-        tableView.mj_header.isHidden = false
-        tableView.mj_footer.isHidden = dataSource.isEmpty
+        tableView.mj_header?.isHidden = false
+        tableView.mj_footer?.isHidden = dataSource.isEmpty
         tableView.reloadData()
     }
     

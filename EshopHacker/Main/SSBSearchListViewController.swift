@@ -11,6 +11,7 @@ import MJRefresh
 import Toast_Swift
 import Reusable
 import FontAwesome_swift
+import Alamofire
 
 class SSBSearchListTableViewCell: UITableViewCell, Reusable {
     
@@ -220,6 +221,13 @@ class SSBSearchListViewController: UIViewController {
     private let dataSource = SSBSearchListDataSource()
     private let listView = SSBSearchListView()
     private var lastPage = 1
+    var isRunningTask: Bool {
+        guard let state = request?.task?.state else {
+            return false
+        }
+        return state == .running
+    }
+    var request: DataRequest?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -240,8 +248,8 @@ class SSBSearchListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        listView.tableView.mj_header.isHidden = true
-        listView.tableView.mj_footer.isHidden = true
+        listView.tableView.mj_header?.isHidden = true
+        listView.tableView.mj_footer?.isHidden = true
         listViewBeginToRefresh(listView)
     }
     
@@ -249,8 +257,7 @@ class SSBSearchListViewController: UIViewController {
         super.viewWillAppear(animated)
         changeTabBar(hidden: false, animated: animated)
     }
-    
-    var isRunningTask: Bool = false
+
 }
 
 extension SSBSearchListViewController: SSBSearchListViewDelegate {
@@ -261,10 +268,9 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
          //   view.makeToast("正在刷新中")
             return
         }
-        
-        isRunningTask = true
-        
-        SearchService.shared.mainIndex(page: lastPage + 1).done { [weak self] data in
+        let ret = SearchService.shared.mainIndex(page: lastPage + 1)
+        request = ret.request
+        ret.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data else {
                     return
@@ -279,7 +285,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
             if self?.dataSource.totalCount != self?.dataSource.count {
                 self?.lastPage += 1
             }
-            self?.isRunningTask = false
+            self?.request = nil
         }
     }
     
@@ -291,12 +297,12 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         }
         
         lastPage = 1
-        isRunningTask = true
         // 重置没有更多数据的状态
         listView.tableView.mj_footer.resetNoMoreData()
-        
+        let ret = SearchService.shared.mainIndex(page: lastPage)
+        request = ret.request
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        SearchService.shared.mainIndex(page: lastPage).done { [weak self] data in
+        ret.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data else {
                     return
@@ -309,12 +315,12 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
-                listView.tableView.mj_header.isHidden = true
-                listView.tableView.mj_footer.isHidden = true
+                listView.tableView.mj_header?.isHidden = true
+                listView.tableView.mj_footer?.isHidden = true
                 listView.tableView.reloadData()
             }.finally { [weak self] in
-                listView.tableView.mj_header.endRefreshing()
-                self?.isRunningTask = false
+                listView.tableView.mj_header?.endRefreshing()
+                self?.request = nil
         }
     }
     

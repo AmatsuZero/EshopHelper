@@ -15,6 +15,7 @@ class SSBCommunityView: UIView {
 class SSBCommunityViewController: UIViewController {
     
     weak var delegate: SSBGameDetailViewControllerDelegate?
+    let communityView = SSBCommunityView()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -25,9 +26,12 @@ class SSBCommunityViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
+    override func loadView() {
+        view = communityView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .green
     }
 }

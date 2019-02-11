@@ -224,7 +224,7 @@ class SSBBannerViewController: UIViewController {
     private let bannerView = SSBannerView(frame: CGRect(origin: .zero,
                                                         size: .init(width: .screenWidth,
                                                                     height: 84)))
-    
+    var request: DataRequest?
     override func loadView() {
         view = bannerView
         dataSouce.delegate = self
@@ -254,7 +254,9 @@ class SSBBannerViewController: UIViewController {
     
     func fetchData() {
         let backgroundView = bannerView.collectionView.backgroundView as? SSBListBackgroundView
-        BannerDataService.shared.getBannerData().done { [weak self] data in
+        let ret = BannerDataService.shared.getBannerData()
+        request = ret.Request
+        ret.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data?.banner else {
                     return

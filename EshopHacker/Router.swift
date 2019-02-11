@@ -46,6 +46,8 @@ enum Router: URLConvertible, URLRequestConvertible {
     case postComment(CommentService.PostCommentOption)
     /// 今日推荐
     case todayRecommend(TodayRecommendService.RequsetOption)
+    /// 社区
+    case community(GamePostService.RequestOption)
     
     enum Error: CustomNSError {
         case invalidURL
@@ -78,6 +80,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .getComment: return "/switch/comment/listGameComment"
         case .postComment: return "/switch/comment/gameComment"
         case .todayRecommend: return "/switch/informationFlow/list"
+        case .community: return "/switch/post/list"
         }
     }
     
@@ -94,6 +97,8 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .postComment(let option):
             components.queryItems = option.asQueryItems()
         case .todayRecommend(let option):
+            components.queryItems = option.asQueryItems()
+        case .community(let option):
             components.queryItems = option.asQueryItems()
         case .gameInfo(let appId, let fromName):
             var queryItems = [URLQueryItem]()
@@ -114,7 +119,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
-        case .banner, .getComment, .postComment:
+        case .banner, .getComment, .postComment, .community:
             request.setValue(Router.cookieString, forHTTPHeaderField: "Cookie")
         default:
             break
@@ -148,12 +153,12 @@ extension ClientVerifiableData {
 }
 
 extension Alamofire.DataRequest {
-    func customResponse<T: ClientVerifiableData>(_ type: T.Type) -> Promise<T> {
-        return responseDecodable(type).map {
+    func customResponse<T: ClientVerifiableData>(_ type: T.Type) -> (DataRequest, Promise<T>) {
+        return (self, responseDecodable(type).map({
             guard $0.result.code == 0 else {
                 throw Router.Error.serverError($0.result)
             }
             return $0
-        }
+        }))
     }
 }

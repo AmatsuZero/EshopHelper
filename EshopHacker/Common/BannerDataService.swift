@@ -33,7 +33,9 @@ class BannerDataService: NSObject {
         let data: Body?
     }
     
-    func getBannerData() -> Promise<BannerData> {
+    typealias Result = (Request: DataRequest, promise: Promise<BannerData>)
+    
+    func getBannerData() -> Result {
         return sessionManager.request(Router.banner).customResponse(BannerData.self)
     }
 }

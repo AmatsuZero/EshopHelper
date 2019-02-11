@@ -72,7 +72,10 @@ class CommentService {
         let data: Int?
     }
     
-    func getGameComment(by appid: String, page: Int = 0, limit: Int = 7) -> Promise<CommentData>  {
+    typealias CommentResult = (request: DataRequest, promise: Promise<CommentData>)
+    typealias PostResult = (request: DataRequest?, promise: Promise<PostCommentData>)
+    
+    func getGameComment(by appid: String, page: Int = 0, limit: Int = 7) -> CommentResult {
         var option = FetchCommentsOption()
         option.limit = limit
         option.offset = (page - 1) * limit
@@ -81,22 +84,23 @@ class CommentService {
     }
     
     @discardableResult
-    func postGameComment(by appid: String, isLike: Bool, content: String) -> Promise<PostCommentData> {
+    func postGameComment(by appid: String, isLike: Bool, content: String) -> PostResult {
         enum PostCommentError: Error {
             case invalidContent
         }
         guard content.count >= 8 else {
-            return Promise(error: PostCommentError.invalidContent)
+            return (nil, Promise(error: PostCommentError.invalidContent))
         }
         return postComment(option: .init(appid: appid, content: content, isLike: isLike))
     }
     
-    private func getComment(option: FetchCommentsOption) -> Promise<CommentData> {
+    private func getComment(option: FetchCommentsOption) -> CommentResult {
         return sessionManager.request(Router.getComment(option)).customResponse(CommentData.self)
     }
     
-    private func postComment(option: PostCommentOption) -> Promise<PostCommentData> {
-        return sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
+    private func postComment(option: PostCommentOption) -> PostResult {
+        let req = sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
+        return (req.0, req.1)
     }
 }
 

@@ -6,11 +6,11 @@ PODS:
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
   - NVActivityIndicatorView/Presenter (4.6.1)
-  - Pageboy (3.0.1)
-  - PromiseKit/Alamofire (6.8.2):
+  - Pageboy (3.0.2)
+  - PromiseKit/Alamofire (6.8.3):
     - Alamofire (~> 4.0)
     - PromiseKit/CorePromise
-  - PromiseKit/CorePromise (6.8.2)
+  - PromiseKit/CorePromise (6.8.3)
   - Reusable (4.0.5):
     - Reusable/Storyboard (= 4.0.5)
     - Reusable/View (= 4.0.5)
@@ -64,8 +64,8 @@ SPEC CHECKSUMS:
   FontAwesome.swift: 7f831846e85b93d32ded5d86983804b749921760
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
-  Pageboy: ec0170fd880ea6fa3589219edfd64b554443ff6e
-  PromiseKit: 8200c4555a5b433ac26f5143093cb792ee2c3426
+  Pageboy: 0e955738f7a46d617e8f6ee11c77f1658bb878c2
+  PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
@@ -76,4 +76,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 776c51695d2107f718c2d8559e8eeeba4b9cf528
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.6.0

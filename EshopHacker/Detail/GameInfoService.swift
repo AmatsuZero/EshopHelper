@@ -107,7 +107,9 @@ class GameInfoService {
         let data: Info?
     }
     
-    func gameInfo(appId: String, fromName: String? = nil) -> Promise<GameInfoData> {
+    typealias Result = (request: DataRequest, promise: Promise<GameInfoData>)
+    
+    func gameInfo(appId: String, fromName: String? = nil) -> Result {
         return sessionManager
             .request(Router.gameInfo(appId: appId, fromName: fromName))
             .customResponse(GameInfoData.self)

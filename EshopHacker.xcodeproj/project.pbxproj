@@ -60,6 +60,7 @@
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
 		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
+		80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA175122118C8800D4AD81 /* GamePostService.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
 		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
@@ -140,6 +141,7 @@
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
 		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
+		80AA175122118C8800D4AD81 /* GamePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePostService.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
 		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				80573BED220460590001F080 /* SSBCommunityViewController.swift */,
+				80AA175122118C8800D4AD81 /* GamePostService.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
+				80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,

@@ -188,6 +188,15 @@ class SSBGameDetailViewController: TabmanViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(true, animated: animated)
+        // 取消正在进行的任务
+        viewControllers.forEach { controller in
+            if let info = controller as? SSBGameInfoViewController {
+                info.request?.cancel()
+                info.gameCommentViewController.request?.cancel()
+            } else if let comment = controller as? SSBCommentViewController {
+                comment.request?.cancel()
+            }
+        }
     }
     
     @objc private func goToHomePage(_ sender: HomePageButton)  {
