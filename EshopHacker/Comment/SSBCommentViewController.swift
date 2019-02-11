@@ -8,14 +8,15 @@
 
 import Reusable
 
+@objc
 protocol SSBCommentViewDelegate: UITableViewDelegate {
-    func listViewBeginToRefresh(_ listView: SSBCommentView)
-    func listViewBeginToAppend(_ listView: SSBCommentView)
+   @objc func listViewBeginToRefresh(_ listView: SSBCommentView)
+   @objc func listViewBeginToAppend(_ listView: SSBCommentView)
 }
 
 class SSBCommentView: UITableViewCell {
     
-    fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
+    let tableView = UITableView(frame: .zero, style: .grouped)
     weak var delegate: SSBCommentViewDelegate? {
         didSet {
             tableView.delegate = delegate
@@ -76,20 +77,26 @@ class SSBCommentViewController: UIViewController {
             if isEmpty {
                 (listView.tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
             }
+            // 没有更多数据隐藏上拉加载
+            if isEmpty || dataSource?.comments.count == dataSource?.totalCount {
+                listView.tableView.mj_footer = nil
+            } else {
+                listView.tableView.mj_footer.isHidden = isEmpty
+            }
             listView.tableView.mj_header.isHidden = false
-            listView.tableView.mj_footer.isHidden = isEmpty
+   
             listView.tableView.reloadData()
         }
     }
     weak var delegate: SSBGameDetailViewControllerDelegate?
-    private var lastPage = 1
-    private let listView = SSBCommentView()
-    private var isRunningTask = false
-    private let appId: String
-    fileprivate let sectionHeader = SSBCommentSectionHeaderView()
-    fileprivate let myCommentSectionHeader = SSBMyCommentsSectionHeader()
-    private let margin: CGFloat = 5
-    private let emptyMyCommentView = SSBMyCommentEmptyView()
+    var lastPage = 1
+    let listView = SSBCommentView()
+    var isRunningTask = false
+    let appId: String
+    var sectionHeader = SSBCommentSectionHeaderView()
+    var myCommentSectionHeader = SSBMyCommentsSectionHeader()
+    var margin: CGFloat = 5
+    var emptyMyCommentView = SSBMyCommentEmptyView()
     
     init(appid: String) {
         appId = appid
@@ -186,7 +193,6 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             if dataSource?.myCommnets.isEmpty ?? true {
-                emptyMyCommentView.isHidden = !(tableView.backgroundView?.isHidden ?? false)
                 emptyMyCommentView.delegate = self
                 return emptyMyCommentView
             } else {
@@ -213,7 +219,7 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         if section == 0 {
             return dataSource?.myCommnets.isEmpty ?? true ? 110 : 40
         }
-        return dataSource?.comments.isEmpty ?? true ? margin : 40
+        return dataSource?.comments.isEmpty ?? true ? 0 : 40
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -248,6 +254,10 @@ extension SSBCommentViewController: SSBCommentSectionHeaderViewDeleagate, SSBMyC
     
     // MARK: SSBCommentSectionHeaderViewDeleagate
     func onSortButtonClicked(_ view: SSBCommentSectionHeaderView) {
+        
+    }
+    
+    func onViewAllCommentsButtonClicked(_ view: SSBCommentSectionHeaderView) {
         
     }
 }

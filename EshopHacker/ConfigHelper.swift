@@ -22,6 +22,21 @@ class SSBToggleModel {
     var lines = [String]()
     let content: String
     
+    func lineHeight(for width: CGFloat) -> CGFloat {
+        let attr = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
+        let fullHeight = attr.boundingRect(with: .init(width: width, height: .greatestFiniteMagnitude),
+                                           options: .usesFontLeading, context: nil).height
+        if !(isExpandable ?? false) || isExpanded {
+            return fullHeight
+        }
+        let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel .attributes)
+        attrStr.append(SSBToggleModel.unFoldText)
+        return attrStr.boundingRect(with: .init(width: width, height: .greatestFiniteMagnitude),
+                                    options: .usesFontLeading, context: nil).height
+    }
+    
+ //   private lazy var expanedHeight: CGFloat =
+    
     init(content: String) {
         self.content = content
     }

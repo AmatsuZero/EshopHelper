@@ -372,18 +372,26 @@ class SSBMyCommentEmptyView: UIView {
     private let dislikeButton = SSBCustomButton()
     weak var delegate: SSBMyCommentEmptyViewDelegate?
     
-    override init(frame: CGRect) {
+    init(frame: CGRect = .zero, isEmbedded: Bool = false) {
         super.init(frame: frame)
         
-        
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .lightGray
         label.text = "玩过这款游戏了？"
         addSubview(label)
-        label.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(10)
+        
+        if isEmbedded {
+            label.font = .boldSystemFont(ofSize: 19)
+            label.textColor = .darkText
+            label.snp.makeConstraints { make in
+                make.left.top.equalTo(10)
+            }
+        } else {
+            label.font = .systemFont(ofSize: 12, weight: .medium)
+            label.textColor = .lightGray
+            label.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.top.equalTo(10)
+            }
         }
         
         let lowerLabel = UILabel()
@@ -453,29 +461,45 @@ class SSBMyCommentEmptyView: UIView {
 
 class SSBMyCommentsSectionHeader: UIView {
     
-    override init(frame: CGRect) {
+    private let isEmbedded: Bool
+    
+    init(frame: CGRect = .zero, isEmbedded: Bool = false) {
+        self.isEmbedded = isEmbedded
         super.init(frame: frame)
-        let color = UIColor.darkGray.withAlphaComponent(0.8)
-        
-        let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .commentDots,
-                                                                   style: .regular,
-                                                                   textColor: color,
-                                                                   size: CGSize(width: 14, height: 14)))
-        addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(10)
-        }
+    
         
         let label = UILabel()
-        label.textColor = color
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 13)
         label.text = "我的评测"
         addSubview(label)
-        label.snp.makeConstraints { make in
-            make.left.equalTo(imageView.snp.right).offset(4)
-            make.centerY.equalToSuperview()
+        
+        if isEmbedded {
+            label.textColor = .darkText
+            label.font = .boldSystemFont(ofSize: 19)
+            
+            label.snp.makeConstraints { make in
+                make.left.equalTo(10)
+                make.centerY.equalToSuperview()
+            }
+        } else {
+            let color = UIColor.darkGray.withAlphaComponent(0.8)
+            let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .commentDots,
+                                                                       style: .regular,
+                                                                       textColor: color,
+                                                                       size: CGSize(width: 14, height: 14)))
+            addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.left.equalTo(10)
+            }
+            
+            label.textColor = color
+            label.font = UIFont.systemFont(ofSize: 13)
+            
+            label.snp.makeConstraints { make in
+                make.left.equalTo(imageView.snp.right).offset(4)
+                make.centerY.equalToSuperview()
+            }
         }
         
         let line = UIView()
@@ -494,57 +518,96 @@ class SSBMyCommentsSectionHeader: UIView {
     }
 }
 
-protocol SSBCommentSectionHeaderViewDeleagate: class {
-    func onSortButtonClicked(_ view: SSBCommentSectionHeaderView)
+@objc protocol SSBCommentSectionHeaderViewDeleagate: NSObjectProtocol {
+   @objc func onSortButtonClicked(_ view: SSBCommentSectionHeaderView)
+   @objc func onViewAllCommentsButtonClicked(_ view: SSBCommentSectionHeaderView)
 }
     
 class SSBCommentSectionHeaderView: UIView  {
     
     var totalCount = 0 {
         didSet {
-            label.text = "玩家评测" + (totalCount != 0 ? " (\(totalCount))" : "")
+            if isEmbedded {
+                let font = label.font ?? .boldSystemFont(ofSize: 19)
+                let color = label.textColor ?? .darkText
+                
+                let attrTitle = NSMutableAttributedString(string: "玩家评测", attributes: [
+                    .font: font,
+                    .foregroundColor: color
+                ])
+                let exponent = NSAttributedString(string: "\(totalCount)", attributes: [
+                    .font: UIFont.systemFont(ofSize: font.pointSize / 2),
+                    .foregroundColor: color.withAlphaComponent(0.8),
+                    .baselineOffset: font.pointSize / 2
+                ])
+                attrTitle.append(exponent)
+                label.attributedText = attrTitle
+            } else {
+               label.text = "玩家评测" + (totalCount != 0 ? " (\(totalCount))" : "")
+            }
         }
     }
     weak var delegate: SSBCommentSectionHeaderViewDeleagate?
     private let label = UILabel()
     private let button = SSBCustomButton()
+    private let isEmbedded: Bool
     
-    override init(frame: CGRect) {
+    init(frame: CGRect = .zero, isEmbedded: Bool = false) {
+        self.isEmbedded = isEmbedded
         super.init(frame: frame)
+        
         let color = UIColor.darkGray.withAlphaComponent(0.8)
         
-        let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .commentDots,
-                                                                   style: .regular,
-                                                                   textColor: color,
-                                                                   size: CGSize(width: 14, height: 14)))
-        addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(10)
-        }
-        
-        label.textColor = color
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.text = "玩家评测"
         addSubview(label)
-        label.snp.makeConstraints { make in
-            make.left.equalTo(imageView.snp.right).offset(4)
-            make.centerY.equalToSuperview()
+        addSubview(button)
+        
+        if isEmbedded {
+            label.textColor = .darkText
+            label.font = .boldSystemFont(ofSize: 19)
+            label.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.left.equalTo(10)
+            }
+            
+            button.setImage(UIImage.fontAwesomeIcon(name: .chevronRight,
+                                                    style: .solid,
+                                                    textColor: color,
+                                                    size: .init(width: 10, height: 10)), for: .normal)
+            button.setTitle("查看全部评测", for: .normal)
+            button.imageEdgeInsets = .init(top: 0, left: 48, bottom: 0, right: 0)
+        } else {
+            let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .commentDots,
+                                                                       style: .regular,
+                                                                       textColor: color,
+                                                                       size: CGSize(width: 14, height: 14)))
+            addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.left.equalTo(10)
+            }
+            
+            label.textColor = color
+            label.textAlignment = .left
+            label.font = UIFont.systemFont(ofSize: 13)
+            label.text = "玩家评测"
+            label.snp.makeConstraints { make in
+                make.left.equalTo(imageView.snp.right).offset(4)
+                make.centerY.equalToSuperview()
+            }
+            
+            button.setImage(UIImage.fontAwesomeIcon(name: .caretDown,
+                                                    style: .solid,
+                                                    textColor: color,
+                                                    size: .init(width: 10, height: 10)), for: .normal)
+            button.setTitle("默认排序", for: .normal)
+            button.imageEdgeInsets = .init(top: 0, left: 30, bottom: 0, right: 0)
         }
         
-        button.setImage(UIImage.fontAwesomeIcon(name: .caretDown,
-                                                style: .solid,
-                                                textColor: color,
-                                                size: .init(width: 10, height: 10)), for: .normal)
-        button.setTitle("默认排序", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.setTitleColor(color, for: .normal)
         button.buttonImagePosition = .right
-        button.imageEdgeInsets = .init(top: 0, left: 30, bottom: 0, right: 0)
-        addSubview(button)
         button.snp.makeConstraints { make in
-            make.right.equalTo(-10)
+            make.right.equalTo(isEmbedded ? 10 : -10)
             make.centerY.equalToSuperview()
         }
         button.addTarget(self, action: #selector(onSortButtonClicked(_:)), for: .touchUpInside)
@@ -565,7 +628,11 @@ class SSBCommentSectionHeaderView: UIView  {
     }
     
     @objc private func onSortButtonClicked(_ sender: SSBCustomButton) {
-        delegate?.onSortButtonClicked(self)
+        if isEmbedded {
+            delegate?.onViewAllCommentsButtonClicked(self)
+        } else {
+            delegate?.onSortButtonClicked(self)
+        }
     }
 }
 

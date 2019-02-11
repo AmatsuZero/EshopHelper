@@ -222,12 +222,6 @@ class SSBGameDLCViewController: UIViewController {
     override func loadView() {
         view = dlcView
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
 }
 
 extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
@@ -235,7 +229,7 @@ extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
     func onMoreButtonClicked(_ view: SSBGameDLCView, tableView: UITableView) {
         // 刷新高度
         if let delegate = self.delegate {
-            delegate.needReload(self, reloadStyle: .bottom)
+            delegate.needReload(self, reloadStyle: .none)
         }
     }
     

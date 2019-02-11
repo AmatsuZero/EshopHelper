@@ -38,7 +38,7 @@ class GameInfoService {
                 let appid: String
                 let banner: String?
                 let brief: String?
-                let category: [String]
+                let category: [String]?
                 
                 let chineseVer: Int
                 let chinese_all: Int?
@@ -198,7 +198,8 @@ struct SSBGameInfoViewModel: SSBViewModelProtocol {
                 }
             }
             
-            categoryLabels += game.category.map { createMarkLabel($0, backgroundColor: .black)}
+            let categories = game.category ?? []
+            categoryLabels += categories.map { createMarkLabel($0, backgroundColor: .black)}
             
             if let label = game.recommendLabel,
                 let level = game.recommendLevel,

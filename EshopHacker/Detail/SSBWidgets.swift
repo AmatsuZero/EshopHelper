@@ -93,7 +93,6 @@ class SSBGameDetailDescriptionView: UITableViewCell {
             guard let data = dataSource else {
                 return
             }
-            setNeedsLayout()
             data.convert(from: descriptionLabel)
         }
     }
@@ -133,6 +132,9 @@ class SSBGameDetailDescriptionView: UITableViewCell {
     }
     
     @objc func toggleState(_ sender: UITapGestureRecognizer) {
+        guard dataSource?.isExpandable ?? false else {
+            return
+        }
         dataSource?.toggleState(label: descriptionLabel)
         delegate?.needRefresh()
     }
@@ -163,6 +165,6 @@ class SSBGameDetailDescriptionViewController: UIViewController {
 
 extension SSBGameDetailDescriptionViewController: SSBGameDetailDescriptionViewDelegate {
     func needRefresh() {
-        delegate?.needReload(self, reloadStyle: .middle)
+        delegate?.needReloadData(self)
     }
 }

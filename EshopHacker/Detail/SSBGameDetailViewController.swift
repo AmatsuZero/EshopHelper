@@ -13,6 +13,7 @@ import SnapKit
 
 protocol SSBGameDetailViewControllerDelegate: class {
     func onReceive(_ viewController: UIViewController, commentCount: Int, postCount: Int)
+    func scrollTo(_ viewController: UIViewController, index: Int, animated: Bool)
 }
 
 class SSBGameDetailViewController: TabmanViewController {
@@ -237,6 +238,10 @@ extension SSBGameDetailViewController: SSBGameDetailViewControllerDelegate {
             let title = viewControllers[index].title {
             bar.buttons.all[index].setAttributedString(title: title, exponent: "\(postCount)")
         }
+    }
+    
+    func scrollTo(_ viewController: UIViewController, index: Int, animated: Bool) {
+        scrollToPage(.at(index: index), animated: animated)
     }
 }
 

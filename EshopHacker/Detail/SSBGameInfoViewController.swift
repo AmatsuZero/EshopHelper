@@ -10,6 +10,7 @@ import SnapKit
 
 protocol SSBGameInfoViewControllerReloadDelegate: class {
     func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation)
+    func needReloadData(_ viewController: UIViewController)
 }
 
 class SSBGameInfoViewController: UIViewController {
@@ -19,7 +20,6 @@ class SSBGameInfoViewController: UIViewController {
             guard let model = self.model else {
                 return
             }
-            
             // 绑定头部数据
             if !children.contains(topViewController) {
                 addChild(topViewController)
@@ -63,6 +63,13 @@ class SSBGameInfoViewController: UIViewController {
                 }
                 descriptionViewController.dataSource = description
             }
+            
+            // 只有已发售游戏，才添加评论列表控制器
+            if model.unlockInfo == nil {
+                if !children.contains(gameCommentViewController)  {
+                    addChild(gameCommentViewController)
+                }
+            }
             tableView.reloadData()
         }
     }
@@ -78,11 +85,11 @@ class SSBGameInfoViewController: UIViewController {
         viewController.delegate = self
         return viewController
     }()
-    private lazy var likeViewController: SSBGameLikeViewController = {
-        return SSBGameLikeViewController()
-    }()
     private lazy var gameCommentViewController: SSBGameCommentViewController = {
-        return SSBGameCommentViewController()
+        let controller = SSBGameCommentViewController(appid: appid)
+        controller.reloadDelegate = self
+        controller.delegate = delegate
+        return controller
     }()
     private lazy var unlockInfoViewController: SSBUnlockInfoViewController = {
         return SSBUnlockInfoViewController()
@@ -129,6 +136,7 @@ class SSBGameInfoViewController: UIViewController {
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
     }
     
     override func viewDidLoad() {
@@ -158,8 +166,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         switch controller {
         case is SSBGameDetailTopViewController: return 460
         case is SSBGamePriceListViewController: return 300
-        case is SSBGameLikeViewController: return 200
-        case is SSBGameCommentViewController: return 400
+        case is SSBGameCommentViewController:
+            return 400
         case is SSBUnlockInfoViewController: return 123
         case is SSBGameRateViewController: return 54
         case is SSBGameDetailDescriptionViewController: return 100
@@ -171,21 +179,14 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let controller = children[indexPath.section]
         switch controller {
-        case is SSBGameDetailTopViewController,
-             is SSBGamePriceListViewController,
-             is SSBGameDetailDescriptionViewController,
-             is SSBGameDLCViewController:
-            return UITableView.automaticDimension
-        case is SSBGameLikeViewController:
-            return 200
         case is SSBGameCommentViewController:
-            return 400
+            return (controller as! SSBGameCommentViewController).totalHeight
         case is SSBUnlockInfoViewController:
             return 123
         case is SSBGameRateViewController:
             return 54
         default:
-            return 0
+            return UITableView.automaticDimension
         }
     }
     
@@ -249,11 +250,14 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
 
 extension SSBGameInfoViewController: SSBGameInfoViewControllerReloadDelegate {
     func needReload(_ viewController: UIViewController, reloadStyle: UITableView.RowAnimation) {
-        tableView.reloadData()
         guard let index = children.firstIndex(where: { $0 == viewController}) else {
             return
         }
         let indexPath = IndexPath(row: 0, section: index)
         tableView.reloadRows(at: [indexPath], with: reloadStyle)
+    }
+    
+    func needReloadData(_ viewController: UIViewController) {
+        tableView.reloadData()
     }
 }
