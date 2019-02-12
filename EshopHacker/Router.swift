@@ -47,7 +47,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     /// 今日推荐
     case todayRecommend(TodayRecommendService.RequsetOption)
     /// 社区
-    case community(GamePostService.RequestOption)
+    case community(GameCommunityService.RequestOption)
     
     enum Error: CustomNSError {
         case invalidURL

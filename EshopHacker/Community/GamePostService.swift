@@ -8,9 +8,9 @@
 
 import PromiseKit
 
-class GamePostService {
+class GameCommunityService {
     
-    static let shared = GameInfoService()
+    static let shared = GameCommunityService()
     
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
     
@@ -40,6 +40,7 @@ class GamePostService {
                     let text: String
                 }
                 let avatarUrl: String
+                let content: [Content]
                 let createTime: String
                 let createTimeImprove: String
                 let happyNum: Int
@@ -48,8 +49,8 @@ class GamePostService {
                 let negativeNum: Int
                 let nickname: String
                 let positiveNum: Int
-                let postCommentCount: Int
-                let postId: Int
+                let postCommentCount: Int?
+                let postId: String
                 let qualityScore: Double
                 let title: String
                 let voteScore: Int
@@ -57,11 +58,24 @@ class GamePostService {
             }
             let count: Int
             let hits: Int
+            let list: [Post]
         }
         var result: ResponseResult
         var data: PostData?
     }
     
-   
+    typealias Result = (request: DataRequest, promise: Promise<ResultData>)
+    
+    func postList(id: String, page: Int, limit: Int = 5, type: RequestOption.SortType = .postDefault) -> Result {
+        var option = RequestOption()
+        option.limit = limit
+        option.offset = (page - 1) * limit
+        option.entityIdStr = id
+        option.sortType = type
+        return post(option: option)
+    }
+    
+    private func post(option: RequestOption) -> Result {
+        return sessionManager.request(Router.community(option)).customResponse(ResultData.self)
+    }
 }
-

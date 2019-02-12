@@ -70,6 +70,8 @@ class SSBGameInfoViewController: UIViewController {
                 if !children.contains(gameCommentViewController)  {
                     addChild(gameCommentViewController)
                 }
+            } else {// 停止无用请求
+                gameCommentViewController.request?.cancel()
             }
             tableView.reloadData()
         }
