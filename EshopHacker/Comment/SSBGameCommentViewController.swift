@@ -36,6 +36,8 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             } else {
                 listView.tableView.tableFooterView = nil
             }
+            // 数据获取完毕，刷新一次
+            refreshHeight()
         }
     }
     
@@ -87,7 +89,11 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !isReloadOnce {
+        refreshHeight()
+    }
+    
+    func refreshHeight() {
+        if !isRunningTask && !isReloadOnce {
             // Cell开始显示了，刷新一下改行实际高度, 因为前面也有有可能自动计算的，所以这里全部刷新
             self.reloadDelegate?.needReloadData(self)
             isReloadOnce = true
@@ -107,6 +113,9 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard tableView.backgroundView?.isHidden == true else {
+            return super.tableView(tableView, heightForHeaderInSection: section)
+        }
         if section == 0 {
             return dataSource?.myCommnets.isEmpty ?? true ? 110 : 50
         }

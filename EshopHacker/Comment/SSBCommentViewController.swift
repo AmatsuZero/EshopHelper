@@ -198,6 +198,11 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     }
     //MARK: UITableView Delegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard tableView.backgroundView?.isHidden == true else {
+            let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
+            view.backgroundColor = .clear
+            return view;
+        }
         if section == 0 {
             if dataSource?.myCommnets.isEmpty ?? true {
                 emptyMyCommentView.delegate = self
@@ -223,6 +228,9 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard tableView.backgroundView?.isHidden == true else {
+            return margin;
+        }
         if section == 0 {
             return dataSource?.myCommnets.isEmpty ?? true ? 110 : 40
         }
