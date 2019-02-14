@@ -164,16 +164,10 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
     
 }
 
-protocol SSBSearchListViewDelegate: class, UITableViewDelegate {
-    
-    func listViewBeginToRefresh(_ listView: SSBSearchListView)
-    func listViewBeginToAppend(_ listView: SSBSearchListView)
-}
-
 class SSBSearchListView: UIView {
     
     let tableView = UITableView(frame: .zero, style: .grouped)
-    weak var delegate: SSBSearchListViewDelegate? {
+    weak var delegate: SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
         }
@@ -204,13 +198,13 @@ class SSBSearchListView: UIView {
     
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToRefresh(self)
+            delegate.tableViewBeginToRefresh(tableView)
         }
     }
     
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToAppend(self)
+            delegate.tableViewBeginToAppend(tableView)
         }
     }
 }
@@ -250,7 +244,7 @@ class SSBSearchListViewController: UIViewController {
         super.viewDidLoad()
         listView.tableView.mj_header?.isHidden = true
         listView.tableView.mj_footer?.isHidden = true
-        listViewBeginToRefresh(listView)
+        tableViewBeginToRefresh(listView.tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -260,9 +254,9 @@ class SSBSearchListViewController: UIViewController {
 
 }
 
-extension SSBSearchListViewController: SSBSearchListViewDelegate {
+extension SSBSearchListViewController: SSBTableViewDelegate {
     
-    func listViewBeginToAppend(_ listView: SSBSearchListView) {
+    func tableViewBeginToAppend(_ listView: UITableView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
          //   view.makeToast("正在刷新中")
@@ -289,7 +283,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         }
     }
     
-    func listViewBeginToRefresh(_ listView: SSBSearchListView) {
+    func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
            // view.makeToast("正在刷新中")
@@ -298,10 +292,10 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
         
         lastPage = 1
         // 重置没有更多数据的状态
-        listView.tableView.mj_footer.resetNoMoreData()
+        tableView.mj_footer.resetNoMoreData()
         let ret = SearchService.shared.mainIndex(page: lastPage)
         request = ret.request
-        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
+        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         ret.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data else {
@@ -315,11 +309,11 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
-                listView.tableView.mj_header?.isHidden = true
-                listView.tableView.mj_footer?.isHidden = true
-                listView.tableView.reloadData()
+                tableView.mj_header?.isHidden = true
+                tableView.mj_footer?.isHidden = true
+                tableView.reloadData()
             }.finally { [weak self] in
-                listView.tableView.mj_header?.endRefreshing()
+                tableView.mj_header?.endRefreshing()
                 self?.request = nil
         }
     }
@@ -355,7 +349,7 @@ extension SSBSearchListViewController: SSBSearchListViewDelegate {
 
 extension SSBSearchListViewController: SSBListBackgroundViewDelegate {
     func retry(view: SSBListBackgroundView) {
-        listViewBeginToRefresh(listView)
+        tableViewBeginToRefresh(listView.tableView)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

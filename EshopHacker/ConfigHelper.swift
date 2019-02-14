@@ -15,6 +15,12 @@ protocol SSBViewModelProtocol {
     init(model: T)
 }
 
+
+@objc protocol SSBTableViewDelegate: UITableViewDelegate, SSBListBackgroundViewDelegate {
+    @objc func tableViewBeginToRefresh(_ tableView: UITableView)
+    @objc func tableViewBeginToAppend(_ tableView: UITableView)
+}
+
 class SSBToggleModel {
     
     var isExpanded = false

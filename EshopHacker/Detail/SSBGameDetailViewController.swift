@@ -127,7 +127,7 @@ class SSBGameDetailViewController: TabmanViewController {
         let comment = SSBCommentViewController(appid: appid)
         comment.delegate = self
         
-        let community = SSBCommunityViewController(nibName: nil, bundle: nil)
+        let community = SSBCommunityViewController(appid: appid)
         community.delegate = self
         
         viewControllers += [detail, comment, community]
@@ -195,12 +195,14 @@ class SSBGameDetailViewController: TabmanViewController {
                 info.gameCommentViewController.request?.cancel()
             } else if let comment = controller as? SSBCommentViewController {
                 comment.request?.cancel()
+            } else if let community = controller as? SSBCommunityViewController {
+                community.request?.cancel()
             }
         }
     }
     
     @objc private func goToHomePage(_ sender: HomePageButton)  {
-        print(sender)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc private func addToMyCollection(_ sender: CollectionButton) {

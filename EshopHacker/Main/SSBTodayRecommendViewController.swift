@@ -435,17 +435,11 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
     }
 }
 
-protocol SSBTodayRecommendViewDelegate: class, UITableViewDelegate {
-    
-    func listViewBeginToRefresh(_ listView: SSBTodayRecommendView)
-    func listViewBeginToAppend(_ listView: SSBTodayRecommendView)
-}
-
 class SSBTodayRecommendView: UIView {
     
     let tableView = UITableView(frame: .zero, style: .grouped)
     
-    weak var delegate : SSBTodayRecommendViewDelegate? {
+    weak var delegate : SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
         }
@@ -496,13 +490,13 @@ class SSBTodayRecommendView: UIView {
     
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToRefresh(self)
+            delegate.tableViewBeginToRefresh(tableView)
         }
     }
     
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToAppend(self)
+            delegate.tableViewBeginToRefresh(tableView)
         }
     }
 }
@@ -541,7 +535,7 @@ class SSBTodayRecommendViewController: UIViewController {
         super.viewDidLoad()
         todayRecommendView.tableView.mj_header?.isHidden = true
         todayRecommendView.tableView.mj_footer?.isHidden = true
-        listViewBeginToRefresh(todayRecommendView)
+        tableViewBeginToRefresh(todayRecommendView.tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -550,9 +544,9 @@ class SSBTodayRecommendViewController: UIViewController {
     }
 }
 
-extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
+extension SSBTodayRecommendViewController: SSBTableViewDelegate {
     
-    func listViewBeginToRefresh(_ listView: SSBTodayRecommendView) {
+    func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
           //  view.makeToast("正在刷新中")
@@ -561,30 +555,30 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
         
         lastPage = 1
         // 重置没有更多数据的状态
-        todayRecommendView.tableView.mj_footer.resetNoMoreData()
+        tableView.mj_footer.resetNoMoreData()
         let ret = TodayRecommendService.shared.mainPage(page: lastPage)
         request = ret.requset
-        let backgroundView = todayRecommendView.tableView.backgroundView as? SSBListBackgroundView
+        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         ret.promise.done { [weak self] data in
             guard let self = self, let source = data.data else {
                 return
             }
             self.dataSource.bind(data: source.informationFlow ?? [],
                                  totalCount: source.allSize,
-                                 collectionView: self.todayRecommendView.tableView)
+                                 collectionView: tableView)
             }.catch { [weak self] error in
                 backgroundView?.state = .error(self)
                 self?.view.makeToast(error.localizedDescription)
-                listView.tableView.mj_header?.isHidden = true
-                listView.tableView.mj_footer?.isHidden = true
+                tableView.mj_header?.isHidden = true
+                tableView.mj_footer?.isHidden = true
                 self?.todayRecommendView.tableView.reloadData()
             }.finally { [weak self] in
-                listView.tableView.mj_header?.endRefreshing()
+                tableView.mj_header?.endRefreshing()
                 self?.request = nil
         }
     }
     
-    func listViewBeginToAppend(_ listView: SSBTodayRecommendView) {
+    func tableViewBeginToAppend(_ tableView: UITableView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
             return
@@ -669,6 +663,6 @@ extension SSBTodayRecommendViewController: SSBTodayRecommendViewDelegate {
 
 extension SSBTodayRecommendViewController: SSBListBackgroundViewDelegate {
     func retry(view: SSBListBackgroundView) {
-        listViewBeginToRefresh(todayRecommendView)
+        tableViewBeginToRefresh(todayRecommendView.tableView)
     }
 }

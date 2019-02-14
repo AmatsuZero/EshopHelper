@@ -10,7 +10,7 @@ import NVActivityIndicatorView
 import SnapKit
 import FontAwesome_swift
 
-protocol SSBListBackgroundViewDelegate: class {
+@objc protocol SSBListBackgroundViewDelegate: NSObjectProtocol {
     func retry(view: SSBListBackgroundView)
 }
 

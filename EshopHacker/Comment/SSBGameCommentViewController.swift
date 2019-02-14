@@ -81,7 +81,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     }
     
     // MARK: 刷新
-    override func listViewBeginToRefresh(_ listView: SSBCommentView) {
+    override func tableViewBeginToRefresh(_ listView: UITableView) {
         
     }
     

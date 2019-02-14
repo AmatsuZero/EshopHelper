@@ -38,6 +38,7 @@
 		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802393F7220C2F68003FCD5B /* SSBWidgets.swift */; };
+		802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
 		8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8057364B220960D100D69929 /* SSBLRUCache.swift */; };
@@ -118,6 +119,7 @@
 		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		802393F7220C2F68003FCD5B /* SSBWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBWidgets.swift; sourceTree = "<group>"; };
+		802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPostDetailViewController.swift; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
 		8057364B220960D100D69929 /* SSBLRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLRUCache.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 			children = (
 				80573BED220460590001F080 /* SSBCommunityViewController.swift */,
 				80AA175122118C8800D4AD81 /* GamePostService.swift */,
+				802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */,
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
+				802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				80573BF32204A5510001F080 /* SSBGamePriceListViewController.swift in Sources */,

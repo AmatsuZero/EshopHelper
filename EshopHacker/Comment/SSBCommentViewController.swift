@@ -9,21 +9,14 @@
 import Reusable
 import Alamofire
 
-@objc
-protocol SSBCommentViewDelegate: UITableViewDelegate {
-   @objc func listViewBeginToRefresh(_ listView: SSBCommentView)
-   @objc func listViewBeginToAppend(_ listView: SSBCommentView)
-}
-
 class SSBCommentView: UITableViewCell {
     
     let tableView = UITableView(frame: .zero, style: .grouped)
-    weak var delegate: SSBCommentViewDelegate? {
+    weak var delegate: SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
         }
     }
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,13 +52,13 @@ class SSBCommentView: UITableViewCell {
     
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToRefresh(self)
+            delegate.tableViewBeginToRefresh(self.tableView)
         }
     }
     
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
-            delegate.listViewBeginToAppend(self)
+            delegate.tableViewBeginToAppend(self.tableView)
         }
     }
 }
@@ -124,17 +117,17 @@ class SSBCommentViewController: UIViewController {
         super.viewDidLoad()
         listView.tableView.mj_header?.isHidden = true
         listView.tableView.mj_footer?.isHidden = true
-        listViewBeginToRefresh(listView)
+        tableViewBeginToRefresh(listView.tableView)
     }
 }
 
-extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundViewDelegate {
+extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewDelegate {
     
     func retry(view: SSBListBackgroundView) {
-        listViewBeginToAppend(listView)
+        tableViewBeginToRefresh(listView.tableView)
     }
     
-    func listViewBeginToRefresh(_ listView: SSBCommentView) {
+    func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
@@ -159,36 +152,36 @@ extension SSBCommentViewController: SSBCommentViewDelegate, SSBListBackgroundVie
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
-            listView.tableView.mj_header?.isHidden = true
-            listView.tableView.mj_footer?.isHidden = true
-            listView.tableView.reloadData()
+            tableView.mj_header?.isHidden = true
+            tableView.mj_footer?.isHidden = true
+            tableView.reloadData()
         }.finally { [weak self] in
-            listView.tableView.mj_header?.endRefreshing()
+            tableView.mj_header?.endRefreshing()
             self?.request = nil
         }
     }
     
-    func listViewBeginToAppend(_ listView: SSBCommentView) {
+    func tableViewBeginToAppend(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
         }
         
-        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
+        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         let ret = CommentService.shared.getGameComment(by: appId, page: lastPage + 1)
         request = ret.request
         ret.promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {
                 return
             }
-            self.dataSource?.append(model: data, tableView: listView.tableView)
+            self.dataSource?.append(model: data, tableView: tableView)
             // 刷新数量
             self.delegate?.onReceive(self, commentCount: self.dataSource?.totalCount ?? 0, postCount: 0)
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
-            listView.tableView.mj_footer.endRefreshing()
-            listView.tableView.reloadData()
+            tableView.mj_footer.endRefreshing()
+            tableView.reloadData()
         }.finally { [weak self] in
             if self?.dataSource?.comments.count != self?.dataSource?.totalCount {
                 self?.lastPage += 1

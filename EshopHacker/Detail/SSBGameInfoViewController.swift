@@ -17,6 +17,13 @@ protocol SSBGameInfoViewControllerReloadDelegate: class {
 class SSBGameInfoViewController: UIViewController {
     
     private var model: SSBGameInfoViewModel? {
+        willSet {
+            
+            NotificationCenter.default.post(name: SSBCommunityViewController.BannerDataNotification,
+                                            object: newValue,
+                                            userInfo: ["appid": appid])
+        }
+        
         didSet {
             guard let model = self.model else {
                 return
@@ -111,6 +118,7 @@ class SSBGameInfoViewController: UIViewController {
     private let appid: String
     private let from: String?
     weak var delegate: SSBGameDetailViewControllerDelegate?
+
     var request: DataRequest?
     var isRunningTask: Bool {
         guard let state = request?.task?.state else {
@@ -207,6 +215,9 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if cell is SSBCommentView {
+            gameCommentViewController.refreshHeight()
+        }
         cellHeights[indexPath] = cell.frame.height
     }
     

@@ -14,6 +14,7 @@ import FontAwesome_swift
 class SSBLoadingImageView: UIImageView {
     
     private let indicator: NVActivityIndicatorView
+    private var lazyLoadUrl: URL?
 
     init(url: String? = nil, placeHolderImage: UIImage? = nil, indicatorType type: NVActivityIndicatorType? = nil) {
         
@@ -28,6 +29,20 @@ class SSBLoadingImageView: UIImageView {
         }
         
         self.url = url
+    }
+    
+    init(frame: CGRect = .zero, lazyLoadUrl: String) {
+        indicator = NVActivityIndicatorView(frame: .zero, color: .eShopColor, padding: 0)
+        self.lazyLoadUrl = URL(string: lazyLoadUrl)
+        super.init(frame: frame)
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if let url = lazyLoadUrl, window != nil {
+            self.url = url.absoluteString
+            lazyLoadUrl = nil
+        }
     }
     
     override func draw(_ rect: CGRect) {
