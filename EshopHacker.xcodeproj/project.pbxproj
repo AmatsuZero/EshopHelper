@@ -59,6 +59,7 @@
 		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
 		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
+		80871D1F2215C2FD002DFC26 /* SSBGamePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */; };
 		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
 		80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA175122118C8800D4AD81 /* GamePostService.swift */; };
@@ -141,6 +142,7 @@
 		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
 		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
+		80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePostViewController.swift; sourceTree = "<group>"; };
 		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
 		80AA175122118C8800D4AD81 /* GamePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePostService.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 			children = (
 				80573BED220460590001F080 /* SSBCommunityViewController.swift */,
 				80AA175122118C8800D4AD81 /* GamePostService.swift */,
+				80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */,
 				802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */,
 			);
 			path = Community;
@@ -629,6 +632,7 @@
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				80573BF32204A5510001F080 /* SSBGamePriceListViewController.swift in Sources */,
+				80871D1F2215C2FD002DFC26 /* SSBGamePostViewController.swift in Sources */,
 				80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,

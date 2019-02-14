@@ -157,16 +157,17 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
     }
     
     func append(model: T, tableView: UITableView) {
+        let lastIndex = comments.count
         if let comments = model.comment {
             self.comments += comments.map { Comment(model: $0) }
         }
         totalCount = model.count ?? 0
+        tableView.insertRows(at: (lastIndex..<comments.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
         if totalCount == comments.count {// 已经取得全部数据
             tableView.mj_footer.endRefreshingWithNoMoreData()
         } else {
             tableView.mj_footer.endRefreshing()
         }
-        tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

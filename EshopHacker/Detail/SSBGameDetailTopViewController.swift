@@ -247,10 +247,7 @@ class SSBGameDetailTopView: UITableViewCell {
             recommendContainer.addSubview(dataSource.recommendView)
             dataSource.recommendView.snp.makeConstraints { $0.edges.equalToSuperview() }
             
-            categoryStackView.arrangedSubviews.forEach {
-                categoryStackView.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
+            categoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             dataSource.categoryLabels.forEach { categoryStackView.addArrangedSubview($0) }
             
             descriptionLabel.attributedText = dataSource.brief
@@ -264,16 +261,12 @@ class SSBGameDetailTopView: UITableViewCell {
                 basicInfoStackView.snp.updateConstraints {
                     $0.height.equalTo(16)
                 }
-                basicInfoStackView.arrangedSubviews.forEach {
-                    basicInfoStackView.removeArrangedSubview($0)
-                    $0.removeFromSuperview()
-                }
+                basicInfoStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
                 dataSource.playMode.forEach { basicInfoStackView.addArrangedSubview($0) }
             }
            
             let selector = #selector(SSBGameDetailTopView.bottomViewClicked(_:))
             gameInfoStackView.arrangedSubviews.forEach {
-                gameInfoStackView.removeArrangedSubview($0)
                 $0.removeFromSuperview()
                 ($0 as? UIControl)?.removeTarget(self, action: selector, for: .touchUpInside)
             }

@@ -112,14 +112,16 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
             case .text:
                 let label = UILabel()
                 label.text = content.text
+                label.numberOfLines = 0
                 label.font = UIFont.systemFont(ofSize: 14)
                 label.textColor = UIColor(r: 106, g: 106, b: 106)
                 return label
             case .image:
                 let imageView = SSBLoadingImageView(lazyLoadUrl: content.image ?? "")
-                imageView.contentMode = .scaleAspectFit
                 imageView.layer.cornerRadius = 5
                 imageView.layer.masksToBounds = true
+                imageView.url = content.image
+                imageView.frame = CGRect(origin: .zero, size: .init(width: 100, height: 100))
                 return imageView
             }
         }
@@ -135,6 +137,10 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
     
     var totalCount = 0
     
+    var count: Int {
+        return dataSource.count
+    }
+    
     weak var tableView: UITableView?
     
     func refresh(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
@@ -147,27 +153,35 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
         } else {
             tableView?.mj_footer?.isHidden = isEmpty
         }
+        if isEmpty {
+            (tableView?.backgroundView as? SSBListBackgroundView)?.state = .empty
+        } else {
+            tableView?.backgroundView?.isHidden = true
+        }
         tableView?.mj_header?.isHidden = false
         tableView?.reloadData()
     }
     
     func append(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
-        
+        let lastIndex = count
+        dataSource += posts.map { SSBGamePostViewModel(model: $0) }
+        tableView?.insertRows(at:  (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 0) }, with: .fade)
+        if totalCount == count {// 已经取得全部数据
+            tableView?.mj_footer?.endRefreshingWithNoMoreData()
+        } else {
+            tableView?.mj_footer?.endRefreshing()
+        }
     }
     
     // MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if dataSource.isEmpty {
-            (tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
-        } else {
-            tableView.backgroundView?.isHidden = true
-        }
         return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityUITableViewCell.self)
         cell.viewModel = dataSource[indexPath.row]
+        cell.separator.isHidden = totalCount == indexPath.row
         return cell
     }
 }

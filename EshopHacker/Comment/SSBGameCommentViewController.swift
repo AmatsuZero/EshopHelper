@@ -55,29 +55,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     }
     
     func fetchData() {
-        // 如果正在刷新中，则取消
-        guard !isRunningTask else {
-            return
-        }
-        
-        lastPage = 1
-        
-        let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        let ret = CommentService.shared.getGameComment(by: appId, page: lastPage)
-        request = ret.request
-        ret.promise.done { [weak self] ret in
-            guard let self = self, let data = ret.data else {
-                return
-            }
-            let model = SSBCommentViewModel(model: data)
-            self.dataSource = model
-            }.catch { [weak self] error in
-                backgroundView?.state = .error(self)
-                self?.view.makeToast(error.localizedDescription)
-                self?.listView.tableView.reloadData()
-            }.finally { [weak self] in
-                self?.request = nil
-        }
+      super.tableViewBeginToRefresh(listView.tableView)
     }
     
     // MARK: 刷新

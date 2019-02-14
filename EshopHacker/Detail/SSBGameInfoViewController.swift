@@ -163,6 +163,7 @@ class SSBGameInfoViewController: UIViewController {
         onRefresh()
         // 提前获取数据，并计算高度
         gameCommentViewController.fetchData()
+        
     }
 }
 
@@ -186,7 +187,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         switch controller {
         case is SSBGameDetailTopViewController: return 460
         case is SSBGamePriceListViewController: return 300
-        case is SSBGameCommentViewController:
+        case is SSBGameCommentViewController,
+             is SSBGamePostViewController:
             return 400
         case is SSBUnlockInfoViewController: return 123
         case is SSBGameRateViewController: return 54
