@@ -8,6 +8,7 @@
 
 import SnapKit
 import Alamofire
+import PromiseKit
 
 protocol SSBGameInfoViewControllerReloadDelegate: class {
     func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation, needScrollTo: Bool)
@@ -77,10 +78,7 @@ class SSBGameInfoViewController: UIViewController {
                 if !children.contains(gameCommentViewController)  {
                     addChild(gameCommentViewController)
                 }
-            } else {// 停止无用请求
-                gameCommentViewController.request?.cancel()
             }
-            tableView.reloadData()
         }
     }
     
@@ -161,9 +159,6 @@ class SSBGameInfoViewController: UIViewController {
         super.viewDidLoad()
         tableView.mj_header?.isHidden = true
         onRefresh()
-        // 提前获取数据，并计算高度
-        gameCommentViewController.fetchData()
-        
     }
 }
 
@@ -217,9 +212,6 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if cell is SSBCommentView {
-            gameCommentViewController.refreshHeight()
-        }
         cellHeights[indexPath] = cell.frame.height
     }
     
@@ -260,29 +252,44 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
         }
         // 移除所有子控制器
         children.forEach { $0.removeFromParent() }
-        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
+       
+        // 先计算评论子控制器高度
+        let backgroundView = self.tableView.backgroundView as? SSBListBackgroundView
         let ret = GameInfoService.shared.gameInfo(appId: appid, fromName: from)
-        request = ret.request
-        ret.promise.done { [weak self] ret in
-            guard let self = self else { return }
+        self.request = ret.request
+        
+        firstly {
+            ret.promise
+        }.then { [weak self] ret -> Promise<Bool> in
+            guard let self = self else {
+                return Promise.value(false)
+            }
             guard let detailData = ret.data else {
                 self.shouldShow = false
                 backgroundView?.state = .empty
-                return
+                return Promise.value(false)
             }
             self.delegate?.onReceive(self, commentCount: detailData.commentCount, postCount: detailData.postCount)
             self.tableView.mj_header?.isHidden = false
             self.shouldShow = true
             self.model = SSBGameInfoViewModel(model: detailData)
-            self.tableView.reloadData()
+            return Promise.value(self.children.contains(self.gameCommentViewController))
+        }.then { [weak self] needFetechcomentData -> Promise<CGFloat> in
+            // 判断是否包含评论控制器，来决定是否要发请求
+            guard let self = self, needFetechcomentData else {
+                return Promise.value(-999)
+            }
+            return self.gameCommentViewController.fetchData()
+        }.done { _ in
+           
         }.catch { [weak self] error in
             self?.shouldShow = false
             backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
-            self?.tableView.reloadData()
         }.finally { [weak self] in
             self?.tableView.mj_header?.endRefreshing()
             self?.request = nil
+            self?.tableView.reloadData()
         }
     }
 }

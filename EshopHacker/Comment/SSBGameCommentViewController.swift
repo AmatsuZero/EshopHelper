@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class SSBGameCommentViewController: SSBCommentViewController  {
     
@@ -36,8 +37,6 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             } else {
                 listView.tableView.tableFooterView = nil
             }
-            // 数据获取完毕，刷新一次
-            refreshHeight()
         }
     }
     
@@ -51,11 +50,28 @@ class SSBGameCommentViewController: SSBCommentViewController  {
     }
     
     var totalHeight: CGFloat {
-       return listView.tableView.contentSize.height == 0 ? 110 : listView.tableView.contentSize.height
+        guard dataSource?.comments.isEmpty == false else {
+            return 100
+        }
+        return listView.tableView.contentSize.height == 0 ? 110 : listView.tableView.contentSize.height
     }
     
-    func fetchData() {
-      super.tableViewBeginToRefresh(listView.tableView)
+    @discardableResult
+    func fetchData() -> Promise<CGFloat> {
+        lastPage = 1
+        let tableView = listView.tableView
+        let (req, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
+        self.request = req
+        return promise.then { [weak self] (ret) -> Promise<CGFloat> in
+            guard let self = self, let data = ret.data else {
+                return Promise.value(UITableView.automaticDimension)
+            }
+            let model = SSBCommentViewModel(model: data)
+            self.dataSource = model
+            tableView.mj_header?.endRefreshing()
+            self.request = nil
+            return Promise.value(self.totalHeight)
+        }
     }
     
     // MARK: 刷新
@@ -69,7 +85,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
         super.viewDidAppear(animated)
         refreshHeight()
     }
-    
+
     func refreshHeight() {
         if !isRunningTask && !isReloadOnce {
             // Cell开始显示了，刷新一下改行实际高度, 因为前面也有有可能自动计算的，所以这里全部刷新
