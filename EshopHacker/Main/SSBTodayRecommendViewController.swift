@@ -496,7 +496,7 @@ class SSBTodayRecommendView: UIView {
     
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
-            delegate.tableViewBeginToRefresh(tableView)
+            delegate.tableViewBeginToAppend(tableView)
         }
     }
 }

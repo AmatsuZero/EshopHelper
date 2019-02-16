@@ -165,7 +165,7 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
     func append(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
         let lastIndex = count
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
-        tableView?.insertRows(at:  (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 0) }, with: .fade)
+        tableView?.insertRows(at:  (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
         if totalCount == count {// 已经取得全部数据
             tableView?.mj_footer?.endRefreshingWithNoMoreData()
         } else {
@@ -174,8 +174,13 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
     }
     
     // MARK: UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return dataSource.isEmpty ? 0 : 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        tableView.backgroundView?.isHidden = count != 0
+        return section == 0 ? 0 : count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

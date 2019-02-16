@@ -79,37 +79,56 @@ class SSBGameInfoViewController: UIViewController {
                     addChild(gameCommentViewController)
                 }
             }
+            
+            // 绑定帖子控制器
+            if !children.contains(postViewController) {
+                addChild(postViewController)
+            }
         }
     }
     
     private lazy var topViewController: SSBGameDetailTopViewController = {
         return SSBGameDetailTopViewController()
     }()
+    
     private lazy var priceViewController:SSBGamePriceListViewController = {
         return SSBGamePriceListViewController(nibName: nil, bundle: nil)
     }()
+    
     private lazy var dlcViewController: SSBGameDLCViewController = {
         let viewController = SSBGameDLCViewController(nibName: nil, bundle: nil)
         viewController.delegate = self
         return viewController
     }()
+    
     lazy var gameCommentViewController: SSBGameCommentViewController = {
         let controller = SSBGameCommentViewController(appid: appid)
         controller.reloadDelegate = self
         controller.delegate = delegate
         return controller
     }()
+    
     private lazy var unlockInfoViewController: SSBUnlockInfoViewController = {
         return SSBUnlockInfoViewController()
     }()
+    
     private lazy var rateViewController: SSBGameRateViewController = {
         return SSBGameRateViewController()
     }()
+    
     private lazy var descriptionViewController: SSBGameDetailDescriptionViewController = {
         let viewController = SSBGameDetailDescriptionViewController()
         viewController.delegate = self
         return viewController
     }()
+    
+    lazy var postViewController: SSBGamePostViewController = {
+        let viewController = SSBGamePostViewController(appid: appid)
+        viewController.reloadDelegate = self
+        viewController.delegate = delegate
+        return viewController
+    }()
+    
     private var cellHeights = [IndexPath: CGFloat]()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let margin: CGFloat = 10
@@ -182,9 +201,10 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         switch controller {
         case is SSBGameDetailTopViewController: return 460
         case is SSBGamePriceListViewController: return 300
-        case is SSBGameCommentViewController,
-             is SSBGamePostViewController:
-            return 400
+        case is SSBGameCommentViewController:
+            return (controller as! SSBGameCommentViewController).totalHeight
+        case is SSBGamePostViewController:
+            return (controller as! SSBGamePostViewController).totalHeight
         case is SSBUnlockInfoViewController: return 123
         case is SSBGameRateViewController: return 54
         case is SSBGameDetailDescriptionViewController: return 100
@@ -198,6 +218,8 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
         switch controller {
         case is SSBGameCommentViewController:
             return (controller as! SSBGameCommentViewController).totalHeight
+        case is SSBGamePostViewController:
+            return (controller as! SSBGamePostViewController).totalHeight
         case is SSBUnlockInfoViewController:
             return 123
         case is SSBGameRateViewController:
@@ -271,7 +293,6 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
             }
             self.delegate?.onReceive(self, commentCount: detailData.commentCount, postCount: detailData.postCount)
             self.tableView.mj_header?.isHidden = false
-            self.shouldShow = true
             self.model = SSBGameInfoViewModel(model: detailData)
             return Promise.value(self.children.contains(self.gameCommentViewController))
         }.then { [weak self] needFetechcomentData -> Promise<CGFloat> in
@@ -280,16 +301,23 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
                 return Promise.value(-999)
             }
             return self.gameCommentViewController.fetchData()
-        }.done { _ in
-           
+        }.then { [weak self] needFetechcomentData -> Promise<CGFloat>  in
+            // 请求社区帖子
+            guard let self = self else {
+                return Promise.value(-999)
+            }
+            return self.postViewController.fetchData()
+        }.done { [weak self] _ in
+            self?.shouldShow = true
+            self?.tableView.mj_header?.endRefreshing()
+            self?.tableView.reloadData()
         }.catch { [weak self] error in
             self?.shouldShow = false
             backgroundView?.state = .error(self)
+            self?.tableView.reloadData()
             self?.view.makeToast(error.localizedDescription)
         }.finally { [weak self] in
-            self?.tableView.mj_header?.endRefreshing()
             self?.request = nil
-            self?.tableView.reloadData()
         }
     }
 }

@@ -48,8 +48,8 @@ class CommentService {
             struct Comment: Codable {
                 let attitude: Int
                 let avatarUrl: String
-                let commentId: String
-                let content: String
+                let commentId: String?
+                let content: String?
                 let createTime: String
                 let happyNum: Int?
                 let negativeNum: Int?
@@ -127,13 +127,13 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
         init(model:T, isMyComment: Bool = false) {
             self.isMyComment = isMyComment
             originalData = model
-            super.init(content: originalData.content)
+            super.init(content: originalData.content ?? "")
         }
         
         required init(model: T) {
             isMyComment = false
             originalData = model
-            super.init(content: originalData.content)
+            super.init(content: originalData.content ?? "")
         }
     }
     

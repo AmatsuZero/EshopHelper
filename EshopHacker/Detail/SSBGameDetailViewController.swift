@@ -193,6 +193,7 @@ class SSBGameDetailViewController: TabmanViewController {
             if let info = controller as? SSBGameInfoViewController {
                 info.request?.cancel()
                 info.gameCommentViewController.request?.cancel()
+                info.postViewController.request?.cancel()
             } else if let comment = controller as? SSBCommentViewController {
                 comment.request?.cancel()
             } else if let community = controller as? SSBCommunityViewController {

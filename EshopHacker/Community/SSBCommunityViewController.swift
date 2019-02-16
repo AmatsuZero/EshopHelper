@@ -169,7 +169,7 @@ fileprivate extension SSBCustomButton {
     }
 }
 
-class SSBCommunityView: UIView {
+class SSBCommunityView: UITableViewCell {
     
     weak var delegate: SSBTableViewDelegate? {
         didSet {
@@ -221,8 +221,8 @@ class SSBCommunityView: UIView {
     let tableView = UITableView(frame: .zero, style: .plain)
     private var headerView: SSBCommunityListHeaderView?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         let backgroundView = SSBListBackgroundView(frame: .zero, type: .triangleSkewSpin)
         backgroundView.emptyDescription = "成为第一个发帖的人吧"
         backgroundView.emptyImageView.image = UIImage.fontAwesomeIcon(name: .comments,
@@ -275,7 +275,23 @@ class SSBCommunityViewController: UIViewController {
         var totalCount = 0 {
             didSet {
                 if totalCount != 0 {
-                    label.text = "贴子(\(totalCount))"
+                    if isEmbeded {
+                        let font = label.font ?? .boldSystemFont(ofSize: 19)
+                        let color = label.textColor ?? .darkText
+                        let attrTitle = NSMutableAttributedString(string: "社区讨论", attributes: [
+                            .font: font,
+                            .foregroundColor: color
+                            ])
+                        let exponent = NSAttributedString(string: "\(totalCount)", attributes: [
+                            .font: UIFont.systemFont(ofSize: font.pointSize / 2),
+                            .foregroundColor: color.withAlphaComponent(0.8),
+                            .baselineOffset: font.pointSize / 2
+                            ])
+                        attrTitle.append(exponent)
+                        label.attributedText = attrTitle
+                    } else {
+                        label.text = "贴子(\(totalCount))"
+                    }
                 } else {
                     label.text = "贴子"
                 }
@@ -283,25 +299,66 @@ class SSBCommunityViewController: UIViewController {
         }
         
         private let label = UILabel()
-        override init(frame: CGRect) {
+        private let isEmbeded: Bool
+        private lazy var button: SSBCustomButton = {
+            let button = SSBCustomButton()
+            let color = UIColor(r: 120, g: 120, b: 120)
+            button.setImage(UIImage.fontAwesomeIcon(name: .chevronRight,
+                                                    style: .solid,
+                                                    textColor: color,
+                                                    size: .init(width: 10, height: 10)), for: .normal)
+            button.setTitle("查看全部帖子", for: .normal)
+            button.imageEdgeInsets = .init(top: 0, left: 48, bottom: 0, right: 0)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+            button.setTitleColor(color, for: .normal)
+            button.buttonImagePosition = .right
+            return button
+        }()
+        
+        init(frame: CGRect = .zero, isEmbeded: Bool = false) {
+            self.isEmbeded = isEmbeded
             super.init(frame: frame)
             let color = UIColor(r: 120, g: 120, b: 120)
-            let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .pollH, style: .solid, textColor: color,
-                                                                       size: .init(width: 15, height: 15)))
-            addSubview(imageView)
-            imageView.snp.makeConstraints { make in
-                make.left.equalTo(10)
-                make.centerY.equalToSuperview()
-            }
             
             addSubview(label)
-            label.textColor = color
-            label.font = UIFont.systemFont(ofSize: 12)
-            label.snp.makeConstraints { make in
-                make.left.equalTo(imageView.snp.right).offset(4)
-                make.centerY.equalToSuperview()
+            
+            if isEmbeded {
+                label.textColor = .darkText
+                label.font = UIFont.boldSystemFont(ofSize: 19)
+                label.snp.makeConstraints { make in
+                    make.left.equalTo(10)
+                    make.centerY.equalToSuperview()
+                }
+                addSubview(button)
+                button.snp.makeConstraints { make in
+                    make.centerY.equalToSuperview()
+                    make.right.equalTo(10)
+                }
+            } else {
+                let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .pollH, style: .solid, textColor: color,
+                                                                           size: .init(width: 15, height: 15)))
+                addSubview(imageView)
+                imageView.snp.makeConstraints { make in
+                    make.left.equalTo(10)
+                    make.centerY.equalToSuperview()
+                }
+                
+                label.textColor = color
+                label.font = UIFont.systemFont(ofSize: 12)
+                label.snp.makeConstraints { make in
+                    make.left.equalTo(imageView.snp.right).offset(4)
+                    make.centerY.equalToSuperview()
+                }
             }
             
+            let view = UIView()
+            view.backgroundColor = .lineColor
+            addSubview(view)
+            view.snp.makeConstraints { make in
+                make.left.right.bottom.equalToSuperview()
+                make.height.equalTo(1)
+            }
+        
             backgroundColor = .white
         }
         
@@ -312,11 +369,11 @@ class SSBCommunityViewController: UIViewController {
     
     weak var delegate: SSBGameDetailViewControllerDelegate?
     let communityView = SSBCommunityView()
-    private let appid: String
+    let appid: String
     static let BannerDataNotification: Notification.Name = {
         return .init("com.ssb.SSBCommunityViewController.BannerDataNotification")
     }()
-    private let dataSource = SSBCommunityDataSource()
+    let dataSource = SSBCommunityDataSource()
     var request: DataRequest?
     var isRunningTask: Bool {
         guard let state = request?.task?.state else {
@@ -324,9 +381,11 @@ class SSBCommunityViewController: UIViewController {
         }
         return state == .running
     }
-    private var lastPage = 1
-    private var cellHeights = [IndexPath: CGFloat]()
-    private let headerView = SSBCommunityHeaderView()
+    
+    var lastPage = 1
+    var cellHeights = [IndexPath: CGFloat]()
+    var headerView = SSBCommunityHeaderView()
+    var margin: CGFloat = 5
     
     init(appid: String) {
         self.appid = appid
@@ -454,14 +513,14 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard !isRunningTask, tableView.backgroundView?.isHidden == true else {
-            return 5
+        guard !isRunningTask, tableView.backgroundView?.isHidden == true, section == 0 else {
+            return margin
         }
         return 35
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard !isRunningTask, tableView.backgroundView?.isHidden == true else {
+        guard !isRunningTask, tableView.backgroundView?.isHidden == true, section == 0 else {
             let view = UIView()
             view.backgroundColor = .clear
             return view
