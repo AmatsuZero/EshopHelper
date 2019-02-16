@@ -44,7 +44,6 @@ class SSBGameCommentViewController: SSBCommentViewController  {
         emptyMyCommentView = SSBMyCommentEmptyView(isEmbedded: true)
         sectionHeader = SSBCommentSectionHeaderView(isEmbedded: true)
         myCommentSectionHeader = SSBMyCommentsSectionHeader(isEmbedded: true)
-        listView.tableView.backgroundView?.backgroundColor = .clear
         listView.tableView.isScrollEnabled = false
         super.viewDidLoad()
     }

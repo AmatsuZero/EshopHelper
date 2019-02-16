@@ -91,6 +91,8 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
     let content: [UIView]
     let postCount: NSAttributedString
     let avatar: String
+    let canFold: Bool
+    var isExpand = false
     
     required init(model: T) {
         originalData = model
@@ -112,7 +114,7 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
             case .text:
                 let label = UILabel()
                 label.text = content.text
-                label.numberOfLines = 0
+                label.numberOfLines = 3
                 label.font = UIFont.systemFont(ofSize: 14)
                 label.textColor = UIColor(r: 106, g: 106, b: 106)
                 return label
@@ -129,6 +131,7 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
             .font: UIFont.boldSystemFont(ofSize: 13),
             .foregroundColor: UIColor.lightGray
         ])
+        canFold = model.voteScore < 0
     }
 }
 
@@ -147,19 +150,20 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
         dataSource.removeAll()
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
         let isEmpty = dataSource.isEmpty
-        // 没有更多数据隐藏上拉加载
-        if isEmpty || dataSource.count == totalCount {
-            tableView?.mj_footer = nil
-        } else {
-            tableView?.mj_footer?.isHidden = isEmpty
-        }
         if isEmpty {
             (tableView?.backgroundView as? SSBListBackgroundView)?.state = .empty
+            tableView?.mj_footer?.isHidden = true
         } else {
             tableView?.backgroundView?.isHidden = true
+            tableView?.mj_footer?.isHidden = false
         }
         tableView?.mj_header?.isHidden = false
         tableView?.reloadData()
+        if count == totalCount {
+            tableView?.mj_footer?.endRefreshingWithNoMoreData()
+        } else {
+            tableView?.mj_footer?.endRefreshing()
+        }
     }
     
     func append(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
@@ -173,21 +177,39 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
         }
     }
     
+    func toggleState(at indexPath: IndexPath) {
+        dataSource[indexPath.row].isExpand.toggle()
+    }
+    
     // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.isEmpty ? 0 : 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableView.backgroundView?.isHidden = count != 0
         return section == 0 ? 0 : count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityUITableViewCell.self)
-        cell.viewModel = dataSource[indexPath.row]
-        cell.separator.isHidden = totalCount == indexPath.row
-        return cell
+        
+        let model = dataSource[indexPath.row]
+        if model.canFold {
+            if model.isExpand {
+                let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityFoldableCell.self)
+                cell.viewModel = dataSource[indexPath.row]
+                cell.separator.isHidden = totalCount == indexPath.row
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityFoldCell.self)
+                cell.separator.isHidden = totalCount == indexPath.row
+                return cell
+            }
+        } else {
+            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityUITableViewCell.self)
+            cell.viewModel = dataSource[indexPath.row]
+            cell.separator.isHidden = totalCount == indexPath.row
+            return cell
+        }
     }
 }
 

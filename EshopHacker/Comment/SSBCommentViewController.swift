@@ -39,8 +39,9 @@ class SSBCommentView: UITableViewCell {
                                                      refreshingAction: #selector(onRefresh(_:)))
         // 上拉加载
         let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(onAppend(_:)))
+        footer?.top = 15
         tableView.mj_footer = footer
-        
+    
         tableView.backgroundView = backgroundView
         tableView.register(cellType: SSBCommentTableViewCell.self)
         tableView.register(cellType: SSBMyCommentTableViewCell.self)
@@ -67,19 +68,29 @@ class SSBCommentViewController: UIViewController {
     
     var dataSource: SSBCommentViewModel? {
         didSet {
-            listView.tableView.dataSource = dataSource
+            let tableView = listView.tableView
+            tableView.dataSource = dataSource
             let isEmpty = dataSource?.totalCount == 0
             if isEmpty {
-                (listView.tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
+                (tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
             }
             // 没有更多数据隐藏上拉加载
-            if isEmpty || dataSource?.comments.count == dataSource?.totalCount {
-                listView.tableView.mj_footer = nil
+            if isEmpty {
+                (tableView.backgroundView as? SSBListBackgroundView)?.state = .empty
+                tableView.mj_footer?.isHidden = true
             } else {
-                listView.tableView.mj_footer.isHidden = isEmpty
+                tableView.backgroundView?.isHidden = true
+                tableView.mj_footer?.isHidden = false
             }
-            listView.tableView.mj_header?.isHidden = false
-            listView.tableView.reloadData()
+            
+            tableView.mj_header?.isHidden = false
+            tableView.reloadData()
+    
+            if dataSource?.totalCount == dataSource?.comments.count {// 已经取得全部数据
+                tableView.mj_footer.endRefreshingWithNoMoreData()
+            } else {
+                tableView.mj_footer.endRefreshing()
+            }
         }
     }
     weak var delegate: SSBGameDetailViewControllerDelegate?
@@ -166,8 +177,7 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
         guard !isRunningTask else {
             return
         }
-        
-        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
+    
         let ret = CommentService.shared.getGameComment(by: appId, page: lastPage + 1)
         request = ret.request
         ret.promise.done { [weak self] ret in
@@ -178,10 +188,8 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
             // 刷新数量
             self.delegate?.onReceive(self, commentCount: self.dataSource?.totalCount ?? 0, postCount: 0)
         }.catch { [weak self] error in
-            backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
             tableView.mj_footer.endRefreshing()
-            tableView.reloadData()
         }.finally { [weak self] in
             if self?.dataSource?.comments.count != self?.dataSource?.totalCount {
                 self?.lastPage += 1

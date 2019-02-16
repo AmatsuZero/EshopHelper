@@ -34,6 +34,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
     
     override func viewDidLoad() {
         headerView = SSBCommunityHeaderView(isEmbeded: true)
+        headerView.delegate = self
         communityView.tableView.isScrollEnabled = false
         super.viewDidLoad()
     }
@@ -90,7 +91,11 @@ class SSBGamePostViewController: SSBCommunityViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard dataSource.dataSource[indexPath.row].canFold else {
+            return
+        }
         super.tableView(tableView, didSelectRowAt: indexPath)
+        reloadDelegate?.needReload(self, reloadStyle: .none, needScrollTo: false)
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -99,5 +104,12 @@ class SSBGamePostViewController: SSBCommunityViewController {
             height = 50
         }
         return height
+    }
+}
+
+extension SSBGamePostViewController: SSBCommunityHeaderViewDelegate {
+    
+    func onMoreButtonClicked(_ view: SSBCommunityViewController.SSBCommunityHeaderView) {
+        delegate?.scrollTo(self, index: 2, animated: true)
     }
 }

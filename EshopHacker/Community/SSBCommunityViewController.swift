@@ -10,165 +10,6 @@ import Reusable
 import Alamofire
 import FontAwesome_swift
 
-class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
-    var viewModel: SSBGamePostViewModel? {
-        didSet {
-            guard let model = viewModel else {
-                return
-            }
-            titleLabel.attributedText = model.title
-            timeStampLabel.attributedText = model.replyTime
-            avatarImageView.url = model.avatar
-            model.content.forEach {
-                contentStackView.addArrangedSubview($0)
-                if $0 is UIImageView {
-                    $0.snp.makeConstraints {
-                        $0.width.height.equalTo(100).priority(.high)
-                    }
-                }
-            }
-            nickNameLabel.attributedText = model.nickName
-            if let count = model.originalData.postCommentCount {
-               discussButton.setTitle("\(count)", for: .normal)
-            } else {
-               discussButton.setTitle("讨论", for: .normal)
-            }
-            let isZero = model.originalData.positiveNum != 0
-            positiveButton.setTitle(isZero ? "\(model.originalData.positiveNum)" : "表态", for: .normal)
-            positiveButton.imageEdgeInsets = isZero ? .zero : .init(top: 0, left: -10, bottom: 0, right: 0)
-            negativeButton.setTitle(model.originalData.negativeNum != 0 ? "\(model.originalData.negativeNum)" : "", for: .normal)
-        }
-    }
-    
-    private let contentStackView = UIStackView()
-    private let titleLabel = UILabel()
-    private let timeStampLabel = UILabel()
-    private let nickNameLabel = UILabel()
-    private let avatarImageView = SSBLoadingImageView()
-    private let countLabel = UILabel()
-    let separator = UIView()
-    private let discussButton = SSBCustomButton.makeCustomButton(title: "讨论", style: .comment)
-    private let positiveButton = SSBCustomButton.makeCustomButton(title: "表态", style: .thumbsUp)
-    private let negativeButton = SSBCustomButton.makeCustomButton(title: "", style: .thumbsDown)
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        titleLabel.numberOfLines = 0
-        contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.left.equalTo(10)
-            make.right.equalTo(-20)
-        }
-        
-        contentStackView.axis = .vertical
-        contentStackView.spacing = 4
-        contentStackView.alignment = .leading
-        contentStackView.distribution = .fill
-        contentView.addSubview(contentStackView)
-        contentStackView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-            make.left.right.equalTo(titleLabel)
-        }
-        
-        avatarImageView.layer.cornerRadius = 15
-        avatarImageView.layer.masksToBounds = true
-        contentView.addSubview(avatarImageView)
-        avatarImageView.snp.makeConstraints { make in
-            make.left.equalTo(titleLabel)
-            make.top.equalTo(contentStackView.snp.bottom).offset(10)
-            make.width.height.equalTo(15)
-        }
-        
-        contentView.addSubview(nickNameLabel)
-        nickNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(avatarImageView.snp.right).offset(4)
-            make.centerY.equalTo(avatarImageView)
-        }
-        
-        contentView.addSubview(timeStampLabel)
-        timeStampLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(avatarImageView)
-            make.right.equalTo(-10)
-        }
-        
-        let lineView = UIView()
-        lineView.backgroundColor = .lineColor
-        contentView.addSubview(lineView)
-        lineView.snp.makeConstraints { make in
-            make.top.equalTo(avatarImageView.snp.bottom).offset(10)
-            make.height.equalTo(1)
-            make.left.right.equalToSuperview()
-        }
-        
-        let bottomView = UIView()
-        contentView.addSubview(bottomView)
-        bottomView.snp.makeConstraints { make in
-            make.top.equalTo(lineView.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(34)
-        }
-        
-        separator.backgroundColor = .lineColor
-        contentView.addSubview(separator)
-        separator.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(bottomView.snp.bottom)
-            make.height.equalTo(2)
-        }
-        
-        let shareButton = SSBCustomButton.makeCustomButton(title: "分享", style: .shareAlt)
-        bottomView.addSubview(shareButton)
-        shareButton.snp.makeConstraints { make in
-            make.left.equalTo(20)
-            make.centerY.equalToSuperview()
-        }
-        
-        bottomView.addSubview(discussButton)
-        discussButton.snp.makeConstraints { $0.center.equalToSuperview() }
-        
-        let praiseStack = UIStackView()
-        praiseStack.alignment = .fill
-        praiseStack.distribution = .fill
-        praiseStack.axis = .horizontal
-        praiseStack.spacing = 4
-        positiveButton.imageEdgeInsets = .zero
-        praiseStack.addArrangedSubview(positiveButton)
-        negativeButton.imageEdgeInsets = .zero
-        praiseStack.addArrangedSubview(negativeButton)
-        bottomView.addSubview(praiseStack)
-        praiseStack.snp.makeConstraints { make in
-            make.right.equalTo(-20)
-            make.centerY.equalToSuperview()
-        }
-        
-        selectionStyle = .none
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-    }
-}
-
-fileprivate extension SSBCustomButton {
-    class func makeCustomButton(title: String, style: FontAwesome) -> SSBCustomButton {
-        let color = UIColor(r: 120, g: 120, b: 120)
-        let button = SSBCustomButton()
-        button.setImage(UIImage.fontAwesomeIcon(name: style, style: .solid, textColor: color,
-                                                size: .init(width: 15, height: 15)), for: .normal)
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.imageEdgeInsets = .init(top: 0, left: -10, bottom: 0, right: 0)
-        button.setTitleColor(color, for: .normal)
-        return button
-    }
-}
-
 class SSBCommunityView: UITableViewCell {
     
     weak var delegate: SSBTableViewDelegate? {
@@ -237,8 +78,11 @@ class SSBCommunityView: UITableViewCell {
                                                      refreshingAction: #selector(onRefresh(_:)))
         // 上拉加载
         let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(onAppend(_:)))
+        footer?.top = 15
         tableView.mj_footer = footer
         tableView.register(cellType: SSBCommunityUITableViewCell.self)
+        tableView.register(cellType: SSBCommunityFoldCell.self)
+        tableView.register(cellType: SSBCommunityFoldableCell.self)
         addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
@@ -267,6 +111,10 @@ class SSBCommunityView: UITableViewCell {
             delegate.tableViewBeginToAppend(self.tableView)
         }
     }
+}
+
+protocol SSBCommunityHeaderViewDelegate: class {
+    func onMoreButtonClicked(_ view: SSBCommunityViewController.SSBCommunityHeaderView)
 }
 
 class SSBCommunityViewController: UIViewController {
@@ -300,6 +148,7 @@ class SSBCommunityViewController: UIViewController {
         
         private let label = UILabel()
         private let isEmbeded: Bool
+        weak var delegate: SSBCommunityHeaderViewDelegate?
         private lazy var button: SSBCustomButton = {
             let button = SSBCustomButton()
             let color = UIColor(r: 120, g: 120, b: 120)
@@ -312,6 +161,7 @@ class SSBCommunityViewController: UIViewController {
             button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
             button.setTitleColor(color, for: .normal)
             button.buttonImagePosition = .right
+            button.addTarget(self, action: #selector(click(_:)), for: .touchUpInside)
             return button
         }()
         
@@ -365,6 +215,10 @@ class SSBCommunityViewController: UIViewController {
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
+        
+        @objc private func click(_ sender: UIButton) {
+            delegate?.onMoreButtonClicked(self)
+        }
     }
     
     weak var delegate: SSBGameDetailViewControllerDelegate?
@@ -396,6 +250,7 @@ class SSBCommunityViewController: UIViewController {
                                                object: nil)
         communityView.tableView.dataSource = dataSource
         communityView.delegate = self
+        dataSource.tableView = communityView.tableView
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -408,7 +263,6 @@ class SSBCommunityViewController: UIViewController {
     
     override func loadView() {
         view = communityView
-        dataSource.tableView = communityView.tableView
     }
     
     override func viewDidLoad() {
@@ -469,7 +323,6 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
             return
         }
         
-        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
         let ret = GameCommunityService.shared.postList(id: appid, page: lastPage + 1)
         request = ret.request
         ret.promise.done { [weak self] ret in
@@ -481,10 +334,8 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
             // 刷新数量
             self.delegate?.onReceive(self, commentCount: 0, postCount: data.count)
         }.catch { [weak self] error in
-            backgroundView?.state = .error(self)
             self?.view.makeToast(error.localizedDescription)
             tableView.mj_footer.endRefreshing()
-            tableView.reloadData()
         }.finally { [weak self] in
             if self?.dataSource.count != self?.dataSource.totalCount {
                 self?.lastPage += 1
@@ -509,7 +360,12 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("s")
+        guard dataSource.dataSource[indexPath.row].canFold else {
+            return
+        }
+        cellHeights.removeValue(forKey: indexPath)
+        dataSource.toggleState(at: indexPath)
+        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

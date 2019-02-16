@@ -63,6 +63,7 @@
 		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
 		80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA175122118C8800D4AD81 /* GamePostService.swift */; };
+		80B4540F22180DDE00AE2575 /* SSBCommunityResueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
 		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
@@ -146,6 +147,7 @@
 		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
 		80AA175122118C8800D4AD81 /* GamePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePostService.swift; sourceTree = "<group>"; };
+		80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommunityResueView.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
 		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				80AA175122118C8800D4AD81 /* GamePostService.swift */,
 				80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */,
 				802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */,
+				80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 				805736AA220BB50800D69929 /* SSBGameDLCViewController.swift in Sources */,
 				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,
+				80B4540F22180DDE00AE2575 /* SSBCommunityResueView.swift in Sources */,
 				80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */,
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
 				8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */,
