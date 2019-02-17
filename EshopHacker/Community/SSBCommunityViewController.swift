@@ -241,6 +241,26 @@ class SSBCommunityViewController: UIViewController {
     var headerView = SSBCommunityHeaderView()
     var margin: CGFloat = 5
     
+    lazy var button: SSBCustomButton = {
+        let control = SSBCustomButton()
+        control.setImage(UIImage.fontAwesomeIcon(name: .pen, style: .solid, textColor: .white,
+                                                 size: .init(width: 14, height: 14)), for: .normal)
+        control.setTitle("发帖", for: .normal)
+        control.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        control.imageEdgeInsets = .init(top: 4, left: 0, bottom: 0, right: 0)
+        control.setTitleColor(.white, for: .normal)
+        control.buttonImagePosition = .top
+        control.backgroundColor = .eShopColor
+        control.layer.cornerRadius = 24
+        control.layer.masksToBounds = true
+        control.layer.shadowColor = UIColor.black.cgColor
+        control.layer.shadowOffset = .init(width: 0, height: -2)
+        control.layer.shadowRadius = 4
+        control.layer.shadowOpacity = 0.8
+        control.addTarget(self, action: #selector(createNewPost), for: .touchUpInside)
+        return control
+    }()
+    
     init(appid: String) {
         self.appid = appid
         super.init(nibName: nil, bundle: nil)
@@ -263,6 +283,12 @@ class SSBCommunityViewController: UIViewController {
     
     override func loadView() {
         view = communityView
+        view.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.right.equalTo(-20)
+            make.bottom.equalTo(-100)
+            make.width.height.equalTo(50)
+        }
     }
     
     override func viewDidLoad() {
@@ -281,6 +307,12 @@ class SSBCommunityViewController: UIViewController {
             communityView.setHeader(banner: obj.originalData.game.banner,
                                     title: obj.originalData.game.titleZh)
         }
+    }
+    
+    @objc private func createNewPost() {
+        let controller = SSBPostDetailViewController()
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 
@@ -350,6 +382,9 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cellHeights[indexPath] = cell.frame.height
+        if let view = cell as? SSBCommunityFoldableCell {
+            view.delegate = self
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -360,12 +395,10 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard dataSource.dataSource[indexPath.row].canFold else {
-            return
+        let cell = tableView.cellForRow(at: indexPath)
+        if let view = cell as? SSBCommunityFoldCell {
+            toggleFoldState(view)
         }
-        cellHeights.removeValue(forKey: indexPath)
-        dataSource.toggleState(at: indexPath)
-        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -383,5 +416,27 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
         }
         headerView.totalCount = dataSource.totalCount
         return headerView
+    }
+}
+
+extension SSBCommunityViewController: SSBCommunityCellDelegate {
+    func toggleFoldState(_ cell: UITableViewCell) {
+        var model: SSBGamePostViewModel?
+        if let view = cell as? SSBCommunityFoldCell {
+            model = view.viewModel
+        } else if let view = cell as? SSBCommunityFoldableCell {
+            model = view.viewModel
+        }
+        guard let data = model,
+            let index = dataSource.dataSource.firstIndex(where: { $0 === data} ) else {
+            return
+        }
+        let indexPath = IndexPath(row: index, section: 1)
+        guard dataSource.dataSource[indexPath.row].canFold else {
+            return
+        }
+        cellHeights.removeValue(forKey: indexPath)
+        dataSource.toggleState(at: indexPath)
+        communityView.tableView.reloadRows(at: [indexPath], with: .fade)
     }
 }

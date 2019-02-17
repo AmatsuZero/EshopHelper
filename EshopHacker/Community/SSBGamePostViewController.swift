@@ -36,6 +36,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
         headerView = SSBCommunityHeaderView(isEmbeded: true)
         headerView.delegate = self
         communityView.tableView.isScrollEnabled = false
+        button.isHidden = true
         super.viewDidLoad()
     }
     
@@ -90,14 +91,6 @@ class SSBGamePostViewController: SSBCommunityViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard dataSource.dataSource[indexPath.row].canFold else {
-            return
-        }
-        super.tableView(tableView, didSelectRowAt: indexPath)
-        reloadDelegate?.needReload(self, reloadStyle: .none, needScrollTo: false)
-    }
-    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var height = super.tableView(tableView, heightForHeaderInSection: section)
         if section == 0 {
@@ -105,9 +98,28 @@ class SSBGamePostViewController: SSBCommunityViewController {
         }
         return height
     }
+    
+    override func toggleFoldState(_ cell: UITableViewCell) {
+        var model: SSBGamePostViewModel?
+        if let view = cell as? SSBCommunityFoldCell {
+            model = view.viewModel
+        } else if let view = cell as? SSBCommunityFoldableCell {
+            model = view.viewModel
+        }
+        guard let data = model,
+            let index = dataSource.dataSource.firstIndex(where: { $0 === data} ) else {
+                return
+        }
+        let indexPath = IndexPath(row: index, section: 1)
+        guard dataSource.dataSource[indexPath.row].canFold else {
+            return
+        }
+        super.toggleFoldState(cell)
+        reloadDelegate?.needReload(self, reloadStyle: .none, needScrollTo: false)
+    }
 }
 
-extension SSBGamePostViewController: SSBCommunityHeaderViewDelegate {
+extension SSBGamePostViewController: SSBCommunityHeaderViewDelegate{
     
     func onMoreButtonClicked(_ view: SSBCommunityViewController.SSBCommunityHeaderView) {
         delegate?.scrollTo(self, index: 2, animated: true)

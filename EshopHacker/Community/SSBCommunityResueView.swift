@@ -9,7 +9,12 @@
 import FontAwesome_swift
 import Reusable
 
+@objc protocol SSBCommunityCellDelegate: class {
+    func toggleFoldState(_ cell: UITableViewCell)
+}
+
 class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
+    
     var viewModel: SSBGamePostViewModel? {
         didSet {
             guard let model = viewModel else {
@@ -70,7 +75,7 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.left.right.equalTo(titleLabel)
         }
         
-        avatarImageView.layer.cornerRadius = 15
+        avatarImageView.layer.cornerRadius = 15 / 2
         avatarImageView.layer.masksToBounds = true
         contentView.addSubview(avatarImageView)
         avatarImageView.snp.makeConstraints { make in
@@ -170,6 +175,7 @@ fileprivate extension SSBCustomButton {
 
 class SSBCommunityFoldCell: UITableViewCell, Reusable {
     
+    var viewModel: SSBGamePostViewModel?
     let separator = UIView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -203,7 +209,7 @@ class SSBCommunityFoldCell: UITableViewCell, Reusable {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.setTitleColor(color, for: .normal)
         button.buttonImagePosition = .right
-        
+        button.isEnabled = false
         container.addSubview(button)
         button.snp.makeConstraints { make in
             make.right.equalTo(-14)
@@ -227,10 +233,13 @@ class SSBCommunityFoldCell: UITableViewCell, Reusable {
 }
 
 class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
+    
+    weak var delegate: SSBCommunityCellDelegate?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let container = UIView()
+        let container = UIControl()
         contentView.addSubview(container)
         container.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
@@ -240,7 +249,7 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
         let color = UIColor(r: 120, g: 120, b: 120)
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
-        label.text = "帖子被折叠"
+        label.text = "帖子已展开"
         label.textColor = color
         container.addSubview(label)
         label.snp.makeConstraints { make in
@@ -253,17 +262,19 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
                                                 style: .solid,
                                                 textColor: color,
                                                 size: .init(width: 10, height: 10)), for: .normal)
-        button.setTitle("展开", for: .normal)
+        button.setTitle("收起", for: .normal)
         button.imageEdgeInsets = .init(top: 0, left: 14, bottom: 0, right: 0)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.setTitleColor(color, for: .normal)
         button.buttonImagePosition = .right
-        
+        button.isEnabled = false
         container.addSubview(button)
         button.snp.makeConstraints { make in
             make.right.equalTo(-14)
             make.centerY.equalToSuperview()
         }
+        
+        container.addTarget(self, action: #selector(toggleState), for: .touchUpInside)
         
         let lineView = UIView()
         lineView.backgroundColor = .lineColor
@@ -283,5 +294,9 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func toggleState() {
+        delegate?.toggleFoldState(self)
     }
 }

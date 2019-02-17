@@ -40,7 +40,7 @@ class GameCommunityService {
                     let text: String?
                     let image: String?
                 }
-                let avatarUrl: String
+                let avatarUrl: String?
                 let content: [Content]?
                 let createTime: String
                 let createTimeImprove: String
@@ -96,7 +96,7 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
     
     required init(model: T) {
         originalData = model
-        avatar = model.avatarUrl
+        avatar = model.avatarUrl ?? ""
         title = NSAttributedString(string: model.title, attributes: [
             .font: UIFont.boldSystemFont(ofSize: 15),
             .foregroundColor: UIColor.darkText
@@ -201,6 +201,7 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBCommunityFoldCell.self)
+                cell.viewModel = dataSource[indexPath.row]
                 cell.separator.isHidden = totalCount == indexPath.row
                 return cell
             }

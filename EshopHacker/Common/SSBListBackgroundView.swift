@@ -163,7 +163,7 @@ class SSBListBackgroundView: UIView {
         retryImageView.layer.shadowColor = UIColor.black.withAlphaComponent(0.8).cgColor
         retryImageView.layer.shadowOffset = .init(width: 0, height: -2)
         retryImageView.layer.shadowRadius = 4
-        retryImageView.layer.shadowOpacity = 0.3;
+        retryImageView.layer.shadowOpacity = 0.3
         errorView.addSubview(retryImageView)
         retryImageView.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
