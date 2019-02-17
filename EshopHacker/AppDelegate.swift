@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let rootViewController = SSBRootViewController(nibName: nil, bundle: nil)
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // 设置启动控制器
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = SSBLaunchViewController()
         return true
@@ -28,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         SSBConfigHelper.shared.initialization().done { ret in
             if ret {
-               self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
+                self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
             } else {
                 self.window?.makeToast("注册App失败")
             }

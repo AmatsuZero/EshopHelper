@@ -383,14 +383,23 @@ class SSBMyCommentEmptyView: UIView {
             label.font = .boldSystemFont(ofSize: 19)
             label.textColor = .darkText
             label.snp.makeConstraints { make in
-                make.left.top.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
+                make.top.equalTo(10)
             }
         } else {
             label.font = .systemFont(ofSize: 12, weight: .medium)
             label.textColor = .lightGray
             label.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
-                make.top.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
             }
         }
         
@@ -478,7 +487,11 @@ class SSBMyCommentsSectionHeader: UIView {
             label.font = .boldSystemFont(ofSize: 19)
             
             label.snp.makeConstraints { make in
-                make.left.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
                 make.centerY.equalToSuperview()
             }
         } else {
@@ -490,7 +503,11 @@ class SSBMyCommentsSectionHeader: UIView {
             addSubview(imageView)
             imageView.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
-                make.left.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
             }
             
             label.textColor = color
@@ -566,7 +583,11 @@ class SSBCommentSectionHeaderView: UIView  {
             label.font = .boldSystemFont(ofSize: 19)
             label.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
-                make.left.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
             }
             
             button.setImage(UIImage.fontAwesomeIcon(name: .chevronRight,
@@ -583,7 +604,11 @@ class SSBCommentSectionHeaderView: UIView  {
             addSubview(imageView)
             imageView.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
-                make.left.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
             }
             
             label.textColor = color

@@ -25,6 +25,10 @@ extension CGFloat {
     func factoredHeight(by: CGFloat) -> CGFloat {
         return by != 0 ? self * .screenHeight / by : 0
     }
+    
+    static var statusBarHeight: CGFloat {
+        return UIApplication.shared.statusBarFrame.height
+    }
 }
 
 extension CGSize {

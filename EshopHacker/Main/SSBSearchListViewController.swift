@@ -251,7 +251,6 @@ class SSBSearchListViewController: UIViewController {
         super.viewWillAppear(animated)
         changeTabBar(hidden: false, animated: animated)
     }
-
 }
 
 extension SSBSearchListViewController: SSBTableViewDelegate {
@@ -331,17 +330,16 @@ extension SSBSearchListViewController: SSBTableViewDelegate {
         guard let tabBar = tabBarController?.tabBar else { return }
         if tabBar.isHidden == hidden{ return }
         let frame = tabBar.frame
-        let offset = hidden ? frame.size.height : -frame.size.height
         let duration:TimeInterval = (animated ? 0.5 : 0.0)
         tabBar.isHidden = false
         if animated {
             UIView.animate(withDuration: duration, animations: {
-                tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+                tabBar.frame.origin.y = hidden ? (.screenHeight + frame.height) : .screenHeight
             }) { _ in
                 tabBar.isHidden = hidden
             }
         } else {
-            tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+            tabBar.frame.origin.y = hidden ? (.screenHeight + frame.height) : .screenHeight
             tabBar.isHidden = hidden
         }
     }

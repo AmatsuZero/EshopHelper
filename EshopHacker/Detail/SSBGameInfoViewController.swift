@@ -84,6 +84,8 @@ class SSBGameInfoViewController: UIViewController {
             if !children.contains(postViewController) {
                 addChild(postViewController)
             }
+            
+            delegate?.onReceiveTitle(model.originalData.game.titleZh)
         }
     }
     

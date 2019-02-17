@@ -19,7 +19,7 @@ class SSBRootViewController: UITabBarController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        let recommenViewController = SSBRecommendViewController(nibName: nil, bundle: nil)
+        let recommenViewController = SSBRecommendWrapperViewController()
         let main = UINavigationController(rootViewController: recommenViewController)
         
         let searchViewController = SSBSearchViewController(nibName: nil, bundle: nil)

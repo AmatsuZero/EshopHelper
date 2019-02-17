@@ -15,7 +15,7 @@ class SSBRecommendViewController: TabmanViewController {
     private var viewControllers = [UIViewController]()
     private let bar = TMBarView<TMHorizontalBarLayout, TMLabelBarButton, SSBLineIndicator>()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         dataSource = self
         
@@ -53,6 +53,21 @@ class SSBRecommendViewController: TabmanViewController {
             button.selectedFont = button.font
             button.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         }
+        
+        view.backgroundColor = .white
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(_:)),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func orientationChanged(_ notification: Notification) {
+        guard let tabBar = tabBarController?.tabBar else { return }
+        let frame = tabBar.frame
+        tabBar.frame .origin.y = tabBar.isHidden ? .screenHeight : (.screenHeight - frame.height)
     }
 }
 

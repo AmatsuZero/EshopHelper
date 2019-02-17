@@ -35,7 +35,11 @@ class SSBCommunityView: UITableViewCell {
             titeLabel.text = title
             addSubview(titeLabel)
             titeLabel.snp.makeConstraints { make in
-                make.left.equalTo(10)
+                if #available(iOS 11, *) {
+                    make.left.equalTo(safeAreaLayoutGuide.snp.leftMargin).offset(10)
+                } else {
+                    make.left.equalTo(10)
+                }
                 make.top.equalTo(28)
                 make.width.lessThanOrEqualTo(270)
             }
@@ -176,7 +180,11 @@ class SSBCommunityViewController: UIViewController {
                 label.textColor = .darkText
                 label.font = UIFont.boldSystemFont(ofSize: 19)
                 label.snp.makeConstraints { make in
-                    make.left.equalTo(10)
+                    if #available(iOS 11, *) {
+                        make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                    } else {
+                        make.left.equalTo(10)
+                    }
                     make.centerY.equalToSuperview()
                 }
                 addSubview(button)
@@ -189,7 +197,11 @@ class SSBCommunityViewController: UIViewController {
                                                                            size: .init(width: 15, height: 15)))
                 addSubview(imageView)
                 imageView.snp.makeConstraints { make in
-                    make.left.equalTo(10)
+                    if #available(iOS 11, *) {
+                        make.left.equalTo(safeAreaLayoutGuide.snp.left).offset(10)
+                    } else {
+                        make.left.equalTo(10)
+                    }
                     make.centerY.equalToSuperview()
                 }
                 

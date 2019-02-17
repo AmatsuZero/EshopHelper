@@ -64,6 +64,11 @@
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
 		80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA175122118C8800D4AD81 /* GamePostService.swift */; };
 		80B4540F22180DDE00AE2575 /* SSBCommunityResueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */; };
+		80B454112219333500AE2575 /* SSBCustomTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B454102219333500AE2575 /* SSBCustomTitleView.swift */; };
+		80B4541522193BDC00AE2575 /* SSBRecommendWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541422193BDC00AE2575 /* SSBRecommendWrapperViewController.swift */; };
+		80B454172219538B00AE2575 /* SSBGameSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B454162219538B00AE2575 /* SSBGameSearchViewController.swift */; };
+		80B4541922195EE400AE2575 /* SSBTopSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541822195EE400AE2575 /* SSBTopSearchViewController.swift */; };
+		80B4541B22195FFE00AE2575 /* SSBSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
 		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
@@ -148,6 +153,11 @@
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
 		80AA175122118C8800D4AD81 /* GamePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePostService.swift; sourceTree = "<group>"; };
 		80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommunityResueView.swift; sourceTree = "<group>"; };
+		80B454102219333500AE2575 /* SSBCustomTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomTitleView.swift; sourceTree = "<group>"; };
+		80B4541422193BDC00AE2575 /* SSBRecommendWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRecommendWrapperViewController.swift; sourceTree = "<group>"; };
+		80B454162219538B00AE2575 /* SSBGameSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameSearchViewController.swift; sourceTree = "<group>"; };
+		80B4541822195EE400AE2575 /* SSBTopSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTopSearchViewController.swift; sourceTree = "<group>"; };
+		80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchResultViewController.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
 		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
@@ -331,6 +341,11 @@
 			isa = PBXGroup;
 			children = (
 				801B809C21FFF51C007DFCB5 /* SSBRootViewController.swift */,
+				80B4541422193BDC00AE2575 /* SSBRecommendWrapperViewController.swift */,
+				80B454102219333500AE2575 /* SSBCustomTitleView.swift */,
+				80B454162219538B00AE2575 /* SSBGameSearchViewController.swift */,
+				80B4541822195EE400AE2575 /* SSBTopSearchViewController.swift */,
+				80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -588,6 +603,7 @@
 			files = (
 				801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */,
 				80AA175222118C8800D4AD81 /* GamePostService.swift in Sources */,
+				80B4541922195EE400AE2575 /* SSBTopSearchViewController.swift in Sources */,
 				801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */,
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
@@ -609,6 +625,7 @@
 				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
 				80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */,
 				80573BF1220499350001F080 /* SSBGameDetailTopViewController.swift in Sources */,
+				80B454172219538B00AE2575 /* SSBGameSearchViewController.swift in Sources */,
 				801B805B21FF22D4007DFCB5 /* UserService.swift in Sources */,
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
 				805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */,
@@ -633,10 +650,13 @@
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */,
+				80B4541522193BDC00AE2575 /* SSBRecommendWrapperViewController.swift in Sources */,
+				80B4541B22195FFE00AE2575 /* SSBSearchResultViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
 				801B7F9A21FDCE09007DFCB5 /* GameInfoService.swift in Sources */,
 				80573BF32204A5510001F080 /* SSBGamePriceListViewController.swift in Sources */,
 				80871D1F2215C2FD002DFC26 /* SSBGamePostViewController.swift in Sources */,
+				80B454112219333500AE2575 /* SSBCustomTitleView.swift in Sources */,
 				80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,

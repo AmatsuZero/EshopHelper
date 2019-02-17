@@ -146,11 +146,23 @@ class SSBConfigHelper {
     func initialization() -> Promise<Bool> {
         // 修改Toast默认时长
         ToastManager.shared.duration = 1
+        navigationbarGlobalSetting()
         return weChatregiser()
     }
     
     func dbInit()  {
         
+    }
+    
+    /// 导航栏全局设置
+    func navigationbarGlobalSetting() {
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().barTintColor = .eShopColor
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
+        ]
     }
     
     private func weChatregiser() -> Promise<Bool> {

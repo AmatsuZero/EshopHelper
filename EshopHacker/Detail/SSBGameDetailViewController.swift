@@ -14,6 +14,7 @@ import SnapKit
 protocol SSBGameDetailViewControllerDelegate: class {
     func onReceive(_ viewController: UIViewController, commentCount: Int, postCount: Int)
     func scrollTo(_ viewController: UIViewController, index: Int, animated: Bool)
+    func onReceiveTitle(_ title: String)
 }
 
 class SSBGameDetailViewController: TabmanViewController {
@@ -132,6 +133,8 @@ class SSBGameDetailViewController: TabmanViewController {
         
         viewControllers += [detail, comment, community]
         dataSource = self
+        
+        title = "游戏详情"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -254,6 +257,10 @@ extension SSBGameDetailViewController: SSBGameDetailViewControllerDelegate {
     
     func scrollTo(_ viewController: UIViewController, index: Int, animated: Bool) {
         scrollToPage(.at(index: index), animated: animated)
+    }
+    
+    func onReceiveTitle(_ title: String) {
+        self.title = title
     }
 }
 
