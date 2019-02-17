@@ -1,12 +1,12 @@
 PODS:
   - Alamofire (4.8.1)
   - AutoInsetter (1.4.1)
-  - FontAwesome.swift (1.4.9)
+  - FontAwesome.swift (1.5.0)
   - MJRefresh (3.1.15.7)
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
   - NVActivityIndicatorView/Presenter (4.6.1)
-  - Pageboy (3.0.2)
+  - Pageboy (3.0.3)
   - PromiseKit/Alamofire (6.8.3):
     - Alamofire (~> 4.0)
     - PromiseKit/CorePromise
@@ -61,10 +61,10 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AutoInsetter: d0eafc611d686f83f925ded729084cf916a39863
-  FontAwesome.swift: 7f831846e85b93d32ded5d86983804b749921760
+  FontAwesome.swift: 55291c7a334ffacf9b62793d27c14014ec09a11b
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
-  Pageboy: 0e955738f7a46d617e8f6ee11c77f1658bb878c2
+  Pageboy: c21974f6b0845d8f70033a64bbd91f74fcf2ed47
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
@@ -74,6 +74,6 @@ SPEC CHECKSUMS:
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
 
-PODFILE CHECKSUM: 776c51695d2107f718c2d8559e8eeeba4b9cf528
+PODFILE CHECKSUM: 3588acf9d6cda0787aef63f8f7bc8e7063f6123f
 
 COCOAPODS: 1.6.0

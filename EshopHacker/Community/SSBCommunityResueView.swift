@@ -163,7 +163,7 @@ fileprivate extension SSBCustomButton {
     class func makeCustomButton(title: String, style: FontAwesome) -> SSBCustomButton {
         let color = UIColor(r: 120, g: 120, b: 120)
         let button = SSBCustomButton()
-        button.setImage(UIImage.fontAwesomeIcon(name: style, style: .solid, textColor: color,
+        button.setImage(UIImage.fontAwesomeIcon(name: style, style: title == "分享" ? .solid : .regular, textColor: color,
                                                 size: .init(width: 15, height: 15)), for: .normal)
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)

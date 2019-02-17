@@ -12,7 +12,7 @@ target 'EshopHacker' do
   pod 'SDWebImage', '~> 4.0'
   pod 'FontAwesome.swift'
   pod 'Tabman', '~> 2.1'
-  pod 'MJRefresh'
+  pod 'MJRefresh', :inhibit_warnings => true
   pod 'Reusable'
   pod 'UIWindowTransitions'
   pod 'NVActivityIndicatorView', '~> 4.6.0'

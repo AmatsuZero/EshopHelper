@@ -47,7 +47,7 @@ class CommentService {
         struct CommentInfo: Codable {
             struct Comment: Codable {
                 let attitude: Int
-                let avatarUrl: String
+                let avatarUrl: String?
                 let commentId: String?
                 let content: String?
                 let createTime: String
