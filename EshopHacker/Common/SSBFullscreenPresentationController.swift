@@ -11,7 +11,7 @@ import SnapKit
 class SSBFullscreenPresentationController: UIPresentationController {
 
     let dimmingView = UIView()
-    private let targetFrame: CGRect
+    var targetFrame: CGRect
     
     init(targetFrame: CGRect = UIScreen.main.bounds, presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         self.targetFrame = targetFrame

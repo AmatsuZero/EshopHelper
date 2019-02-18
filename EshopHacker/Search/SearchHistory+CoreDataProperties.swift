@@ -12,7 +12,7 @@ import CoreData
 
 extension SearchHistory {
     
-    fileprivate static var context: NSManagedObjectContext  = {
+    static var context: NSManagedObjectContext  = {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }()
 

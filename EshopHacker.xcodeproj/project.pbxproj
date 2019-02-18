@@ -69,6 +69,7 @@
 		80B454172219538B00AE2575 /* SSBGameSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B454162219538B00AE2575 /* SSBGameSearchViewController.swift */; };
 		80B4541922195EE400AE2575 /* SSBTopSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541822195EE400AE2575 /* SSBTopSearchViewController.swift */; };
 		80B4541B22195FFE00AE2575 /* SSBSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */; };
+		80B4544B22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
 		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
@@ -158,6 +159,7 @@
 		80B454162219538B00AE2575 /* SSBGameSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameSearchViewController.swift; sourceTree = "<group>"; };
 		80B4541822195EE400AE2575 /* SSBTopSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTopSearchViewController.swift; sourceTree = "<group>"; };
 		80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchResultViewController.swift; sourceTree = "<group>"; };
+		80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchHistoryTableViewController.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
 		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				8057364B220960D100D69929 /* SSBLRUCache.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
+				80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				801B7FFC21FEE19C007DFCB5 /* CommentService.swift in Sources */,
 				801B809D21FFF51C007DFCB5 /* SSBRootViewController.swift in Sources */,
 				801B7F9021FD92C1007DFCB5 /* SearchService.swift in Sources */,
+				80B4544B22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift in Sources */,
 				80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */,
 				80573BF1220499350001F080 /* SSBGameDetailTopViewController.swift in Sources */,
 				80B454172219538B00AE2575 /* SSBGameSearchViewController.swift in Sources */,

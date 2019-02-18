@@ -32,6 +32,7 @@ class SSBSearchViewController: TabmanViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .orange
     }
 }
 

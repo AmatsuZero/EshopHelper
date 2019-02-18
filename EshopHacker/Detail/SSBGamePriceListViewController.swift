@@ -82,7 +82,7 @@ class SSBGamePriceListView: UITableViewCell {
                 if let price = model.price.rmbExpression() {
                     priceLabel.superview?.isHidden = false
                     priceLabel.text = price
-                    originPriceLabel.text = "(\(model.coinName) \(model.originPrice))"
+                    originPriceLabel.text = "(\(model.coinName) \(model.originPrice ?? ""))"
                 } else {
                     priceLabel.superview?.isHidden = true
                 }

@@ -45,7 +45,7 @@ class SSBCustomTitleView: UIView {
         return control
     }()
     
-    var titleTextAttributes: [NSAttributedString.Key : Any]? = [
+    var titleTextAttributes: [NSAttributedString.Key : Any]? = UINavigationBar.appearance().titleTextAttributes ?? [
         .foregroundColor: UIColor.white,
         .font: UIFont.systemFont(ofSize: 18, weight: .medium)
     ]

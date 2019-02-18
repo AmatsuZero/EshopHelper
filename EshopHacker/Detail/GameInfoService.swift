@@ -91,7 +91,7 @@ class GameInfoService {
             struct GamePrice: Codable {
                 let coinName: String
                 let country: String
-                let originPrice: String
+                let originPrice: String?
                 let price: String
                 let cutfoff: Int?
             }

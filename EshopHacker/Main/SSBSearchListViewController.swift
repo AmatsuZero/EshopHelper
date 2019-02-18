@@ -334,12 +334,12 @@ extension SSBSearchListViewController: SSBTableViewDelegate {
         tabBar.isHidden = false
         if animated {
             UIView.animate(withDuration: duration, animations: {
-                tabBar.frame.origin.y = hidden ? (.screenHeight + frame.height) : .screenHeight
+                tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
             }) { _ in
                 tabBar.isHidden = hidden
             }
         } else {
-            tabBar.frame.origin.y = hidden ? (.screenHeight + frame.height) : .screenHeight
+            tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
             tabBar.isHidden = hidden
         }
     }
