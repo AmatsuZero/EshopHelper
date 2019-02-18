@@ -42,6 +42,7 @@ class SSBTopSearchView: UIView {
         let textField = UITextField()
         textField.layer.cornerRadius = 6
         textField.layer.masksToBounds = true
+        textField.returnKeyType = .search
         let color = UIColor(r: 120, g: 120, b: 120)
         // 占位字符居中显示
         let style = NSMutableParagraphStyle()
@@ -128,9 +129,7 @@ class SSBTopSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
     }
-    
 }
 
 extension SSBTopSearchViewController: SSBTopSearchDelegate {
@@ -145,19 +144,27 @@ extension SSBTopSearchViewController: SSBTopSearchDelegate {
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print(textField)
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        searchHistoryViewController.search(word: textField.text ?? "")
+        let text = textField.text as NSString? ?? ""
+        searchHistoryViewController.currentText = text.replacingCharacters(in: range, with: string)
         return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // 结束编辑状态
         view.endEditing(true)
+        // 隐藏编辑控制器
         hideSearchHistory()
-        return false
+        // 增加记录
+        guard let text = textField.text else {
+            return false
+        }
+        SearchHistory.createOrUpdate(word: text).done { _ in
+            SearchHistory.save()
+        }.catch { [weak self] error in
+            self?.parent?.view.makeToast(error.localizedDescription)
+        }
+        return true
     }
     
     private func showSearchHistory() {
@@ -187,6 +194,15 @@ extension SSBTopSearchViewController: SSBTopSearchDelegate {
 }
 
 extension SSBTopSearchViewController: SSBSearchHistoryTableViewControllerDelegate {
+    
+    func onSelect(text: String) {
+        searchView.searchField.text = text
+        // 结束编辑状态
+        view.endEditing(true)
+        // 隐藏编辑控制器
+        hideSearchHistory()
+    }
+    
     func onWillDismiss(_ controller: SSBSearchHistoryTableViewController) {
         view.endEditing(true)
     }

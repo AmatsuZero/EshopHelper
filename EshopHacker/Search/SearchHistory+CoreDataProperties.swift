@@ -12,12 +12,14 @@ import CoreData
 
 extension SearchHistory {
     
+    static let entityName = "SearchHistory"
+    
     static var context: NSManagedObjectContext  = {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }()
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SearchHistory> {
-        let request = NSFetchRequest<SearchHistory>(entityName: "SearchHistory")
+        let request = NSFetchRequest<SearchHistory>(entityName: entityName)
         // 按照时间排序
         let descriptor = NSSortDescriptor(key: "time", ascending: false)
         request.sortDescriptors = [descriptor]

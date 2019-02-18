@@ -13,6 +13,8 @@ class SSBGameSearchViewController: UIViewController {
     let searchController = SSBTopSearchViewController()
     let searchResultController = SSBSearchResultViewController()
     
+    private weak var originalDelegate: UIGestureRecognizerDelegate?
+    
     private let topHeight: CGFloat = 80
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -43,6 +45,10 @@ class SSBGameSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        originalDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(_:)),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
@@ -65,6 +71,11 @@ class SSBGameSearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillAppear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationController?.interactivePopGestureRecognizer?.delegate = originalDelegate
     }
     
     @objc private func orientationChanged(_ notification: Notification) {
@@ -101,5 +112,11 @@ class SSBGameSearchViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         })
+    }
+}
+
+extension SSBGameSearchViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
