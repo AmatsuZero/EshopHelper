@@ -215,6 +215,7 @@ class SSBGamePriceListView: UITableViewCell {
         }
     
         listTableView.rowHeight = 44
+        listTableView.estimatedRowHeight = 44
         listTableView.isScrollEnabled = false
         listTableView.separatorStyle = .none
         listTableView.register(cellType: GamePriceListCell.self)

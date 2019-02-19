@@ -49,6 +49,7 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
     private let recommendStackView = UIStackView()
     private let priceLabel = UILabel()
     private let discountView = DiscountView()
+    let separator = UIView()
     
     var model: SSBSearchListViewModel? {
         didSet {
@@ -101,6 +102,13 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
             make.left.top.equalTo(0)
         }
         
+        separator.backgroundColor = .lineColor
+        contentView.addSubview(separator)
+        separator.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(10)
+        }
+        
         descriptionStackView.axis = .vertical
         descriptionStackView.alignment = .leading
         descriptionStackView.distribution = .equalSpacing
@@ -127,15 +135,17 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
         contentView.addSubview(priceLabel)
         priceLabel.snp.makeConstraints { make in
             make.left.equalTo(descriptionStackView)
-            make.bottom.equalTo(-8)
+            make.bottom.equalTo(separator.snp.top).offset(-8)
         }
         
         contentView.addSubview(discountView)
         discountView.snp.makeConstraints { make in
-            make.right.bottom.equalToSuperview()
+            make.right.equalToSuperview()
             make.width.equalTo(80)
             make.height.equalTo(30)
+            make.bottom.equalTo(separator.snp.top)
         }
+        
         selectionStyle = .none
     }
     
@@ -150,23 +160,11 @@ class SSBSearchListTableViewCell: UITableViewCell, Reusable {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
 }
 
 class SSBSearchListView: UIView {
     
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    let tableView = UITableView(frame: .zero, style: .plain)
     weak var delegate: SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
@@ -176,19 +174,18 @@ class SSBSearchListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(tableView)
-        tableView.rowHeight = 120
+        tableView.rowHeight = 130
+        tableView.estimatedRowHeight = 130
+        tableView.separatorStyle = .none
         tableView.backgroundView = SSBListBackgroundView(frame: .zero, type: .lineScale)
         tableView.register(cellType: SSBSearchListTableViewCell.self)
-        tableView.sectionFooterHeight = 5
-        tableView.sectionHeaderHeight = 5
-        tableView.snp.makeConstraints { $0.edges.equalTo(0) }
-        
+        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
         // 下拉刷新
         tableView.mj_header = SSBCustomRefreshHeader(refreshingTarget: self,
                                                      refreshingAction: #selector(SSBSearchListView.onRefresh(_:)))
         // 上拉加载
         let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(SSBSearchListView.onAppend(_:)))
-        footer?.top = -15
+        footer?.top = 15
         tableView.mj_footer = footer
     }
     
@@ -222,6 +219,7 @@ class SSBSearchListViewController: UIViewController {
         return state == .running
     }
     var request: DataRequest?
+    var margin: CGFloat = 5
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -233,7 +231,6 @@ class SSBSearchListViewController: UIViewController {
         view = listView
         listView.delegate = self
         listView.tableView.dataSource = dataSource
-        listView.tableView.tableHeaderView = bannerViewController.view
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -291,7 +288,7 @@ extension SSBSearchListViewController: SSBTableViewDelegate {
         
         lastPage = 1
         // 重置没有更多数据的状态
-        tableView.mj_footer.resetNoMoreData()
+        tableView.mj_footer?.resetNoMoreData()
         let ret = SearchService.shared.mainIndex(page: lastPage)
         request = ret.request
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
@@ -300,8 +297,6 @@ extension SSBSearchListViewController: SSBTableViewDelegate {
                 let source = data.data else {
                     return
             }
-           
-            self.bannerViewController.fetchData()
             self.dataSource.bind(data: source.games,
                                  totalCount: source.hits,
                                  collectionView: self.listView.tableView)
@@ -315,6 +310,14 @@ extension SSBSearchListViewController: SSBTableViewDelegate {
                 tableView.mj_header?.endRefreshing()
                 self?.request = nil
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return section == 0 ? bannerViewController.view : nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 84 : 0
     }
     
     // MARK: 滚动时隐藏Tabbar

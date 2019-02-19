@@ -26,13 +26,20 @@ class SSBBannerCollectionViewCell: UICollectionViewCell, Reusable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         contentView.addSubview(bannerImageView)
         bannerImageView.contentMode = .redraw
         bannerImageView.layer.cornerRadius = 6
         bannerImageView.layer.masksToBounds = true
         bannerImageView.isUserInteractionEnabled = true
-        bannerImageView.snp.makeConstraints { $0.edges.equalTo(0) }
+        bannerImageView.snp.makeConstraints { make in
+            if #available(iOS 11.0, *) {
+                make.top.left.equalTo(safeAreaLayoutGuide).offset(8)
+                make.right.bottom.equalTo(safeAreaLayoutGuide).offset(-8)
+            } else {
+                make.top.left.equalTo(8)
+                make.right.bottom.equalTo(-8)
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +53,23 @@ protocol SSBBannerViewDelegate: class {
 
 class SSBannerView: UIView {
     
-    let collectionView: UICollectionView
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(cellType: SSBBannerCollectionViewCell.self)
+        collectionView.isPagingEnabled = true
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundView = SSBListBackgroundView(frame: .zero, needImage: false)
+        collectionView.backgroundView?.isHidden = false
+        collectionView.backgroundColor = .lineColor
+        
+        return collectionView
+    }()
     let pageControl = UIPageControl()
     var timer: Timer?
     private let duration: CFTimeInterval = 1
@@ -65,36 +88,19 @@ class SSBannerView: UIView {
     private var lastIndex = 1
     
     override init(frame: CGRect) {
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        
-        collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
-        collectionView.register(cellType: SSBBannerCollectionViewCell.self)
-        collectionView.isPagingEnabled = true
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundView = SSBListBackgroundView(frame: .zero, needImage: false)
-        collectionView.backgroundView?.isHidden = false
-        collectionView.layer.cornerRadius = 6
-        
         super.init(frame: frame)
         
         collectionView.delegate = self
         addSubview(collectionView)
-        
         collectionView.snp.makeConstraints { make in
-            make.top.left.equalTo(0)
-            make.bottom.right.equalTo(0)
+            make.edges.equalToSuperview()
         }
         
         addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.width.equalTo(40)
-            make.bottom.equalTo(0)
-            make.centerX.equalTo(self)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(collectionView)
         }
         
         backgroundColor = .white
@@ -105,14 +111,6 @@ class SSBannerView: UIView {
         pageControl.isHidden = count == 0
         pageControl.numberOfPages = count - 2
         return pageControl.numberOfPages > 0 ? pageControl.numberOfPages : 0
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        collectionView.snp.updateConstraints { make in
-            make.top.left.equalTo(padding)
-            make.bottom.right.equalTo(-padding)
-        }
     }
     
     override func layoutSubviews() {
@@ -139,7 +137,7 @@ class SSBannerView: UIView {
                           selector: #selector(SSBannerView.startAutoScroll),
                           userInfo: nil,
                           repeats: true)
-        RunLoop.current.add(timer, forMode: .default)
+        RunLoop.current.add(timer, forMode: .common)
         self.timer = timer
     }
     
@@ -221,20 +219,19 @@ extension SSBannerView: UICollectionViewDelegate, UICollectionViewDelegateFlowLa
 class SSBBannerViewController: UIViewController {
     
     private let dataSouce = SSBBannerDataSource()
-    private let bannerView = SSBannerView(frame: CGRect(origin: .zero,
-                                                        size: .init(width: .screenWidth,
-                                                                    height: 84)))
+    private let bannerView = SSBannerView()
     var request: DataRequest?
+    
     override func loadView() {
         view = bannerView
         dataSouce.delegate = self
         bannerView.delegate = dataSouce
         bannerView.collectionView.dataSource = dataSouce
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        bannerView.frame.size.width = .screenWidth
+        if #available(iOS 11.0, *) {
+            bannerView.collectionView.contentInsetAdjustmentBehavior = .never
+        } else {
+            automaticallyAdjustsScrollViewInsets = false
+        }
     }
 
     override func viewDidLoad() {
@@ -268,7 +265,6 @@ class SSBBannerViewController: UIViewController {
         }.catch { [weak self] error in
             backgroundView?.state = .error(self)
         }
-        self.bannerView.collectionView.reloadData()
     }
 }
 

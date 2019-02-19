@@ -288,6 +288,7 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourcePro
     typealias ViewType = UITableView
     typealias ViewModelType = SSBSearchListViewModel
     var totalCount = 0
+    var hasBanner = true
     
     var dataSource = [SSBSearchListViewModel]()
     
@@ -303,29 +304,35 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourcePro
         tableView.reloadData()
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return hasBanner ? 2 : 1
+    }
+    
     func append(data: [SearchService.SearchResult.Data.Game], totalCount:Int, collectionView tableView: UITableView) {
+        let lastIndex = dataSource.count
         self.totalCount = totalCount
         dataSource += data.map { SSBSearchListViewModel(model: $0) }
+        tableView.insertRows(at: (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: hasBanner ? 1 : 0) },
+                             with: .fade)
         if count == totalCount {
             tableView.mj_footer.endRefreshingWithNoMoreData()
         } else {
             tableView.mj_footer.endRefreshing()
         }
-        tableView.reloadData()
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if hasBanner, section == 0 {
+            return 0
+        }
         tableView.backgroundView?.isHidden = !dataSource.isEmpty
         return dataSource.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBSearchListTableViewCell.self)
-        cell.model = dataSource[indexPath.section]
+        cell.model = dataSource[indexPath.row]
+        cell.separator.isHidden = indexPath.row == count - 1
         return cell
     }
 }

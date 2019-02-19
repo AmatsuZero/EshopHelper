@@ -147,6 +147,7 @@ class SSBGameDLCView: UITableViewCell {
         tableView.register(cellType: SSBGameDLCUITableViewCell.self)
         tableView.isScrollEnabled = false
         tableView.rowHeight = 60
+        tableView.estimatedRowHeight = 60
         tableView.separatorStyle = .none
         contentView.addSubview(tableView)
         tableView.snp.makeConstraints { make in

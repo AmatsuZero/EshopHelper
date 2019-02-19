@@ -90,7 +90,6 @@ class SSBSearchHistoryTableViewController: UITableViewController {
     let context = SearchHistory.context
     var currentText = "" {
         didSet {
-            print("搜索文字：" + currentText)
             search(word: currentText).done { [weak self] _ in
                 self?.tableView.reloadData()
             }.catch { error in
@@ -120,6 +119,17 @@ class SSBSearchHistoryTableViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.register(cellType: SSBSearchHistoryTableViewCell.self)
         view.backgroundColor = .clear
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        do {
+            fetchResultContoller.fetchRequest.predicate = nil
+            try fetchResultContoller.performFetch()
+            tableView.reloadData()
+        } catch {
+            parent?.view.makeToast(error.localizedDescription)
+        }
     }
     
     func search(word: String) -> Promise<Bool> {
