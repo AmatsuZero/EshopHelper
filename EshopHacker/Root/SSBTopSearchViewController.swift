@@ -10,16 +10,12 @@ import UIKit
 
 protocol SSBTopSearchDelegate: UITextFieldDelegate {
     func onGoBack(_ view: SSBTopSearchView)
+    func onSearchText(keyword: String)
 }
 
 class SSBTopSearchView: UIView {
     
-    weak var delegate: SSBTopSearchDelegate? {
-        didSet {
-            searchField.delegate = delegate
-        }
-    }
-    
+    weak var delegate: SSBTopSearchDelegate?
     fileprivate let backButton: UIButton = {
         let button = UIButton()
         button.setImage(.fontAwesomeIcon(name: .chevronLeft, style: .solid, textColor: .white,
@@ -118,12 +114,17 @@ class SSBTopSearchView: UIView {
 
 class SSBTopSearchViewController: UIViewController {
     
+    weak var delegate: SSBTopSearchDelegate? {
+        didSet {
+            searchView.delegate = delegate
+        }
+    }
     private let searchView = SSBTopSearchView()
     fileprivate let searchHistoryViewController = SSBSearchHistoryTableViewController()
     
     override func loadView() {
         view = searchView
-        searchView.delegate = self
+        searchView.searchField.delegate = self
         searchHistoryViewController.delegate = self
     }
     
@@ -132,11 +133,7 @@ class SSBTopSearchViewController: UIViewController {
     }
 }
 
-extension SSBTopSearchViewController: SSBTopSearchDelegate {
-    
-    func onGoBack(_ view: SSBTopSearchView) {
-        navigationController?.popViewController(animated: true)
-    }
+extension SSBTopSearchViewController: UITextFieldDelegate {
     
     // MARK: TextField Delegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -164,6 +161,8 @@ extension SSBTopSearchViewController: SSBTopSearchDelegate {
         }.catch { [weak self] error in
             self?.parent?.view.makeToast(error.localizedDescription)
         }
+        // 搜索关键字
+        delegate?.onSearchText(keyword: text)
         return true
     }
     
@@ -201,6 +200,8 @@ extension SSBTopSearchViewController: SSBSearchHistoryTableViewControllerDelegat
         view.endEditing(true)
         // 隐藏编辑控制器
         hideSearchHistory()
+        // 搜索关键字
+        delegate?.onSearchText(keyword: text)
     }
     
     func onWillDismiss(_ controller: SSBSearchHistoryTableViewController) {

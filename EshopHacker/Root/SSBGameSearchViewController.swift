@@ -19,6 +19,7 @@ class SSBGameSearchViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        searchController.delegate = self
         addChild(searchController)
         addChild(searchResultController)
     }
@@ -71,6 +72,8 @@ class SSBGameSearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillAppear(animated)
+        // 取消搜索任务
+        searchResultController.request?.cancel()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -118,5 +121,15 @@ class SSBGameSearchViewController: UIViewController {
 extension SSBGameSearchViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+}
+
+extension SSBGameSearchViewController: SSBTopSearchDelegate {
+    func onGoBack(_ view: SSBTopSearchView) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func onSearchText(keyword: String) {
+        searchResultController.search(keyword: keyword)
     }
 }

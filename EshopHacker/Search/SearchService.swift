@@ -24,17 +24,53 @@ class SearchService {
             case hot = "hot"
         }
         
-        var ifDiscount = false
-        var title = ""
-        var orderByDiscountStart = -1
-        var orderByDiscointEnd = 0
-        var orderByCutoff = 0
-        var orderByRate = 0
-        var hotType = HotType.index
-        var all = true
-        var offset = 0
-        var limit = 10
-        var scene = 1089
+        var ifDiscount: Bool?
+        var title: String?
+        var orderByDiscountStart: Int?
+        var orderByDiscointEnd: Int?
+        var orderByCutoff: Int?
+        var orderByRate: Int?
+        var hotType: HotType?
+        var all: Bool?
+        var offset: Int?
+        var limit: Int?
+        var scene: Int?
+        
+        func asQueryItems() -> [URLQueryItem] {
+            var items = [URLQueryItem]()
+            items.append(.init(name: "title", value: title))
+            if let bool = ifDiscount {
+                items.append(.init(name: "ifDiscount", value: "\(bool)"))
+            }
+            if let start = orderByDiscountStart {
+                items.append(.init(name: "orderByDiscountStart", value: "\(start)"))
+            }
+            if let end = orderByDiscointEnd {
+                items.append(.init(name: "orderByDiscointEnd", value: "\(end)"))
+            }
+            if let cutoff = orderByCutoff {
+                items.append(.init(name: "orderByCutoff", value: "\(cutoff)"))
+            }
+            if let rate = orderByRate {
+                items.append(.init(name: "orderByRate", value: "\(rate)"))
+            }
+            if let type = hotType {
+                items.append(.init(name: "hotType", value: "\(type)"))
+            }
+            if let isAll = all {
+                items.append(.init(name: "all", value: "\(isAll)"))
+            }
+            if let offset = offset {
+                items.append(.init(name: "offset", value: "\(offset)"))
+            }
+            if let limit = limit {
+                items.append(.init(name: "limit", value: "\(limit)"))
+            }
+            if let scene = scene {
+                items.append(.init(name: "scene", value: "\(scene)"))
+            }
+            return items
+        }
     }
     
     struct SearchResult: ClientVerifiableData {
@@ -99,6 +135,14 @@ class SearchService {
         var option = SearchOption()
         option.limit = limit
         option.offset = (page - 1) * limit
+        option.ifDiscount = false
+        option.orderByDiscountStart = -1
+        option.orderByDiscointEnd = 0
+        option.orderByCutoff = 0
+        option.orderByRate = 0
+        option.hotType = .index
+        option.all = true
+        option.scene = 1089
         return search(option: option)
     }
     
@@ -289,7 +333,6 @@ class SSBSearchListDataSource: NSObject, UITableViewDataSource, SSBDataSourcePro
     typealias ViewModelType = SSBSearchListViewModel
     var totalCount = 0
     var hasBanner = true
-    
     var dataSource = [SSBSearchListViewModel]()
     
     func bind(data: [SearchService.SearchResult.Data.Game], totalCount: Int, collectionView tableView: UITableView) {

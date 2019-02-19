@@ -41,7 +41,7 @@
 		802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
-		8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8057364B220960D100D69929 /* SSBLRUCache.swift */; };
+		8057364C220960D100D69929 /* SSBCoreSpotlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8057364B220960D100D69929 /* SSBCoreSpotlightService.swift */; };
 		805736AA220BB50800D69929 /* SSBGameDLCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805736A9220BB50800D69929 /* SSBGameDLCViewController.swift */; };
 		80573BA9220291990001F080 /* SSBCustomRefreshComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */; };
 		80573BB02202D9820001F080 /* ConfigHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80573BAF2202D9820001F080 /* ConfigHelper.swift */; };
@@ -71,7 +71,7 @@
 		80B4541B22195FFE00AE2575 /* SSBSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */; };
 		80B4544B22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */; };
 		80F054A12206B3E200F97CEC /* SSBSearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */; };
-		80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBTrie.swift */; };
+		80F054A32206E1CF00F97CEC /* SSBDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054A22206E1CF00F97CEC /* SSBDataStructure.swift */; };
 		80F054A52206E3C000F97CEC /* dictionary.txt in Resources */ = {isa = PBXBuildFile; fileRef = 80F054A42206E3C000F97CEC /* dictionary.txt */; };
 		80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */; };
 		80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */; };
@@ -130,7 +130,7 @@
 		802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPostDetailViewController.swift; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
-		8057364B220960D100D69929 /* SSBLRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLRUCache.swift; sourceTree = "<group>"; };
+		8057364B220960D100D69929 /* SSBCoreSpotlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCoreSpotlightService.swift; sourceTree = "<group>"; };
 		805736A9220BB50800D69929 /* SSBGameDLCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameDLCViewController.swift; sourceTree = "<group>"; };
 		80573BA8220291990001F080 /* SSBCustomRefreshComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomRefreshComponents.swift; sourceTree = "<group>"; };
 		80573BAF2202D9820001F080 /* ConfigHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHelper.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 		80B4541A22195FFE00AE2575 /* SSBSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchResultViewController.swift; sourceTree = "<group>"; };
 		80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchHistoryTableViewController.swift; sourceTree = "<group>"; };
 		80F054A02206B3E200F97CEC /* SSBSearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchServiceTests.swift; sourceTree = "<group>"; };
-		80F054A22206E1CF00F97CEC /* SSBTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBTrie.swift; sourceTree = "<group>"; };
+		80F054A22206E1CF00F97CEC /* SSBDataStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBDataStructure.swift; sourceTree = "<group>"; };
 		80F054A42206E3C000F97CEC /* dictionary.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dictionary.txt; sourceTree = "<group>"; };
 		80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -262,8 +262,8 @@
 			children = (
 				80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */,
 				80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */,
-				80F054A22206E1CF00F97CEC /* SSBTrie.swift */,
-				8057364B220960D100D69929 /* SSBLRUCache.swift */,
+				80F054A22206E1CF00F97CEC /* SSBDataStructure.swift */,
+				8057364B220960D100D69929 /* SSBCoreSpotlightService.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
 				80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */,
@@ -647,10 +647,10 @@
 				80B4540F22180DDE00AE2575 /* SSBCommunityResueView.swift in Sources */,
 				80F054BA2206EBB600F97CEC /* SearchHistory+CoreDataClass.swift in Sources */,
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
-				8057364C220960D100D69929 /* SSBLRUCache.swift in Sources */,
+				8057364C220960D100D69929 /* SSBCoreSpotlightService.swift in Sources */,
 				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
 				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
-				80F054A32206E1CF00F97CEC /* SSBTrie.swift in Sources */,
+				80F054A32206E1CF00F97CEC /* SSBDataStructure.swift in Sources */,
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */,
