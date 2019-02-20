@@ -617,12 +617,20 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
                 let browser = SFSafariViewController(href: url)
                 present(browser, animated: true)
             }
-        default:
+        case .comment:
             guard let appid = model.originalData.acceptorId else {
                 view.makeToast("没有找到该游戏")
                 return
             }
-            let viewController = SSBGameDetailViewController(appid: appid, pageIndex: type == .comment ? 1 : 0)
+            let viewController = SSBGameDetailViewController(appid: appid, pageIndex: 1)
+            viewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(viewController, animated: true)
+        default:
+            guard !model.originalData.appid.isEmpty else {
+                view.makeToast("没有找到该游戏")
+                return
+            }
+            let viewController = SSBGameDetailViewController(appid: model.originalData.appid, pageIndex: 0)
             viewController.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(viewController, animated: true)
         }

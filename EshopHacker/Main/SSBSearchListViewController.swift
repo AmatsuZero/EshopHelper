@@ -354,8 +354,7 @@ extension SSBSearchListViewController: SSBListBackgroundViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let id = dataSource.dataSource[indexPath.section].originalData.appID
-        // "CChX-Le0KWrFJCQk"
+        let id = dataSource.dataSource[indexPath.row].originalData.appID
         let viewController = SSBGameDetailViewController(appid: id)
         viewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(viewController, animated: true)

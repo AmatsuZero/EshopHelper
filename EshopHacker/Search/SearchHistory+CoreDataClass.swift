@@ -56,12 +56,15 @@ public class SearchHistory: NSManagedObject {
     
     func delete() {
         SearchHistory.context.delete(self)
+        SearchHistory.save()
     }
     
     class func save() {
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        DispatchQueue.main.async {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            delegate.saveContext()
         }
-        delegate.saveContext()
     }
 }

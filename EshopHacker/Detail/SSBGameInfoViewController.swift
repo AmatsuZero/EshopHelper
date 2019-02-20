@@ -86,6 +86,9 @@ class SSBGameInfoViewController: UIViewController {
             }
             
             delegate?.onReceiveTitle(model.originalData.game.titleZh)
+            
+            // 追踪到Core Spotlight
+            SSBCoreSpotlightService.shared.addTrack(game: model.originalData.game)
         }
     }
     

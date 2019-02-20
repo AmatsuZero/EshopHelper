@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		39C2AA03411DAF54897006D4 /* Pods_EshopHackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */; };
+		800F24EE221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800F24EC221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift */; };
+		800F24EF221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800F24ED221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift */; };
 		801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */; };
 		801B7F7321FD912D007DFCB5 /* EshopHacker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F7121FD912D007DFCB5 /* EshopHacker.xcdatamodeld */; };
 		801B7F7521FD912E007DFCB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 801B7F7421FD912E007DFCB5 /* Assets.xcassets */; };
@@ -93,6 +95,8 @@
 		51B7A549FEC49D0E0478B99D /* Pods-EshopHacker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.debug.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.debug.xcconfig"; sourceTree = "<group>"; };
 		6B0AA7E8481ADBDF63C7378E /* Pods-EshopHackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.debug.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHacker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		800F24EC221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSBBrowseHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		800F24ED221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSBBrowseHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		801B7F6721FD912D007DFCB5 /* EshopHacker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EshopHacker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		801B7F7221FD912D007DFCB5 /* EshopHacker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EshopHacker.xcdatamodel; sourceTree = "<group>"; };
@@ -200,6 +204,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		800F24E3221CFA980033B117 /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				800F24EC221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift */,
+				800F24ED221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift */,
+				8057364B220960D100D69929 /* SSBCoreSpotlightService.swift */,
+			);
+			path = Spotlight;
+			sourceTree = "<group>";
+		};
 		801B7F5E21FD912D007DFCB5 = {
 			isa = PBXGroup;
 			children = (
@@ -260,10 +274,10 @@
 		801B7F8D21FD916D007DFCB5 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				800F24E3221CFA980033B117 /* Spotlight */,
 				80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */,
 				80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */,
 				80F054A22206E1CF00F97CEC /* SSBDataStructure.swift */,
-				8057364B220960D100D69929 /* SSBCoreSpotlightService.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
 				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
 				80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */,
@@ -611,6 +625,7 @@
 				801B7F9221FD9EF5007DFCB5 /* Router.swift in Sources */,
 				801B7FCB21FED17C007DFCB5 /* BannerDataService.swift in Sources */,
 				80F054EB2208853B00F97CEC /* SSBUnlockInfoViewController.swift in Sources */,
+				800F24EE221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift in Sources */,
 				80573BEE220460590001F080 /* SSBCommunityViewController.swift in Sources */,
 				805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */,
 				80573BEC22045FB70001F080 /* SSBGameInfoViewController.swift in Sources */,
@@ -641,6 +656,7 @@
 				80573BA9220291990001F080 /* SSBCustomRefreshComponents.swift in Sources */,
 				80573BB02202D9820001F080 /* ConfigHelper.swift in Sources */,
 				80573BE6220446BA0001F080 /* SSBSimpleBrowser.swift in Sources */,
+				800F24EF221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift in Sources */,
 				805736AA220BB50800D69929 /* SSBGameDLCViewController.swift in Sources */,
 				801B806221FFE33A007DFCB5 /* CALayer+Extensions.swift in Sources */,
 				801B806421FFE4BF007DFCB5 /* UIColor+Extensions.swift in Sources */,

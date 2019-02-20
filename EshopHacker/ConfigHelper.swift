@@ -147,11 +147,12 @@ class SSBConfigHelper {
         // 修改Toast默认时长
         ToastManager.shared.duration = 1
         navigationbarGlobalSetting()
+        // Debugg调试
+        #if DEBUG
+        let overlayClass = NSClassFromString("UIDebuggingInformationOverlay") as? UIWindow.Type
+        _ = overlayClass?.perform(NSSelectorFromString("prepareDebuggingOverlay"))
+        #endif
         return weChatregiser()
-    }
-    
-    func dbInit()  {
-        
     }
     
     /// 导航栏全局设置
@@ -175,5 +176,17 @@ class SSBConfigHelper {
             }
             resolver.fulfill(WXApi.registerApp(key))
         })
+    }
+}
+
+class SSBOpenService {
+    class func openGameInfo(appid id: String) {
+        let viewController = SSBGameDetailViewController(appid: id)
+        viewController.hidesBottomBarWhenPushed = true
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
+            let navigationController = rootViewController.selectedViewController as? UINavigationController else {
+            return
+        }
+        navigationController.pushViewController(viewController, animated: true)
     }
 }

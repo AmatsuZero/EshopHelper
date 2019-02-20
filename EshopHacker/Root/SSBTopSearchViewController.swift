@@ -131,6 +131,12 @@ class SSBTopSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // 保存变更结果
+        SearchHistory.save()
+    }
 }
 
 extension SSBTopSearchViewController: UITextFieldDelegate {

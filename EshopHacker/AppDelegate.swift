@@ -9,6 +9,7 @@
 import UIKit
 import UIWindowTransitions
 import CoreData
+import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -58,6 +59,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         saveContext()
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        if let identifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+            _ = SSBBrowseHistory.find(title: identifier).done { tracks in
+                guard let id = tracks.first?.appid else {
+                    return
+                }
+                SSBOpenService.openGameInfo(appid: id)
+            }
+        }
+        return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
