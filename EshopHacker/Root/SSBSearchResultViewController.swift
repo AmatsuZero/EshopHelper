@@ -45,6 +45,7 @@ class SSBSearchResultViewController: UIViewController {
     func search(keyword: String) {
         request?.cancel() // 取消上一个任务
         self.keyWord = keyword
+        listView.tableView.mj_header?.beginRefreshing()
         tableViewBeginToRefresh(listView.tableView)
     }
 }
@@ -72,10 +73,11 @@ extension SSBSearchResultViewController: SSBTableViewDelegate {
                                  totalCount: source.hits,
                                  collectionView: self.listView.tableView)
         }.catch { [weak self] error in
-                backgroundView?.state = .error(self)
-                self?.view.makeToast(error.localizedDescription)
-                tableView.reloadData()
+            backgroundView?.state = .error(self)
+            self?.view.makeToast(error.localizedDescription)
+            tableView.reloadData()
         }.finally { [weak self] in
+            self?.listView.tableView.mj_header?.endRefreshing()
             self?.listView.tableView.mj_footer?.isHidden = self?.dataSource.count == self?.dataSource.totalCount
             self?.request = nil
         }

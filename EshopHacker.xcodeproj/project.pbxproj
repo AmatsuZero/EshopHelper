@@ -34,12 +34,13 @@
 		801B80A221FFFF0F007DFCB5 /* GCD+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */; };
 		801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */; };
 		801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */; };
-		801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */; };
 		801B80DA2200391E007DFCB5 /* SSBTodayRecommendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */; };
 		801B80DC220043E1007DFCB5 /* SSBCustomTabmanComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B80DB220043E1007DFCB5 /* SSBCustomTabmanComponents.swift */; };
 		801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */; };
 		801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */; };
 		802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802393F7220C2F68003FCD5B /* SSBWidgets.swift */; };
+		802C0DBF22214B4400A7D31B /* SSBSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DBE22214B4400A7D31B /* SSBSearchViewController.swift */; };
+		802C0DEF222184D300A7D31B /* SSBGGameGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DEE222184D200A7D31B /* SSBGGameGenreViewController.swift */; };
 		802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
@@ -125,12 +126,13 @@
 		801B80A121FFFF0F007DFCB5 /* GCD+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GCD+Extensions.swift"; sourceTree = "<group>"; };
 		801B80A322001521007DFCB5 /* SSBRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRecommendViewController.swift; sourceTree = "<group>"; };
 		801B80A522001A0D007DFCB5 /* SSBSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchListViewController.swift; sourceTree = "<group>"; };
-		801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBSearchViewController.swift; sourceTree = "<group>"; };
 		801B80D92200391E007DFCB5 /* SSBTodayRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBTodayRecommendViewController.swift; sourceTree = "<group>"; };
 		801B80DB220043E1007DFCB5 /* SSBCustomTabmanComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomTabmanComponents.swift; sourceTree = "<group>"; };
 		801B8167220062E1007DFCB5 /* SSBBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBannerViewController.swift; sourceTree = "<group>"; };
 		801B816922009AA3007DFCB5 /* CGValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGValue+Extensions.swift"; sourceTree = "<group>"; };
 		802393F7220C2F68003FCD5B /* SSBWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBWidgets.swift; sourceTree = "<group>"; };
+		802C0DBE22214B4400A7D31B /* SSBSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBSearchViewController.swift; sourceTree = "<group>"; };
+		802C0DEE222184D200A7D31B /* SSBGGameGenreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGGameGenreViewController.swift; sourceTree = "<group>"; };
 		802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPostDetailViewController.swift; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
@@ -276,10 +278,11 @@
 			children = (
 				800F24E3221CFA980033B117 /* Spotlight */,
 				80F054B82206EBB600F97CEC /* SearchHistory+CoreDataClass.swift */,
+				802C0DBE22214B4400A7D31B /* SSBSearchViewController.swift */,
+				802C0DEE222184D200A7D31B /* SSBGGameGenreViewController.swift */,
 				80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */,
 				80F054A22206E1CF00F97CEC /* SSBDataStructure.swift */,
 				801B7F8F21FD92C1007DFCB5 /* SearchService.swift */,
-				801B80A92200276A007DFCB5 /* SSBSearchViewController.swift */,
 				80B4544A22198DD000AE2575 /* SSBSearchHistoryTableViewController.swift */,
 			);
 			path = Search;
@@ -665,11 +668,11 @@
 				80573BF72204A9A10001F080 /* SSBGameCommentViewController.swift in Sources */,
 				8057364C220960D100D69929 /* SSBCoreSpotlightService.swift in Sources */,
 				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
-				801B80AA2200276A007DFCB5 /* SSBSearchViewController.swift in Sources */,
 				80F054A32206E1CF00F97CEC /* SSBDataStructure.swift in Sources */,
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */,
+				802C0DBF22214B4400A7D31B /* SSBSearchViewController.swift in Sources */,
 				80B4541522193BDC00AE2575 /* SSBRecommendWrapperViewController.swift in Sources */,
 				80B4541B22195FFE00AE2575 /* SSBSearchResultViewController.swift in Sources */,
 				801B809B21FFF4C0007DFCB5 /* SSBAlphaTransitingViewControllerAnimator.swift in Sources */,
@@ -681,6 +684,7 @@
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,
 				801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */,
+				802C0DEF222184D300A7D31B /* SSBGGameGenreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

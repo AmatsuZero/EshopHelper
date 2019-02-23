@@ -178,15 +178,3 @@ class SSBConfigHelper {
         })
     }
 }
-
-class SSBOpenService {
-    class func openGameInfo(appid id: String) {
-        let viewController = SSBGameDetailViewController(appid: id)
-        viewController.hidesBottomBarWhenPushed = true
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
-            let navigationController = rootViewController.selectedViewController as? UINavigationController else {
-            return
-        }
-        navigationController.pushViewController(viewController, animated: true)
-    }
-}

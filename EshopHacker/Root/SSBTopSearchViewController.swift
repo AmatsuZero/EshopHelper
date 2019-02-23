@@ -128,10 +128,6 @@ class SSBTopSearchViewController: UIViewController {
         searchHistoryViewController.delegate = self
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 保存变更结果

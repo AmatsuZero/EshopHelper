@@ -13,6 +13,8 @@ class SSBGameSearchViewController: UIViewController {
     let searchController = SSBTopSearchViewController()
     let searchResultController = SSBSearchResultViewController()
     
+    private var state = UIGestureRecognizer.State.ended
+    
     private weak var originalDelegate: UIGestureRecognizerDelegate?
     
     private let topHeight: CGFloat = 80
@@ -67,18 +69,15 @@ class SSBGameSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         super.viewWillAppear(animated)
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillAppear(animated)
         // 取消搜索任务
         searchResultController.request?.cancel()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        navigationController?.interactivePopGestureRecognizer?.delegate = originalDelegate
+        originalDelegate = navigationController?.interactivePopGestureRecognizer?.delegate
+        navigationController?.setNavigationBarHidden(state != .ended, animated: animated)
     }
     
     @objc private func orientationChanged(_ notification: Notification) {
@@ -120,6 +119,7 @@ class SSBGameSearchViewController: UIViewController {
 
 extension SSBGameSearchViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        state = gestureRecognizer.state
         return true
     }
 }

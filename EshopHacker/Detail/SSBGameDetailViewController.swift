@@ -181,6 +181,8 @@ class SSBGameDetailViewController: TabmanViewController {
         // Toolbar 背景色
         navigationController?.toolbar.barTintColor = .white
         toolbarItems = [homePage, createSpaceItem(), collection, createSpaceItem(), share]
+        
+        view.backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 guard let id = tracks.first?.appid else {
                     return
                 }
-                SSBOpenService.openGameInfo(appid: id)
+                SSBOpenService.gameInfo(id: id).open()
             }
         }
         return true
