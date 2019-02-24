@@ -11,7 +11,7 @@ import Alamofire
 
 class SSBSearchResultViewController: UIViewController {
     
-    private let listView = SSBSearchListView()
+    let listView = SSBSearchListView()
     let dataSource = SSBSearchListDataSource()
     var lastPage = 1
     var isRunningTask: Bool {
@@ -20,7 +20,7 @@ class SSBSearchResultViewController: UIViewController {
         }
         return state == .running
     }
-    private(set) var request: DataRequest?
+    var request: DataRequest?
     
     fileprivate var keyWord = ""
     

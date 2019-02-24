@@ -133,7 +133,7 @@ extension URLQueryItemConvertiable {
         let mirror = Mirror(reflecting: self)
         return mirror.children
             .filter { $0.label != nil }
-            .map { URLQueryItem.init(name: $0.label!, value: "\($0.value)")}
+            .map { URLQueryItem(name: $0.label!, value: "\($0.value)") }
     }
 }
 
@@ -165,6 +165,7 @@ extension Alamofire.DataRequest {
 
 enum SSBOpenService {
     case gameInfo(id: String)
+    
     func open() {
         switch self {
         case .gameInfo(let id):

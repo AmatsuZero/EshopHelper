@@ -28,7 +28,13 @@ class SSBCommunityView: UITableViewCell {
             bannerImageView.url = banner
             bannerImageView.contentMode = .redraw
             addSubview(bannerImageView)
-            bannerImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+            bannerImageView.snp.makeConstraints {
+                if #available(iOS 11.0, *) {
+                    $0.edges.equalTo(safeAreaLayoutGuide)
+                } else {
+                    $0.edges.equalToSuperview()
+                }
+            }
     
             titeLabel.textColor = .white
             titeLabel.font = UIFont.boldSystemFont(ofSize: 19)
@@ -52,7 +58,11 @@ class SSBCommunityView: UITableViewCell {
             addSubview(followButton)
             followButton.snp.makeConstraints { make in
                 make.top.equalTo(titeLabel.snp.bottom).offset(10)
-                make.left.equalTo(10)
+                if #available(iOS 11.0, *) {
+                    make.left.equalTo(safeAreaLayoutGuide).offset(10)
+                } else {
+                    make.left.equalToSuperview().offset(10)
+                }
                 make.width.equalTo(80)
                 make.height.equalTo(25)
             }

@@ -22,19 +22,35 @@ class SearchService {
             case index = "index"
             case newHot = "newHot"
             case hot = "hot"
+            case undefined = "undefined"
         }
         
         var ifDiscount: Bool?
         var title: String?
+        
         var orderByDiscountStart: Int?
         var orderByDiscointEnd: Int?
         var orderByCutoff: Int?
+      
         var orderByRate: Int?
+        
         var hotType: HotType?
         var all: Bool?
         var offset: Int?
         var limit: Int?
         var scene: Int?
+        
+        var chineseVer: Bool?
+        var orderByPubDate: Int?
+        var orderByPrice: Int?
+        var demo: Int?
+        var free: Int?
+        var unPub: Int?
+        var categories: [String]?
+        var detail: Bool?
+        var softwareType: String?
+        var discount: Bool?
+        var playMode: [String]?
         
         func asQueryItems() -> [URLQueryItem] {
             var items = [URLQueryItem]()
@@ -68,6 +84,36 @@ class SearchService {
             }
             if let scene = scene {
                 items.append(.init(name: "scene", value: "\(scene)"))
+            }
+            if let value = chineseVer {
+                items.append(.init(name: "chineseVer", value: "\(value)"))
+            }
+            if let value = orderByPubDate {
+                items.append(.init(name: "orderByPubDate", value: "\(value)"))
+            }
+            if let demo = demo {
+                items.append(.init(name: "demo", value: "\(demo)"))
+            }
+            if let free = free {
+                items.append(.init(name: "free", value: "\(free)"))
+            }
+            if let unPub = unPub {
+                items.append(.init(name: "unPub", value: "\(unPub)"))
+            }
+            if let cat = categories {
+                items.append(.init(name: "categories", value: cat.joined(separator: ";")))
+            }
+            if let detail = detail {
+                items.append(.init(name: "detail", value: "\(detail)"))
+            }
+            if let software = softwareType {
+                items.append(.init(name: "softwareType", value: "\(software)"))
+            }
+            if let val = discount {
+                items.append(.init(name: "discount", value: "\(val)"))
+            }
+            if let play = playMode {
+                items.append(.init(name: "playMode", value: "\(play.joined(separator: ";"))"))
             }
             return items
         }

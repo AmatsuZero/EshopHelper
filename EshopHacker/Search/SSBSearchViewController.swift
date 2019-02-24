@@ -11,6 +11,11 @@ import Reusable
 
 private let lineHeight: CGFloat = 2
 
+protocol SSBSearchTopContainerViewDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func onZHButtonClicked(_ view: SSBSearchTopContainerView)
+    func onFilterButtonClicked(_ view: SSBSearchTopContainerView)
+}
+
 class SSBSearchTopContainerView: UIView {
     
     class SSBSearchPanelCell: UICollectionViewCell, Reusable {
@@ -22,6 +27,7 @@ class SSBSearchTopContainerView: UIView {
                 label.text = type.rawValue
             }
         }
+        
         override init(frame: CGRect) {
             super.init(frame: frame)
             label.textAlignment = .center
@@ -51,9 +57,15 @@ class SSBSearchTopContainerView: UIView {
         return view
     }()
     
-    private let titleView = SSBCustomTitleView()
-    
-    private let filterButton: SSBCustomButton = {
+    let titleView = SSBCustomTitleView()
+    weak var delegate: SSBSearchTopContainerViewDelegate? {
+        didSet {
+            selectionPanel.delegate = delegate
+            selectionPanel.dataSource = delegate
+            
+        }
+    }
+    let filterButton: SSBCustomButton = {
         let button = SSBCustomButton()
         button.setImage(UIImage.fontAwesomeIcon(name: .caretDown,
                                                 style: .solid,
@@ -61,13 +73,15 @@ class SSBSearchTopContainerView: UIView {
                                                 size: .init(width: 10, height: 10)), for: .normal)
         button.setTitle("筛选", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.setTitleColor(.eShopColor, for: .selected)
         button.buttonImagePosition = .right
         button.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 30)
         button.setTitleColor(.gray, for: .normal)
+        button.addTarget(self, action: #selector(onFilterButtonClicked(_:)), for: .touchUpInside)
         return button
     }()
     
-    private let zhButton: UIButton = {
+    let zhButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 19 / 2
         button.layer.masksToBounds = true
@@ -155,9 +169,9 @@ class SSBSearchTopContainerView: UIView {
         selectionPanel.snp.makeConstraints { make in
             make.height.bottom.equalTo(filterPanel)
             if #available(iOS 11.0, *) {
-                make.left.equalTo(safeAreaLayoutGuide).offset(17)
+                make.left.equalTo(safeAreaLayoutGuide).offset(10)
             } else {
-                make.left.equalToSuperview().offset(17)
+                make.left.equalToSuperview().offset(10)
             }
             make.right.equalTo(filterPanel.snp.left)
         }
@@ -183,17 +197,30 @@ class SSBSearchTopContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func onZHButtonSelected(_ sender: UIButton) {
+    @objc private func onZHButtonSelected(_ sender: UIButton) {
         sender.isSelected.toggle()
         sender.layer.borderWidth = sender.isSelected ? 1 : 0
         sender.backgroundColor = sender.isSelected ? .white : UIColor(r: 240, g: 240, b: 240)
+        delegate?.onZHButtonClicked(self)
     }
+    
+    @objc private func onFilterButtonClicked(_ sender: UIButton) {
+        delegate?.onFilterButtonClicked(self)
+    }
+}
+
+protocol SSBSearchTopContainerViewControllerDelegate: class {
+    func selectZH(isSelected: Bool)
+    func selectFilter()
+    func onSelect(option: SearchService.SearchOption)
 }
 
 class SSBSearchTopContainerViewController: UIViewController {
     
     let contentView = SSBSearchTopContainerView()
     private var currentIndex =  IndexPath(row: 0, section: 0)
+    let genreSelector = SSBGGameGenreViewController()
+    weak var delegate: SSBSearchTopContainerViewControllerDelegate?
     
     enum GameType: String, CaseIterable {
         case latest = "最新发布"
@@ -201,11 +228,45 @@ class SSBSearchTopContainerViewController: UIViewController {
         case comingsoon = "即将推出"
         case hottest = "热门新游"
         case highScore = "高分评价"
+        
+        var searchOption: SearchService.SearchOption {
+            var option = SearchService.SearchOption()
+            option.chineseVer = false
+            option.orderByRate = 0
+            option.orderByPrice = 0
+            option.orderByPubDate = 0
+            option.demo = -1
+            option.free = -1
+            option.unPub = 0
+            option.detail = false
+            option.categories = []
+            option.playMode = []
+            option.softwareType = ""
+            option.offset = 0
+            option.limit = 10
+            option.discount = false
+            option.hotType = .undefined
+            
+            switch self {
+            case .latest:
+                option.orderByPubDate = -1
+            case .popular:
+                option.hotType = .hot
+            case .comingsoon:
+                option.detail = true
+                option.unPub = 1
+            case .hottest:
+                option.hotType = .newHot
+            case .highScore:
+                option.orderByRate = -1
+            }
+            return option
+        }
     }
     
     override func loadView() {
-        contentView.selectionPanel.dataSource = self
-        contentView.selectionPanel.delegate = self
+        contentView.delegate = self
+        contentView.titleView.delegate = self
         view = contentView
     }
     
@@ -222,11 +283,31 @@ class SSBSearchTopContainerViewController: UIViewController {
     }
     
     @objc private func orientationChanged(_ notification: Notification) {
-        contentView.selectionPanel.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
+        contentView.selectionPanel.collectionViewLayout.invalidateLayout()
+        if CGFloat.screenWidth < CGFloat.screenHeight {
+            contentView.selectionPanel.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
+        } else {
+            scrollViewDidScroll(contentView.selectionPanel)
+        }
     }
 }
 
-extension SSBSearchTopContainerViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension SSBSearchTopContainerViewController: SSBSearchTopContainerViewDelegate, UICollectionViewDelegateFlowLayout, SSBCustomTitleViewDelegate {
+    
+    func onFakeSearchbarClicked(_ view: SSBCustomTitleView) {
+        let searchController = SSBGameSearchViewController()
+        searchController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(searchController, animated: true)
+    }
+    
+    func onZHButtonClicked(_ view: SSBSearchTopContainerView) {
+        delegate?.selectZH(isSelected: view.zhButton.isSelected)
+    }
+    
+    func onFilterButtonClicked(_ view: SSBSearchTopContainerView) {
+        delegate?.selectFilter()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return GameType.allCases.count
     }
@@ -239,17 +320,19 @@ extension SSBSearchTopContainerViewController: UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath),
+        guard let cell = collectionView.cellForItem(at: indexPath) as? SSBSearchTopContainerView.SSBSearchPanelCell,
             let view = contentView.underLine.superview else {
                 return
         }
         currentIndex = indexPath
         view.setNeedsLayout()
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.contentView.underLine.snp.updateConstraints { make in
                 make.left.equalTo(cell.frame.minX - collectionView.contentOffset.x)
             }
             view.layoutIfNeeded()
+        }) { _ in
+            self.delegate?.onSelect(option: cell.type.searchOption)
         }
     }
     
@@ -258,7 +341,7 @@ extension SSBSearchTopContainerViewController: UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemSize = CGSize(width: UIDevice.current.orientation.isLandscape ? 100 : 60, height: 41)
+        let itemSize = CGSize(width: CGFloat.screenWidth < CGFloat.screenHeight ? 60 : 100, height: 41)
         if contentView.underLine.frame.width != itemSize.width,
             let cell = collectionView.cellForItem(at: currentIndex) {
             contentView.underLine.superview?.setNeedsLayout()
@@ -284,12 +367,108 @@ extension SSBSearchTopContainerViewController: UICollectionViewDataSource, UICol
 
 class SSBSearchResultContainerViewController: SSBSearchResultViewController {
     
+    var searchOption: SearchService.SearchOption?
+    
+    func search(option: SearchService.SearchOption)  {
+        request?.cancel() // 取消上一个任务
+        searchOption = option
+        listView.tableView.mj_header?.beginRefreshing()
+        tableViewBeginToRefresh(listView.tableView)
+    }
+    
+    override func tableViewBeginToRefresh(_ tableView: UITableView) {
+        guard !isRunningTask,
+            var option = searchOption else {
+            return
+        }
+        lastPage = 1
+        // 重置没有更多数据的状态
+        tableView.mj_footer?.resetNoMoreData()
+        option.offset = 0
+        let ret = SearchService.shared.search(option: option)
+        request = ret.request
+        let backgroundView = tableView.backgroundView as? SSBListBackgroundView
+        ret.promise.done { [weak self] data in
+            guard let self = self,
+                let source = data.data else {
+                    return
+            }
+            self.dataSource.bind(data: source.games,
+                                 totalCount: source.hits,
+                                 collectionView: self.listView.tableView)
+            }.catch { [weak self] error in
+                backgroundView?.state = .error(self)
+                self?.view.makeToast(error.localizedDescription)
+                tableView.reloadData()
+            }.finally { [weak self] in
+                self?.listView.tableView.mj_header?.endRefreshing()
+               // self?.listView.tableView.mj_footer?.isHidden = self?.dataSource.count == self?.dataSource.totalCount
+                self?.request = nil
+        }
+    }
+    
+    override func tableViewBeginToAppend(_ tableView: UITableView) {
+        // 没有下拉刷新的任务，也没有加载任务
+        guard !isRunningTask, var option = searchOption else {
+            //   view.makeToast("正在刷新中")
+            return
+        }
+        option.offset = lastPage * (option.limit ?? 10)
+        let ret = SearchService.shared.search(option: option)
+        request = ret.request
+        ret.promise.done { [weak self] data in
+            guard let self = self,
+                let source = data.data else {
+                    return
+            }
+            self.dataSource.append(data: source.games,
+                                   totalCount:source.hits,
+                                   collectionView: self.listView.tableView)
+            }.catch { [weak self] error in
+                self?.view.makeToast("请求失败")
+                self?.listView.tableView.mj_footer.endRefreshing()
+            }.finally { [weak self] in
+                if self?.dataSource.totalCount != self?.dataSource.count {
+                    self?.lastPage += 1
+                }
+                self?.request = nil
+        }
+    }
+    
+    // MARK: 滚动时隐藏Tabbar
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 { // 向下滚动隐藏
+            changeTabBar(hidden: true, animated: true)
+        } else {  // 向上滚动显示
+            changeTabBar(hidden: false, animated: true)
+        }
+    }
+    
+    func changeTabBar(hidden:Bool, animated: Bool) {
+        guard let tabBar = tabBarController?.tabBar else { return }
+        if tabBar.isHidden == hidden{ return }
+        let frame = tabBar.frame
+        let duration:TimeInterval = (animated ? 0.5 : 0.0)
+        tabBar.isHidden = false
+        if animated {
+            UIView.animate(withDuration: duration, animations: {
+                tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
+            }) { _ in
+                tabBar.isHidden = hidden
+            }
+        } else {
+            tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
+            tabBar.isHidden = hidden
+        }
+    }
 }
 
 class SSBSearchViewController: UIViewController {
     
     let headerViewController = SSBSearchTopContainerViewController()
     let resultViewController = SSBSearchResultContainerViewController()
+    let genreViewController = SSBGGameGenreViewController()
+    private var searchOption = SearchService.SearchOption()
     
     private let topHeight: CGFloat = 120 + lineHeight
     
@@ -302,8 +481,10 @@ class SSBSearchViewController: UIViewController {
                                                                  textColor: .eShopColor,
                                                                  size: .init(width: 40, height: 40)),
                                   tag: SSBRootViewController.TabType.search.rawValue)
+        headerViewController.delegate = self
         addChild(headerViewController)
         addChild(resultViewController)
+        genreViewController.delegate = self
     }
     
     override func loadView() {
@@ -329,6 +510,8 @@ class SSBSearchViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(_:)),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        // 默认搜索第一项
+        resultViewController.search(option: SSBSearchTopContainerViewController.GameType.latest.searchOption)
     }
     
     deinit {
@@ -338,6 +521,9 @@ class SSBSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         super.viewWillAppear(animated)
+        if let controller = children.first(where: { $0 is SSBGGameGenreViewController }) as? SSBGGameGenreViewController {
+            dismiss(controller)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -349,5 +535,105 @@ class SSBSearchViewController: UIViewController {
         headerViewController.view.snp.updateConstraints { make in
             make.height.equalTo(topHeight + CGFloat.statusBarHeight)
         }
+    }
+    
+    private func presentGenreViewController() {
+        guard !children.contains(genreViewController) else {
+            return
+        }
+        addChild(genreViewController)
+        view.setNeedsLayout()
+        view.addSubview(genreViewController.view)
+        genreViewController.view.snp.makeConstraints { make in
+            if #available(iOS 11.0, *) {
+                make.left.right.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            } else {
+                 make.left.right.bottom.equalToSuperview()
+            }
+            make.top.equalTo(headerViewController.view.snp.bottom)
+        }
+    }
+}
+
+extension SSBSearchViewController: SSBGGameGenreViewControllerDelegate, SSBSearchTopContainerViewControllerDelegate {
+    
+    func onSelect(option: SearchService.SearchOption) {
+        // 拷贝原有属性
+        let originalOption = searchOption
+        searchOption = option
+        searchOption.playMode = originalOption.playMode
+        searchOption.categories = originalOption.categories
+        searchOption.discount = originalOption.discount
+        searchOption.demo = originalOption.demo
+        searchOption.softwareType = originalOption.softwareType
+        searchOption.free = originalOption.free
+        searchOption.chineseVer = originalOption.chineseVer
+        searchOption.offset = originalOption.offset
+        searchOption.limit = originalOption.limit
+        
+        resultViewController.search(option: searchOption)
+    }
+    
+    func onComplete(_ controller: SSBGGameGenreViewController, traits: [SSBGGameGenreViewController.Traits], types: [SSBGGameGenreViewController.GameType]) {
+        
+        let count = traits.count + types.count
+        let button = headerViewController.contentView.filterButton
+        let label = UILabel(frame: .init(origin: .zero, size: .init(width: 13, height: 13)))
+        label.font = UIFont.systemFont(ofSize: 9)
+        label.textColor = .white
+        label.text = "\(count)"
+        label.textAlignment = .center
+        label.layer.cornerRadius = 6.5
+        label.layer.masksToBounds = true
+        label.backgroundColor = .eShopColor
+        
+        searchOption.playMode = []
+        searchOption.categories = []
+        
+        var playMode = [String]()
+        traits.forEach { trait in
+            searchOption.discount = false
+            searchOption.demo = -1
+            searchOption.softwareType = ""
+            searchOption.free = -1
+            
+            switch trait {
+            case .discount:
+                searchOption.discount = true
+            case .includeDemo:
+                searchOption.demo = 1
+            case .includeEntity:
+                searchOption.softwareType = "entity"
+            case .isFree:
+                searchOption.free = 1
+            default:
+                playMode.append(trait.rawValue)
+            }
+        }
+        
+        searchOption.playMode = playMode
+        searchOption.categories = types.map { $0.rawValue }
+        
+        button.setImage(label.toImage(), for: .selected)
+        button.isSelected = count > 0
+        
+        dismiss(controller)
+        resultViewController.search(option: searchOption)
+    }
+    
+    
+    
+    func selectZH(isSelected: Bool) {
+        searchOption.chineseVer = isSelected
+        resultViewController.search(option: searchOption)
+    }
+    
+    func selectFilter() {
+        presentGenreViewController()
+    }
+    
+    func dismiss(_ controller: SSBGGameGenreViewController) {
+        controller.view.removeFromSuperview()
+        controller.removeFromParent()
     }
 }
