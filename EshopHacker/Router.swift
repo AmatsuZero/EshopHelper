@@ -164,18 +164,24 @@ extension Alamofire.DataRequest {
 }
 
 enum SSBOpenService {
+    
     case gameInfo(id: String)
+    case search
     
     func open() {
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
+            let navigationController = rootViewController.selectedViewController as? UINavigationController else {
+                return
+        }
         switch self {
         case .gameInfo(let id):
             let viewController = SSBGameDetailViewController(appid: id)
             viewController.hidesBottomBarWhenPushed = true
-            guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
-                let navigationController = rootViewController.selectedViewController as? UINavigationController else {
-                    return
-            }
             navigationController.pushViewController(viewController, animated: true)
+        case .search:
+            let searchController = SSBGameSearchViewController()
+            searchController.hidesBottomBarWhenPushed = true
+            navigationController.pushViewController(searchController, animated: true)
         }
     }
 }

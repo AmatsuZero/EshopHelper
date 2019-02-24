@@ -17,7 +17,9 @@ class SSBRootViewController: UITabBarController {
         case search
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    var launchOption: [UIApplication.LaunchOptionsKey : Any]?
+    
+    override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let recommenViewController = SSBRecommendWrapperViewController()
         let main = UINavigationController(rootViewController: recommenViewController)
@@ -35,5 +37,21 @@ class SSBRootViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = .eShopColor
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let options = launchOption else {
+            return
+        }
+        // 根据启动选项进项跳转
+        if let shortcutItem = options[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem,
+            let type = SSBConfigHelper.ShortcutType(rawValue: shortcutItem.type) {
+            switch type {
+            case .search:
+                SSBOpenService.search.open()
+            }
+        }
+        launchOption = nil
     }
 }

@@ -152,6 +152,7 @@ class SSBConfigHelper {
         let overlayClass = NSClassFromString("UIDebuggingInformationOverlay") as? UIWindow.Type
         _ = overlayClass?.perform(NSSelectorFromString("prepareDebuggingOverlay"))
         #endif
+        addShortcutItems()
         return weChatregiser()
     }
     
@@ -164,6 +165,22 @@ class SSBConfigHelper {
             .foregroundColor: UIColor.white,
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
+    }
+    
+    enum ShortcutType: String {
+        case search = "com.ssb.EshopHacker.search"
+    }
+    
+    /// 配置3D Touch快捷启动
+    func addShortcutItems() {
+        // 搜索
+        let search = UIApplicationShortcutIcon(type: .search)
+        let searchItem = UIApplicationShortcutItem(type: ShortcutType.search.rawValue,
+                                                    localizedTitle: "搜索",
+                                                    localizedSubtitle: "搜索Switch游戏",
+                                                    icon: search,
+                                                    userInfo: nil)
+        UIApplication.shared.shortcutItems = [searchItem]
     }
     
     private func weChatregiser() -> Promise<Bool> {

@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         SSBConfigHelper.shared.initialization().done { ret in
             if ret {
+                self.rootViewController.launchOption = launchOptions
                 self.window?.setRootViewController(self.rootViewController, options: .init(direction: .fade, style: .linear))
             } else {
                 self.window?.makeToast("注册App失败")
@@ -81,6 +82,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return WXApi.handleOpen(url, delegate: UserService.shared)
         }
         return true
+    }
+    
+    func application(_ application: UIApplication,
+                     performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
+        guard let type = SSBConfigHelper.ShortcutType(rawValue: shortcutItem.type) else {
+            return completionHandler(false)
+        }
+        switch type {
+        case .search:
+            SSBOpenService.search.open()
+        }
+        completionHandler(true)
     }
     
     // MARK: - Core Data stack

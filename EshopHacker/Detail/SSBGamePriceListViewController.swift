@@ -287,7 +287,7 @@ class SSBGamePriceListViewController: UIViewController {
 
 extension SSBGamePriceListViewController: SSBGamePriceListViewDelegate {
     func onMoreButtonClicked(view: SSBGamePriceListView) {
-        print("ss")
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
