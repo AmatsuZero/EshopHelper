@@ -287,7 +287,8 @@ class SSBGamePriceListViewController: UIViewController {
 
 extension SSBGamePriceListViewController: SSBGamePriceListViewDelegate {
     func onMoreButtonClicked(view: SSBGamePriceListView) {
-        
+        let controller = SSBGameDetailModalViewController()
+        present(controller, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

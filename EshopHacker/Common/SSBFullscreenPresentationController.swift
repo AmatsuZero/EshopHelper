@@ -19,6 +19,8 @@ class SSBFullscreenPresentationController: UIPresentationController {
         dimmingView.translatesAutoresizingMaskIntoConstraints = false
         dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         dimmingView.alpha = 0
+        let tapGez = UITapGestureRecognizer(target: self, action: #selector(SSBFullscreenPresentationController.dismiss(_:)))
+        dimmingView.addGestureRecognizer(tapGez)
     }
     
     override func presentationTransitionWillBegin() {
@@ -49,5 +51,9 @@ class SSBFullscreenPresentationController: UIPresentationController {
     
     override var frameOfPresentedViewInContainerView: CGRect {
         return targetFrame
+    }
+    
+    @objc func dismiss(_ sender: UITapGestureRecognizer) {
+        presentedViewController.dismiss(animated: true)
     }
 }

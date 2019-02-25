@@ -52,6 +52,7 @@ class SSBTopSearchView: UIView {
         ])
         textField.backgroundColor = .white
         textField.leftViewMode = .always
+        textField.clearButtonMode = .whileEditing
         let imageView = UIImageView(image: .fontAwesomeIcon(name: .search, style: .solid, textColor: color,
                                                             size: .init(width: 15, height: 15)))
         imageView.frame.size = CGSize(width: 20, height: 20)

@@ -41,7 +41,7 @@
 		802393F8220C2F68003FCD5B /* SSBWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802393F7220C2F68003FCD5B /* SSBWidgets.swift */; };
 		802C0DBF22214B4400A7D31B /* SSBSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DBE22214B4400A7D31B /* SSBSearchViewController.swift */; };
 		802C0DEF222184D300A7D31B /* SSBGGameGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DEE222184D200A7D31B /* SSBGGameGenreViewController.swift */; };
-		802C0DF12222B5AC00A7D31B /* SSBGamePriceListModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DF02222B5AC00A7D31B /* SSBGamePriceListModalViewController.swift */; };
+		802C0DF12222B5AC00A7D31B /* SSBGameDetailModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802C0DF02222B5AC00A7D31B /* SSBGameDetailModalViewController.swift */; };
 		802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */; };
 		805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */; };
 		805452532201693A002F04D7 /* SSBLoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805452522201693A002F04D7 /* SSBLoadingImageView.swift */; };
@@ -134,7 +134,7 @@
 		802393F7220C2F68003FCD5B /* SSBWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBWidgets.swift; sourceTree = "<group>"; };
 		802C0DBE22214B4400A7D31B /* SSBSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSBSearchViewController.swift; sourceTree = "<group>"; };
 		802C0DEE222184D200A7D31B /* SSBGGameGenreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGGameGenreViewController.swift; sourceTree = "<group>"; };
-		802C0DF02222B5AC00A7D31B /* SSBGamePriceListModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePriceListModalViewController.swift; sourceTree = "<group>"; };
+		802C0DF02222B5AC00A7D31B /* SSBGameDetailModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGameDetailModalViewController.swift; sourceTree = "<group>"; };
 		802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPostDetailViewController.swift; sourceTree = "<group>"; };
 		805451F4220138F0002F04D7 /* SSBListBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBListBackgroundView.swift; sourceTree = "<group>"; };
 		805452522201693A002F04D7 /* SSBLoadingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBLoadingImageView.swift; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 				80573BF0220499350001F080 /* SSBGameDetailTopViewController.swift */,
 				80573BF22204A5510001F080 /* SSBGamePriceListViewController.swift */,
 				805736A9220BB50800D69929 /* SSBGameDLCViewController.swift */,
-				802C0DF02222B5AC00A7D31B /* SSBGamePriceListModalViewController.swift */,
+				802C0DF02222B5AC00A7D31B /* SSBGameDetailModalViewController.swift */,
 				802393F7220C2F68003FCD5B /* SSBWidgets.swift */,
 			);
 			path = Detail;
@@ -685,7 +685,7 @@
 				80B454112219333500AE2575 /* SSBCustomTitleView.swift in Sources */,
 				80573BEA22045E710001F080 /* SSBGameDetailViewController.swift in Sources */,
 				801B7F9721FDAFE2007DFCB5 /* UIDevice+Extensions.swift in Sources */,
-				802C0DF12222B5AC00A7D31B /* SSBGamePriceListModalViewController.swift in Sources */,
+				802C0DF12222B5AC00A7D31B /* SSBGameDetailModalViewController.swift in Sources */,
 				801B80A422001521007DFCB5 /* SSBRecommendViewController.swift in Sources */,
 				801B80A021FFFB03007DFCB5 /* SSBFullscreenPresentationController.swift in Sources */,
 				802C0DEF222184D300A7D31B /* SSBGGameGenreViewController.swift in Sources */,
