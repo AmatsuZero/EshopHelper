@@ -107,11 +107,6 @@ class SSBGameDetailModalViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      
-    }
-    
     override var shouldAutorotate: Bool {
         return false
     }
@@ -127,16 +122,16 @@ extension SSBGameDetailModalViewController: UIViewControllerTransitioningDelegat
         let padding: CGFloat = 14
         let bottom: CGFloat = {
             if #available(iOS 11.0, *) {
-                return presented.view.safeAreaInsets.bottom + 125 + padding
+                return presented.view.safeAreaInsets.bottom + CGFloat(125).factoredHeight(by: 812) + padding
             } else {
-                return 125 + padding
+                return CGFloat(125).factoredHeight(by: 812) + padding
             }
         }()
         let top: CGFloat = {
             if #available(iOS 11.0, *) {
-                return presented.view.safeAreaInsets.top + 121 + padding
+                return presented.view.safeAreaInsets.top + CGFloat(121).factoredHeight(by: 812) + padding
             } else {
-                return CGFloat.statusBarHeight + 121 + padding
+                return CGFloat.statusBarHeight + CGFloat(121).factoredHeight(by: 812) + padding
             }
         }()
         let presentationController = SSBFullscreenPresentationController(targetFrame: .init(origin: .init(x: padding, y: top),
@@ -161,15 +156,32 @@ extension SSBGameDetailModalViewController: UIViewControllerTransitioningDelegat
     }
 }
 
-class SSBGamePriceListModalView: UIView {
-    
-}
 
-class SSBGamePriceListModalViewController: SSBGameDetailModalViewController {
+class SSBGamePriceListModalViewController: SSBGameDetailModalViewController, UITableViewDelegate, UITableViewDataSource {
     
-    init(dataSource: [GameInfoService.GameInfoData.Info.GamePrice]) {
+    let listView = UITableView(frame: .zero, style: .plain)
+    
+    private let dataSource: SSBGameInfoViewModel.PriceData
+    
+    init(dataSource: SSBGameInfoViewModel.PriceData) {
+        self.dataSource = dataSource
         super.init(nibName: nil, bundle: nil)
-        
+        listView.dataSource = self
+        listView.delegate = self
+        listView.rowHeight = 44
+        listView.estimatedRowHeight = 44
+        listView.separatorInset = .init(top: 0, left: -10, bottom: 0, right: -10)
+        listView.register(cellType: SSBGamePriceListView.GamePriceListCell.self)
+    }
+    
+    override func loadView() {
+        super.loadView()
+        contentView.addSubview(listView)
+        listView.snp.makeConstraints { make in
+            make.top.left.equalTo(10)
+            make.right.equalTo(-10)
+            make.bottom.equalTo(contentView.closeButton.snp.top)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -178,7 +190,16 @@ class SSBGamePriceListModalViewController: SSBGameDetailModalViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    }
+    
+    // MARK: Delegate
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource.prices.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBGamePriceListView.GamePriceListCell.self)
+        cell.data = dataSource.prices[indexPath.row]
+        return cell
     }
 }

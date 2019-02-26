@@ -287,7 +287,10 @@ class SSBGamePriceListViewController: UIViewController {
 
 extension SSBGamePriceListViewController: SSBGamePriceListViewDelegate {
     func onMoreButtonClicked(view: SSBGamePriceListView) {
-        let controller = SSBGameDetailModalViewController()
+        guard let source = dataSource else {
+            return
+        }
+        let controller = SSBGamePriceListModalViewController(dataSource: source)
         present(controller, animated: true)
     }
     
