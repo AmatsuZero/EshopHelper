@@ -10,24 +10,24 @@ import Tabman
 import SnapKit
 
 class SSBLineIndicator: TMLineBarIndicator {
-    
+
     private let lineView = UIView()
-    
+
     var customSize = CGSize.zero {
         didSet {
             setNeedsLayout()
         }
     }
-    
+
     override var displayMode: TMBarIndicator.DisplayMode { return .bottom }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         let targetSize = CGSize(width: customSize.width,
                                 height: min(self.frame.height, customSize.height))
         lineView.snp.updateConstraints { $0.size.equalTo(targetSize) }
     }
-    
+
     override var tintColor: UIColor! {
         didSet {
             lineView.backgroundColor = tintColor
@@ -49,15 +49,15 @@ class SSBLineIndicator: TMLineBarIndicator {
 
 class SSBLabelBarButton: TMBarButton {
     // MARK: Defaults
-    
+
     private struct Defaults {
         static let contentInset = UIEdgeInsets(top: 12.0, left: 0.0, bottom: 12.0, right: 0.0)
         static let font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
         static let text = "Item"
     }
-    
+
     // MARK: Properties
-    
+
     open override var intrinsicContentSize: CGSize {
         if let fontIntrinsicContentSize = self.fontIntrinsicContentSize {
             return fontIntrinsicContentSize
@@ -65,9 +65,9 @@ class SSBLabelBarButton: TMBarButton {
         return super.intrinsicContentSize
     }
     private var fontIntrinsicContentSize: CGSize?
-    
+
     private let label = UILabel()
-    
+
     open override var contentInset: UIEdgeInsets {
         set {
             super.contentInset = newValue
@@ -80,7 +80,7 @@ class SSBLabelBarButton: TMBarButton {
             return super.contentInset
         }
     }
-    
+
     /// Text to display in the button.
     open var text: String? {
         set {
@@ -89,14 +89,14 @@ class SSBLabelBarButton: TMBarButton {
             return label.text
         }
     }
-    
+
     var attributedString: (normal: NSAttributedString, selected: NSAttributedString)? {
         didSet {
             calculateFontIntrinsicContentSize()
             label.attributedText = isSelected ? attributedString?.selected : attributedString?.normal
         }
     }
-    
+
     /// Color of the text when unselected / normal.
     open override var tintColor: UIColor! {
         didSet {
@@ -108,7 +108,7 @@ class SSBLabelBarButton: TMBarButton {
     /// Color of the text when selected.
     open var selectedTintColor: UIColor! {
         didSet {
-            if isSelected  {
+            if isSelected {
                 label.textColor = selectedTintColor
             }
         }
@@ -132,12 +132,12 @@ class SSBLabelBarButton: TMBarButton {
             label.font = selectedFont
         }
     }
-    
+
     // MARK: Lifecycle
-    
+
     open override func layout(in view: UIView) {
         super.layout(in: view)
-        
+
         view.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
@@ -147,24 +147,24 @@ class SSBLabelBarButton: TMBarButton {
             view.bottomAnchor.constraint(equalTo: label.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-        
+
         label.textAlignment = .center
         label.text = Defaults.text
         label.font = self.font
         selectedTintColor = tintColor
         tintColor = .black
         self.contentInset = Defaults.contentInset
-        
+
         calculateFontIntrinsicContentSize(for: label.text)
     }
-    
+
     open override func populate(for item: TMBarItemable) {
         super.populate(for: item)
-        
+
         label.text = item.title
         calculateFontIntrinsicContentSize(for: item.title)
     }
-    
+
     open override func update(for selectionState: TMBarButton.SelectionState) {
         if let attrStr = attributedString {
             if selectionState == .selected {
@@ -179,9 +179,9 @@ class SSBLabelBarButton: TMBarButton {
         } else {
             let transitionColor = tintColor.interpolate(with: selectedTintColor,
                                                         percent: selectionState.rawValue)
-            
+
             label.textColor = transitionColor
-            
+
             // Because we can't animate nicely between fonts 😩
             // Cross dissolve on 'end' states between font properties.
             if let selectedFont = self.selectedFont {
@@ -200,25 +200,25 @@ class SSBLabelBarButton: TMBarButton {
 }
 
 private extension SSBLabelBarButton {
-    
+
     private func calculateFontIntrinsicContentSize() {
         guard let value = attributedString else {
             return
         }
-        
+
         let fontRect = value.normal.boundingRect(with: .zero, options: .usesFontLeading, context: nil)
         let selectedFontRect = value.selected.boundingRect(with: .zero, options: .usesFontLeading, context: nil)
-        
+
         var largestWidth = max(selectedFontRect.width, fontRect.width)
         var largestHeight = max(selectedFontRect.height, fontRect.height)
-        
+
         largestWidth += contentInset.left + contentInset.right
         largestHeight += contentInset.top + contentInset.bottom
-        
+
         fontIntrinsicContentSize = CGSize(width: largestWidth, height: largestHeight)
         invalidateIntrinsicContentSize()
     }
-    
+
     private func calculateFontIntrinsicContentSize(for string: String?) {
         guard let value = string else {
             return
@@ -226,16 +226,16 @@ private extension SSBLabelBarButton {
         let string = value as NSString
         let font = self.font
         let selectedFont = self.selectedFont ?? self.font
-        
+
         let fontRect = string.boundingRect(with: .zero, options: .usesFontLeading, attributes: [.font: font], context: nil)
         let selectedFontRect = string.boundingRect(with: .zero, options: .usesFontLeading, attributes: [.font: selectedFont], context: nil)
-        
+
         var largestWidth = max(selectedFontRect.size.width, fontRect.size.width)
         var largestHeight = max(selectedFontRect.size.height, fontRect.size.height)
-        
+
         largestWidth += contentInset.left + contentInset.right
         largestHeight += contentInset.top + contentInset.bottom
-        
+
         self.fontIntrinsicContentSize = CGSize(width: largestWidth, height: largestHeight)
         invalidateIntrinsicContentSize()
     }

@@ -14,13 +14,13 @@ extension UILabel {
         guard let context = UIGraphicsGetCurrentContext() else {
             return nil
         }
-        
+
         defer {
             UIGraphicsEndImageContext()
         }
-        
+
         layer.render(in: context)
-        
+
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
@@ -31,26 +31,26 @@ extension UIImage {
         draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage;
+        return newImage
     }
 }
 
 extension Timer {
-    
-    class func ssbPlayerScheduledTimerWithTimeInterval(_ timeInterval: TimeInterval, block: @escaping ()->(), repeats: Bool) -> Timer {
+
+    class func ssbPlayerScheduledTimerWithTimeInterval(_ timeInterval: TimeInterval, block: @escaping () -> Void, repeats: Bool) -> Timer {
         return scheduledTimer(timeInterval: timeInterval,
                               target: self,
                               selector: #selector(self.ssbPlayerBlcokInvoke(_:)),
                               userInfo: block,
                               repeats: repeats)
     }
-    
+
     @objc class func ssbPlayerBlcokInvoke(_ timer: Timer) {
-        if let block = timer.userInfo as? ()->() {
+        if let block = timer.userInfo as? () -> Void {
              block()
         }
     }
-    
+
 }
 
 extension NumberFormatter {
@@ -85,7 +85,7 @@ extension Array {
 }
 
 extension NSAttributedString {
-    
+
     class func create(from richText: String, from: Int, to: Int, color: UIColor) -> NSAttributedString {
         let attrStr = NSMutableAttributedString(string: richText)
         attrStr.addAttribute(.foregroundColor, value: color, range: .init(location: from, length: to))
@@ -103,7 +103,7 @@ extension UILabel {
         let attrStr = NSMutableAttributedString(string: string)
         attrStr.addAttributes([
             kCTFontAttributeName as NSAttributedString.Key: myFont
-        ],range: NSRange.init(location: 0, length: attrStr.length))
+        ], range: NSRange.init(location: 0, length: attrStr.length))
         let frameSetter = CTFramesetterCreateWithAttributedString(attrStr as CFAttributedString)
         let path = CGMutablePath()
         path.addRect(.init(origin: .zero, size: .init(width: rect.width, height: .greatestFiniteMagnitude)))
@@ -112,9 +112,9 @@ extension UILabel {
             let value = line as! CTLine
             let lineRange = CTLineGetStringRange(value)
             let range = NSRange(location: lineRange.location, length: lineRange.length)
-            let str = (string as NSString).substring(with: range)
+            let newString = (string as NSString).substring(with: range)
             CFAttributedStringSetAttribute(attrStr as CFMutableAttributedString, lineRange, kCTKernAttributeName, 0 as CFTypeRef)
-            return str
+            return newString
         }
         return lines
     }

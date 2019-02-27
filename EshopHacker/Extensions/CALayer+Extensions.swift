@@ -12,7 +12,7 @@ public extension CALayer {
     var isAnimationsPaused: Bool {
         return speed == 0.0
     }
-    
+
     func pauseAnimations() {
         if !isAnimationsPaused {
             let currentTime = CACurrentMediaTime()
@@ -21,7 +21,7 @@ public extension CALayer {
             timeOffset = pausedTime
         }
     }
-    
+
     func resumeAnimations() {
         let pausedTime = timeOffset
         speed = 1.0
@@ -35,7 +35,7 @@ public extension CALayer {
 
 public extension CALayer {
     static private var persistentHelperKey = "CALayer.LayerPersistentHelper"
-    
+
     public func makeAnimationsPersistent() {
         var object = objc_getAssociatedObject(self, &CALayer.persistentHelperKey)
         if object == nil {
@@ -50,12 +50,12 @@ public class LayerPersistentHelper {
     private var persistentAnimations: [String: CAAnimation] = [:]
     private var persistentSpeed: Float = 0.0
     private weak var layer: CALayer?
-    
+
     public init(with layer: CALayer) {
         self.layer = layer
         addNotificationObservers()
     }
-    
+
     deinit {
         removeNotificationObservers()
     }
@@ -69,25 +69,25 @@ private extension LayerPersistentHelper {
         center.addObserver(self, selector: #selector(didBecomeActive), name: enterForeground, object: nil)
         center.addObserver(self, selector: #selector(willResignActive), name: enterBackground, object: nil)
     }
-    
+
     func removeNotificationObservers() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     func persistAnimations(with keys: [String]?) {
         guard let layer = self.layer else { return }
-        keys?.forEach { key in
-            if let animation = layer.animation(forKey: key) {
-                persistentAnimations[key] = animation
+        keys?.forEach { animationKey in
+            if let animation = layer.animation(forKey: animationKey) {
+                persistentAnimations[animationKey] = animation
             }
         }
     }
-    
+
     func restoreAnimations(with keys: [String]?) {
         guard let layer = self.layer else { return }
-        keys?.forEach { (key) in
-            if let animation = persistentAnimations[key] {
-                layer.add(animation, forKey: key)
+        keys?.forEach { animationKey in
+            if let animation = persistentAnimations[animationKey] {
+                layer.add(animation, forKey: animationKey)
             }
         }
     }
@@ -102,7 +102,7 @@ private extension LayerPersistentHelper {
             layer.resumeAnimations()
         }
     }
-    
+
     func willResignActive() {
         guard let layer = self.layer else { return }
         persistentSpeed = layer.speed

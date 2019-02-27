@@ -14,7 +14,7 @@ protocol SSBPlayerViewDelegate: class {
     func playerView(_ playerView: SSBPlayerView, willFullscreen isFullscreen: Bool)
     func playerView(didTappedClose playerView: SSBPlayerView)
     func playerView(didDisplayControl playerView: SSBPlayerView)
-    
+
     func onEnterFullScreen(_ player: SSBPlayerView)
     func oneExitFullScreen(_ player: SSBPlayerView)
 }
@@ -28,15 +28,15 @@ extension SSBPlayerViewDelegate {
 }
 
 class SSBPlayerView: UIView {
-    
+
     enum PanGestureDirection {
         case vertical
         case horizontal
     }
-    
-    weak var player : SSBPlayer?
-    var controlViewDuration : TimeInterval = 5.0  /// default 5.0
-    fileprivate(set) var playerLayer : AVPlayerLayer?
+
+    weak var player: SSBPlayer?
+    var controlViewDuration: TimeInterval = 5.0  /// default 5.0
+    fileprivate(set) var playerLayer: AVPlayerLayer?
     fileprivate(set) var isFullScreen = false
     fileprivate(set) var isTimeSliding = false
     fileprivate(set) var isDisplayControl  = true {
@@ -46,31 +46,31 @@ class SSBPlayerView: UIView {
             }
         }
     }
-    
-    weak var delegate : SSBPlayerViewDelegate?
-    
+
+    weak var delegate: SSBPlayerViewDelegate?
+
     // top view
-    var topView : UIView = {
+    var topView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
         return view
     }()
-    
-    var titleLabel : UILabel = {
+
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         return label
     }()
-    
-    var closeButton : UIButton = {
+
+    var closeButton: UIButton = {
         let button = UIButton(type: .custom)
         return button
     }()
-    
+
     // bottom view
-    var bottomView : UIView = {
+    var bottomView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
         return view
@@ -80,20 +80,20 @@ class SSBPlayerView: UIView {
     var fullscreenButton = UIButton(type: .custom)
     var timeLabel = UILabel()
     var playButton = UIButton(type: .custom)
-    var volumeSlider : UISlider!
+    var volumeSlider: UISlider!
     var replayButton = UIButton(type: .custom)
     fileprivate(set) var panGestureDirection = PanGestureDirection.horizontal
     var isVolume = false
     var sliderSeekTimeValue = TimeInterval.nan
     fileprivate var timer = Timer()
-    fileprivate weak var parentView : UIView?
+    fileprivate weak var parentView: UIView?
     fileprivate var viewFrame = CGRect.zero
-    
+
     // GestureRecognizer
     var singleTapGesture = UITapGestureRecognizer()
     var doubleTapGesture = UITapGestureRecognizer()
     var panGesture = UIPanGestureRecognizer()
-    
+
     override init(frame: CGRect) {
         self.playerLayer = AVPlayerLayer(player: nil)
         super.init(frame: frame)
@@ -102,30 +102,30 @@ class SSBPlayerView: UIView {
         configurationVolumeSlider()
         configurationUI()
     }
-    
+
     public convenience init() {
         self.init(frame: CGRect.zero)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     deinit {
         timer.invalidate()
         playerLayer?.removeFromSuperlayer()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         updateDisplayerView(frame: bounds)
     }
-    
+
     func setPlayer(player: SSBPlayer) {
         self.player = player
     }
-    
+
     func reloadPlayerLayer() {
         playerLayer = AVPlayerLayer(player: player?.player)
         layer.insertSublayer(playerLayer!, at: 0)
@@ -133,7 +133,7 @@ class SSBPlayerView: UIView {
         timeSlider.isUserInteractionEnabled = player?.mediaFormat != .m3u8
         reloadGravity()
     }
-    
+
     func playStateDidChange(_ state: SSBPlayer.PlayerState) {
         playButton.isSelected = state == .playing
         replayButton.isHidden = !(state == .playFinished)
@@ -145,7 +145,7 @@ class SSBPlayerView: UIView {
             loadingIndicator.isHidden = true
         }
     }
-    
+
     func bufferStateDidChange(_ state: SSBPlayer.PlayerBufferstate) {
         if state == .buffering {
             loadingIndicator.isHidden = false
@@ -162,12 +162,11 @@ class SSBPlayerView: UIView {
             timeLabel.text = "\(current + " / " +  (formatSecondsToString((player?.totalDuration)!)))"
         }
     }
-    
+
     func bufferedDidChange(_ bufferedDuration: TimeInterval, totalDuration: TimeInterval) {
         timeSlider.setProgress(Float(bufferedDuration / totalDuration), animated: true)
     }
-    
-    
+
     func playerDurationDidChange(_ currentDuration: TimeInterval, totalDuration: TimeInterval) {
         var current = formatSecondsToString(currentDuration)
         if totalDuration.isNaN {  // HLS
@@ -178,7 +177,7 @@ class SSBPlayerView: UIView {
             timeSlider.value = Float(currentDuration / totalDuration)
         }
     }
-    
+
     func configurationUI() {
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         configurationTopView()
@@ -186,7 +185,7 @@ class SSBPlayerView: UIView {
         configurationReplayButton()
         setupViewAutoLayout()
     }
-    
+
     func reloadPlayerView() {
         playerLayer = AVPlayerLayer(player: nil)
         timeSlider.value = Float(0)
@@ -198,23 +197,23 @@ class SSBPlayerView: UIView {
         timeLabel.text = "--:-- / --:--"
         reloadPlayerLayer()
     }
-    
-    func displayControlView(_ isDisplay:Bool) {
+
+    func displayControlView(_ isDisplay: Bool) {
         if isDisplay {
             displayControlAnimation()
         } else {
             hiddenControlAnimation()
         }
     }
-    
+
     func play() {
         playButton.isSelected = true
     }
-    
+
     func pause() {
         playButton.isSelected = false
     }
-    
+
     func displayControlAnimation() {
         bottomView.isHidden = false
         topView.isHidden = false
@@ -222,9 +221,9 @@ class SSBPlayerView: UIView {
         UIView.animate(withDuration: 0.5, animations: {
             self.bottomView.alpha = 1
             self.topView.alpha = 1
-        }) { _ in
+        }, completion: { _ in
             self.setupTimer()
-        }
+        })
     }
     internal func hiddenControlAnimation() {
         timer.invalidate()
@@ -232,12 +231,12 @@ class SSBPlayerView: UIView {
         UIView.animate(withDuration: 0.5, animations: {
             self.bottomView.alpha = 0
             self.topView.alpha = 0
-        }) { _ in
+        }, completion: { _ in
             self.bottomView.isHidden = true
             self.topView.isHidden = true
-        }
+        })
     }
-    
+
     func setupTimer() {
         timer.invalidate()
         timer = Timer.ssbPlayerScheduledTimerWithTimeInterval(self.controlViewDuration,
@@ -246,11 +245,12 @@ class SSBPlayerView: UIView {
                                                                 self.displayControlView(false)
             }, repeats: false)
     }
-    
+
     func addDeviceOrientationNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationWillChange(_:)), name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationWillChange(_:)),
+                                               name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
     }
-    
+
     func configurationVolumeSlider() {
         let volumeView = MPVolumeView()
         if let view = volumeView.subviews.first as? UISlider {
@@ -261,11 +261,11 @@ class SSBPlayerView: UIView {
 
 // MARK: - public
 extension SSBPlayerView {
-    
+
     func updateDisplayerView(frame: CGRect) {
         playerLayer?.frame = frame
     }
-    
+
     func reloadGravity() {
         guard let mode = player?.gravityMode else {
             return
@@ -279,10 +279,10 @@ extension SSBPlayerView {
             playerLayer?.videoGravity = .resizeAspectFill
         }
     }
-    
+
     func enterFullscreen() {
         let statusBarOrientation = UIApplication.shared.statusBarOrientation
-        if statusBarOrientation == .portrait{
+        if statusBarOrientation == .portrait {
             parentView = (self.superview)!
             viewFrame = self.frame
         }
@@ -291,18 +291,18 @@ extension SSBPlayerView {
             delegate.onEnterFullScreen(self)
         }
     }
-    
+
     func exitFullscreen() {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         if let delegate = self.delegate {
             delegate.oneExitFullScreen(self)
         }
     }
-    
+
     func playFailed(_ error: SSBPlayer.PlayerError) {
         // error
     }
-    
+
     func formatSecondsToString(_ seconds: TimeInterval) -> String {
         if seconds.isNaN {
             return "00:00"
@@ -314,30 +314,29 @@ extension SSBPlayerView {
     }
 }
 
-
 // MARK: - GestureRecognizer
 extension SSBPlayerView {
-    
+
     func addGestureRecognizer() {
         singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onSingleTapGesture(_:)))
         singleTapGesture.numberOfTapsRequired = 1
         singleTapGesture.numberOfTouchesRequired = 1
         singleTapGesture.delegate = self
         addGestureRecognizer(singleTapGesture)
-        
+
         doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDoubleTapGesture(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         doubleTapGesture.numberOfTouchesRequired = 1
         doubleTapGesture.delegate = self
         addGestureRecognizer(doubleTapGesture)
-        
+
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPanGesture(_:)))
         panGesture.delegate = self
         addGestureRecognizer(panGesture)
-        
+
         singleTapGesture.require(toFail: doubleTapGesture)
     }
-    
+
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -350,7 +349,7 @@ extension SSBPlayerView: UIGestureRecognizerDelegate {
 
 // MARK: - Event
 extension SSBPlayerView {
-    
+
     @objc func timeSliderValueChanged(_ sender: SSBPlayerSlider) {
         isTimeSliding = true
         if let duration = player?.totalDuration {
@@ -358,15 +357,15 @@ extension SSBPlayerView {
             timeLabel.text = "\(formatSecondsToString(currentTime) + " / " +  (formatSecondsToString(duration)))"
         }
     }
-    
+
     @objc func timeSliderTouchDown(_ sender: SSBPlayerSlider) {
         isTimeSliding = true
         timer.invalidate()
     }
-    
+
     @objc func timeSliderTouchUpInside(_ sender: SSBPlayerSlider) {
         isTimeSliding = true
-        
+
         if let duration = player?.totalDuration {
             let currentTime = Double(sender.value) * duration
             player?.seekTime(currentTime, completion: { [weak self] (finished) in
@@ -379,7 +378,7 @@ extension SSBPlayerView {
             timeLabel.text = "\(formatSecondsToString(currentTime) + " / " +  (formatSecondsToString(duration)))"
         }
     }
-    
+
     @objc func onPlayerButton(_ sender: UIButton) {
         if !sender.isSelected {
             player?.play()
@@ -387,7 +386,7 @@ extension SSBPlayerView {
             player?.pause()
         }
     }
-    
+
     @objc func onFullscreen(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         isFullScreen = sender.isSelected
@@ -397,8 +396,7 @@ extension SSBPlayerView {
             exitFullscreen()
         }
     }
-    
-    
+
     /// Single Tap Event
     ///
     /// - Parameter gesture: Single Tap Gesture
@@ -406,7 +404,7 @@ extension SSBPlayerView {
         isDisplayControl = !isDisplayControl
         displayControlView(isDisplayControl)
     }
-    
+
     /// Double Tap Event
     ///
     /// - Parameter gesture: Double Tap Gesture
@@ -423,7 +421,7 @@ extension SSBPlayerView {
             break
         }
     }
-    
+
     @objc func onPanGesture(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: self)
         let location = gesture.location(in: self)
@@ -462,7 +460,7 @@ extension SSBPlayerView {
         default: break
         }
     }
-    
+
     internal func panGestureHorizontal(_ velocityX: CGFloat) -> TimeInterval {
         displayControlView(true)
         isTimeSliding = true
@@ -476,23 +474,23 @@ extension SSBPlayerView {
         } else {
             return .nan
         }
-        
+
     }
-    
+
     func panGestureVertical(_ velocityY: CGFloat) {
         isVolume ? (volumeSlider.value -= Float(velocityY / 10000))
             : (UIScreen.main.brightness -= velocityY / 10000)
     }
-    
+
     @objc func onCloseView(_ sender: UIButton) {
         delegate?.playerView(didTappedClose: self)
     }
-    
+
     @objc internal func onReplay(_ sender: UIButton) {
         player?.replaceVideo((player?.contentURL)!)
         player?.play()
     }
-    
+
     @objc func deviceOrientationWillChange(_ sender: Notification) {
         let orientation = UIDevice.current.orientation
         let statusBarOrientation = UIApplication.shared.statusBarOrientation
@@ -508,7 +506,7 @@ extension SSBPlayerView {
         default: return
         }
     }
-    
+
     func onDeviceOrientation(_ fullScreen: Bool, orientation: UIInterfaceOrientation) {
         let statusBarOrientation = UIApplication.shared.statusBarOrientation
         if orientation == statusBarOrientation {
@@ -551,9 +549,9 @@ extension SSBPlayerView {
     }
 }
 
-//MARK: - UI autoLayout
+// MARK: - UI autoLayout
 extension SSBPlayerView {
-    
+
     func configurationReplayButton() {
         addSubview(replayButton)
         let replayImage = UIImage(named: "VGPlayer_ic_replay")!
@@ -561,7 +559,7 @@ extension SSBPlayerView {
         replayButton.addTarget(self, action: #selector(onReplay(_:)), for: .touchUpInside)
         replayButton.isHidden = true
     }
-    
+
     func configurationTopView() {
         addSubview(topView)
         titleLabel.text = ""
@@ -571,7 +569,7 @@ extension SSBPlayerView {
         closeButton.addTarget(self, action: #selector(onCloseView(_:)), for: .touchUpInside)
         topView.addSubview(closeButton)
     }
-    
+
     func configurationBottomView() {
         addSubview(bottomView)
         timeSlider.addTarget(self, action: #selector(timeSliderValueChanged(_:)),
@@ -583,22 +581,22 @@ extension SSBPlayerView {
         loadingIndicator.startAnimating()
         addSubview(loadingIndicator)
         bottomView.addSubview(timeSlider)
-        
+
         let playImage = UIImage(named: "VGPlayer_ic_play")!
         let pauseImage = UIImage(named: "VGPlayer_ic_pause")!
-        
+
         playButton.setImage(playImage.newImage(scaledToSize: .init(width: 15, height: 15)),
                             for: .normal)
         playButton.setImage(pauseImage.newImage(scaledToSize: .init(width: 15, height: 15)), for: .selected)
         playButton.addTarget(self, action: #selector(onPlayerButton(_:)), for: .touchUpInside)
         bottomView.addSubview(playButton)
-        
+
         timeLabel.textAlignment = .center
         timeLabel.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         timeLabel.font = .systemFont(ofSize: 12.0)
         timeLabel.text = "--:-- / --:--"
         bottomView.addSubview(timeLabel)
-        
+
         let enlargeImage = UIImage(named: "VGPlayer_ic_fullscreen")!
         let narrowImage = UIImage(named: "VGPlayer_ic_fullscreen_exit")!
         fullscreenButton.setImage(enlargeImage.newImage(scaledToSize: .init(width: 15, height: 15)), for: .normal)
@@ -606,13 +604,13 @@ extension SSBPlayerView {
         fullscreenButton.addTarget(self, action: #selector(onFullscreen(_:)), for: .touchUpInside)
         bottomView.addSubview(fullscreenButton)
     }
-    
+
     func setupViewAutoLayout() {
         replayButton.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.height.equalTo(30)
         }
-        
+
         // top view layout
         topView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
@@ -627,38 +625,38 @@ extension SSBPlayerView {
             make.left.equalTo(closeButton.snp.right).offset(20)
             make.centerY.equalTo(closeButton)
         }
-        
+
         // bottom view layout
         bottomView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(52)
         }
-        
+
         playButton.snp.makeConstraints { make in
             make.left.equalTo(bottomView).offset(20)
             make.height.width.equalTo(25)
             make.centerY.equalTo(bottomView)
         }
-        
+
         timeLabel.snp.makeConstraints { make in
             make.right.equalTo(fullscreenButton.snp.left).offset(-10)
             make.centerY.equalTo(playButton)
             make.height.equalTo(30)
         }
-        
+
         timeSlider.snp.makeConstraints { make in
             make.centerY.equalTo(playButton)
             make.right.equalTo(timeLabel.snp.left).offset(-10)
             make.left.equalTo(playButton.snp.right).offset(25)
             make.height.equalTo(25)
         }
-        
+
         fullscreenButton.snp.makeConstraints { make in
             make.centerY.equalTo(playButton)
             make.right.equalTo(bottomView).offset(-10)
             make.height.width.equalTo(30)
         }
-        
+
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.height.width.equalTo(30)

@@ -12,9 +12,9 @@ import SDWebImage
 import PromiseKit
 
 class SSBCoreSpotlightService {
-    
+
     static let shared = SSBCoreSpotlightService()
-    
+
     @discardableResult
     func addTrack(game: GameInfoService.GameInfoData.Info.Game) -> Promise<Void> {
         return firstly {
@@ -24,8 +24,8 @@ class SSBCoreSpotlightService {
             return Promise(resolver: { resolver in
                 DispatchQueue.global().async {
                     CSSearchableIndex.default().indexSearchableItems([game.toSearchableItem()]) { error in
-                        if let err = error {
-                            resolver.reject(err)
+                        if let exception = error {
+                            resolver.reject(exception)
                         } else {
                             SSBBrowseHistory.save()
                             resolver.fulfill_()
@@ -35,9 +35,9 @@ class SSBCoreSpotlightService {
             })
         }
     }
-    
+
     @discardableResult
-    func remove(by titleZh: String) -> Promise<Void>  {
+    func remove(by titleZh: String) -> Promise<Void> {
         return firstly {
             SSBBrowseHistory.find(title: titleZh)
         }.then { item -> Promise<Bool> in
@@ -47,8 +47,8 @@ class SSBCoreSpotlightService {
             return Promise(resolver: { resolver in
                 DispatchQueue.global().async {
                     CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [titleZh]) { error in
-                        if let err = error {
-                            resolver.reject(err)
+                        if let exception = error {
+                            resolver.reject(exception)
                         } else {
                             SSBBrowseHistory.save()
                             resolver.fulfill_()
@@ -58,7 +58,7 @@ class SSBCoreSpotlightService {
             })
         }
     }
-    
+
     @discardableResult
     func removeAll() -> Promise<Void> {
         return firstly {
@@ -67,8 +67,8 @@ class SSBCoreSpotlightService {
             return Promise(resolver: { resolver in
                 DispatchQueue.global().async {
                     CSSearchableIndex.default().deleteAllSearchableItems { error in
-                        if let err = error {
-                            resolver.reject(err)
+                        if let exception = error {
+                            resolver.reject(exception)
                         } else {
                             SSBBrowseHistory.save()
                             resolver.fulfill_()
@@ -93,7 +93,7 @@ extension GameInfoService.GameInfoData.Info.Game {
         // appid每次都会变化，这里单纯使用标题作为标识符, appid另外持久化保存，取出的时候，按照游戏名取出对应的appid
         return CSSearchableItem(uniqueIdentifier: "\(titleZh) \(title ?? "")", domainIdentifier: developer, attributeSet: rateItem)
     }
-    
+
     func addToCoreData() -> Promise<SSBBrowseHistory> {
         return SSBBrowseHistory.createOrUpdate(title: "\(titleZh) \(title ?? "")", appid: appid, developer: developer)
     }

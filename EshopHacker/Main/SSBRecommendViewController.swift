@@ -11,14 +11,14 @@ import Pageboy
 import FontAwesome_swift
 
 class SSBRecommendViewController: TabmanViewController {
-    
+
     private var viewControllers = [UIViewController]()
     private let bar = TMBarView<TMHorizontalBarLayout, TMLabelBarButton, SSBLineIndicator>()
-    
+
     override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         dataSource = self
-        
+
         title = "游戏推荐"
         tabBarItem = UITabBarItem(title: title,
                                   image: UIImage.fontAwesomeIcon(name: .nintendoSwitch,
@@ -26,17 +26,17 @@ class SSBRecommendViewController: TabmanViewController {
                                                                  textColor: .eShopColor,
                                                                  size: .init(width: 40, height: 40)),
                                   tag: SSBRootViewController.TabType.recommend.rawValue)
-        
+
         let listViewController = SSBSearchListViewController(nibName: nil, bundle: nil)
         let todayRecommendController = SSBTodayRecommendViewController(nibName: nil, bundle: nil)
-        
+
         viewControllers += [listViewController, todayRecommendController]
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         bar.layout.contentMode = .fit
@@ -53,17 +53,17 @@ class SSBRecommendViewController: TabmanViewController {
             button.selectedFont = button.font
             button.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         }
-        
+
         view.backgroundColor = .white
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(_:)),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc private func orientationChanged(_ notification: Notification) {
         guard let tabBar = tabBarController?.tabBar else { return }
         let frame = tabBar.frame
@@ -75,11 +75,11 @@ extension SSBRecommendViewController: PageboyViewControllerDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count
     }
-    
+
     func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController? {
         return viewControllers[index]
     }
-    
+
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
         return .at(index: 0)
     }

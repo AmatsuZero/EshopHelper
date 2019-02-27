@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 
 class SSBSearchResultViewController: UIViewController {
-    
+
     let listView = SSBSearchListView()
     let dataSource = SSBSearchListDataSource()
     var lastPage = 1
@@ -21,9 +21,9 @@ class SSBSearchResultViewController: UIViewController {
         return state == .running
     }
     var request: DataRequest?
-    
+
     fileprivate var keyWord = ""
-    
+
     override func loadView() {
         dataSource.hasBanner = false
         listView.delegate = self
@@ -41,7 +41,7 @@ class SSBSearchResultViewController: UIViewController {
         listView.tableView.mj_header?.isHidden = true
         listView.tableView.mj_footer?.isHidden = true
     }
-    
+
     func search(keyword: String) {
         request?.cancel() // 取消上一个任务
         self.keyWord = keyword
@@ -51,7 +51,7 @@ class SSBSearchResultViewController: UIViewController {
 }
 
 extension SSBSearchResultViewController: SSBTableViewDelegate {
-    
+
     func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
@@ -82,7 +82,7 @@ extension SSBSearchResultViewController: SSBTableViewDelegate {
             self?.request = nil
         }
     }
-    
+
     func tableViewBeginToAppend(_ tableView: UITableView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
@@ -97,9 +97,9 @@ extension SSBSearchResultViewController: SSBTableViewDelegate {
                     return
             }
             self.dataSource.append(data: source.games,
-                                   totalCount:source.hits,
+                                   totalCount: source.hits,
                                    collectionView: self.listView.tableView)
-        }.catch { [weak self] error in
+        }.catch { [weak self] _ in
             self?.view.makeToast("请求失败")
             self?.listView.tableView.mj_footer.endRefreshing()
         }.finally { [weak self] in
@@ -109,14 +109,14 @@ extension SSBSearchResultViewController: SSBTableViewDelegate {
             self?.request = nil
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let id = dataSource.dataSource[indexPath.row].originalData.appID
         let viewController = SSBGameDetailViewController(appid: id)
         viewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
     func retry(view: SSBListBackgroundView) {
         tableViewBeginToAppend(listView.tableView)
     }

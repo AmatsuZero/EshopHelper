@@ -20,6 +20,7 @@ PODS:
     - SDWebImage/Core (= 4.4.5)
   - SDWebImage/Core (4.4.5)
   - SnapKit (4.0.1)
+  - SwiftLint (0.30.1)
   - Tabman (2.1.3):
     - AutoInsetter (~> 1.4.1)
     - Pageboy (~> 3.0.1)
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - Reusable
   - SDWebImage (~> 4.0)
   - SnapKit (~> 4.0.0)
+  - SwiftLint
   - Tabman (~> 2.1)
   - Toast-Swift (~> 4.0.0)
   - UIWindowTransitions
@@ -53,6 +55,7 @@ SPEC REPOS:
     - Reusable
     - SDWebImage
     - SnapKit
+    - SwiftLint
     - Tabman
     - Toast-Swift
     - UIWindowTransitions
@@ -69,11 +72,12 @@ SPEC CHECKSUMS:
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   Tabman: 083741793bed532032b1a010f4af3725d49fa519
   Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
 
-PODFILE CHECKSUM: 3588acf9d6cda0787aef63f8f7bc8e7063f6123f
+PODFILE CHECKSUM: f78fd1404bf40ed09b0c3dab8cfc6ee0bdb046bf
 
 COCOAPODS: 1.6.1

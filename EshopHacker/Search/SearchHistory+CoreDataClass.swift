@@ -12,11 +12,11 @@ import CoreData
 
 @objc(SearchHistory)
 public class SearchHistory: NSManagedObject {
-    
+
     enum OperationError: Error {
         case emptyString
     }
-    
+
     class func createOrUpdate(word: String) -> Promise<SearchHistory> {
         return find(text: word).then { words -> Promise<SearchHistory>  in
             guard words.isEmpty else {
@@ -27,7 +27,7 @@ public class SearchHistory: NSManagedObject {
             return add(text: word)
         }
     }
-    
+
     class func add(text: String) -> Promise<SearchHistory> {
         // 插入字符不为空
         guard !text.isEmpty else {
@@ -40,7 +40,7 @@ public class SearchHistory: NSManagedObject {
             resolver.fulfill(model)
         })
     }
-    
+
     class func find(text: String) -> Promise<[SearchHistory]> {
         let request: NSFetchRequest<SearchHistory> = fetchRequest()
         request.predicate = NSPredicate(format: "word CONTAINS %@", text)
@@ -53,12 +53,12 @@ public class SearchHistory: NSManagedObject {
             }
         })
     }
-    
+
     func delete() {
         SearchHistory.context.delete(self)
         SearchHistory.save()
     }
-    
+
     class func save() {
         DispatchQueue.main.async {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {

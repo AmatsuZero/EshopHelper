@@ -8,7 +8,7 @@ target 'EshopHacker' do
   # Pods for EshopHacker
   pod 'Alamofire'
   pod 'PromiseKit/Alamofire'
-  pod 'SnapKit', '~> 4.0.0'
+  pod 'SnapKit', '~> 4.0.0', :inhibit_warnings => true
   pod 'SDWebImage', '~> 4.0'
   pod 'FontAwesome.swift'
   pod 'Tabman', '~> 2.1'
@@ -18,6 +18,7 @@ target 'EshopHacker' do
   pod 'NVActivityIndicatorView', '~> 4.6.0'
   pod 'Toast-Swift', '~> 4.0.0'
   pod 'WechatOpenSDK'
+  pod 'SwiftLint'
 
   target 'EshopHackerTests' do
     inherit! :search_paths

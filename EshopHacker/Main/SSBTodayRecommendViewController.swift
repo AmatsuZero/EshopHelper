@@ -14,7 +14,7 @@ import SafariServices
 import Alamofire
 
 class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
-    
+
     var model: SSBtodayRecommendViewModel? {
         didSet {
             guard let model = model else {
@@ -26,40 +26,40 @@ class SSBTodayRecommendTableViewCell: UITableViewCell, Reusable {
     }
     let coverImageView = SSBLoadingImageView()
     let bottomMask = UIView()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         coverImageView.layer.cornerRadius = 14
         coverImageView.layer.masksToBounds = true
-        
+
         contentView.addSubview(coverImageView)
-        
+
         coverImageView.snp.makeConstraints { make in
             make.left.equalTo(10)
             make.right.equalTo(-10)
             make.height.equalTo(196)
             make.top.equalToSuperview()
         }
-        
+
         bottomMask.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         coverImageView.addSubview(bottomMask)
         bottomMask.snp.makeConstraints { make in
             make.left.bottom.right.equalToSuperview()
             make.height.equalTo(70)
         }
-        
+
         backgroundColor = .clear
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
-    
+
     private let conent = UILabel()
     private let titleLabel = UILabel()
     private let infoContainer = UIView()
@@ -67,7 +67,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
     private let userNameLabel = UILabel()
     private let fakeButton = UIView()
     private lazy var recommendLabel = UILabel()
-    
+
     override var model: SSBtodayRecommendViewModel? {
         didSet {
             guard let data = model else {
@@ -79,10 +79,10 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             self.titleLabel.text = data.gameName
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
         titleLabel.textColor = .white
         bottomMask.addSubview(titleLabel)
@@ -91,7 +91,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.left.equalTo(10)
             make.width.lessThanOrEqualTo(200)
         }
-        
+
         conent.font = UIFont.systemFont(ofSize: 14)
         conent.textColor = .white
         conent.numberOfLines = 2
@@ -103,14 +103,14 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.bottom.equalTo(-10)
         }
-        
+
         contentView.addSubview(infoContainer)
         infoContainer.snp.makeConstraints { make in
             make.top.equalTo(coverImageView.snp.bottom)
             make.right.left.equalTo(coverImageView)
             make.bottom.equalToSuperview()
         }
-        
+
         userAvatar.layer.cornerRadius = 21 / 2
         userAvatar.layer.masksToBounds = true
         userAvatar.backgroundColor = .white
@@ -120,7 +120,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.width.height.equalTo(21)
             make.left.equalTo(4)
         }
-        
+
         userNameLabel.font = UIFont.systemFont(ofSize: 13)
         userNameLabel.textColor = .darkText
         infoContainer.addSubview(userNameLabel)
@@ -128,7 +128,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.centerY.equalToSuperview()
             make.left.equalTo(userAvatar.snp.right).offset(8)
         }
-        
+
         recommendLabel.textColor = .lightGray
         recommendLabel.font = userNameLabel.font
         recommendLabel.text = "推荐"
@@ -137,7 +137,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.left.equalTo(userNameLabel.snp.right).offset(8)
             make.centerY.equalToSuperview()
         }
-        
+
         fakeButton.backgroundColor = UIColor(r: 235, g: 236, b: 237)
         let label = UILabel()
         label.textColor = .lightGray
@@ -148,8 +148,10 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.centerY.equalToSuperview()
             make.left.equalTo(4)
         }
-        
-        let arrow = UIImageView(image: .fontAwesomeIcon(name: .angleRight, style: .solid, textColor: .lightGray, size: .init(width: 12, height: 12)))
+
+        let arrow = UIImageView(image: .fontAwesomeIcon(name: .angleRight, style: .solid,
+                                                        textColor: .lightGray,
+                                                        size: .init(width: 12, height: 12)))
         fakeButton.addSubview(arrow)
         arrow.snp.makeConstraints { make in
             make.left.equalTo(label.snp.right)
@@ -157,7 +159,7 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.width.height.equalTo(12)
         }
         fakeButton.layer.cornerRadius = 20 / 2
-        
+
         infoContainer.addSubview(fakeButton)
         fakeButton.snp.makeConstraints { make in
             make.right.centerY.equalToSuperview()
@@ -165,45 +167,45 @@ class SSBTodayRecommendCommentCell: SSBTodayRecommendTableViewCell {
             make.height.equalTo(20)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
-    
+
     class DiscountLabel: UIView {
-        
+
         private let cutoffLabel = UILabel()
         private let rawPriceLabel = UILabel()
         private let currentPriceLabel = UILabel()
         private let shapeLayer = CAShapeLayer()
-        
+
         var cutOff: String? {
             didSet {
                 cutoffLabel.text = cutOff
             }
         }
-        
+
         var price: (priceRaw: NSAttributedString?, currentPrice: NSAttributedString?)? {
             didSet {
                 rawPriceLabel.attributedText = price?.priceRaw
                 currentPriceLabel.attributedText = price?.currentPrice
             }
         }
-        
+
         override init(frame: CGRect) {
             super.init(frame: frame)
             backgroundColor = .white
-            
+
             shapeLayer.strokeColor = UIColor.eShopColor.cgColor
             shapeLayer.fillColor = UIColor.eShopColor.cgColor
             shapeLayer.lineCap = .round
             shapeLayer.lineJoin = .round
             shapeLayer.lineWidth = 0.5
             layer.addSublayer(shapeLayer)
-            
+
             cutoffLabel.font = UIFont.boldSystemFont(ofSize: 15)
             cutoffLabel.textColor = .white
             cutoffLabel.textAlignment = .center
@@ -212,34 +214,34 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
                 make.centerY.left.equalToSuperview()
                 make.width.equalToSuperview().multipliedBy(0.5)
             }
-            
+
             let container = UIView()
             addSubview(container)
             container.snp.makeConstraints { make in
                 make.top.bottom.right.equalToSuperview()
                 make.width.equalToSuperview().multipliedBy(0.5)
             }
-            
+
             container.addSubview(currentPriceLabel)
             currentPriceLabel.snp.makeConstraints { make in
                 make.right.equalTo(-4)
                 make.top.equalTo(8)
             }
-            
+
             container.addSubview(rawPriceLabel)
             rawPriceLabel.snp.makeConstraints { make in
                 make.top.equalTo(currentPriceLabel.snp.bottom)
                 make.right.equalTo(currentPriceLabel)
             }
         }
-        
+
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         override func draw(_ rect: CGRect) {
             super.draw(rect)
-            
+
             let path = UIBezierPath()
             path.move(to: .init(x: bounds.minX, y: bounds.minY))
             path.addLine(to: .init(x: bounds.width * 0.4, y: bounds.minY))
@@ -248,10 +250,10 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             shapeLayer.path = path.cgPath
         }
     }
-    
+
     private let disCountLabel = DiscountLabel()
     private let titleLabel = UILabel()
-    
+
     override var model: SSBtodayRecommendViewModel? {
         didSet {
             guard let data = model else { return }
@@ -260,10 +262,10 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             disCountLabel.price = (model?.priceRaw, model?.priceCurrent)
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         bottomMask.addSubview(disCountLabel)
         disCountLabel.snp.makeConstraints { make in
             make.right.bottom.equalTo(-10)
@@ -272,7 +274,7 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
         }
         disCountLabel.layer.cornerRadius = 8
         disCountLabel.layer.masksToBounds = true
-        
+
         let label = UILabel()
         label.text = "热门折扣"
         label.textColor = .white
@@ -283,7 +285,7 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             make.width.lessThanOrEqualTo(200)
             make.left.equalTo(10)
         }
-        
+
         titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
         titleLabel.textColor = .white
         bottomMask.addSubview(titleLabel)
@@ -293,18 +295,18 @@ class SSBTodayRecommendDiscountCell: SSBTodayRecommendTableViewCell {
             make.left.equalTo(label)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
-    
+
     private let bottomView = UIView()
     private let titleLabel = UILabel()
     private let timeLabel = UILabel()
-    
+
     override var model: SSBtodayRecommendViewModel? {
         didSet {
             guard let data = model else {
@@ -314,18 +316,19 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             timeLabel.text = data.time
         }
     }
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+
+    override init(style: UITableViewCell.CellStyle,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         bottomMask.isHidden = true
-        
+
         contentView.addSubview(bottomView)
         bottomView.snp.makeConstraints { make in
             make.right.left.equalTo(coverImageView)
             make.top.equalTo(coverImageView.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
-        
+
         titleLabel.numberOfLines = 2
         bottomView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
@@ -333,7 +336,7 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             $0.left.equalToSuperview().offset(2)
             $0.right.equalToSuperview().offset(-2)
         }
-        
+
         timeLabel.font = UIFont.systemFont(ofSize: 13)
         timeLabel.textColor = .lightGray
         bottomView.addSubview(timeLabel)
@@ -341,18 +344,19 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             $0.bottom.equalToSuperview()
             $0.left.equalTo(titleLabel)
         }
-        
+
         let fakeButton = UIView()
         fakeButton.backgroundColor = UIColor(r: 235, g: 236, b: 237)
-        
-        let bookmark = UIImageView(image: .fontAwesomeIcon(name: .bookmark, style: .solid, textColor: .lightGray, size: .init(width: 12, height: 12)))
+
+        let bookmark = UIImageView(image: .fontAwesomeIcon(name: .bookmark, style: .solid,
+                                                           textColor: .lightGray, size: .init(width: 12, height: 12)))
         fakeButton.addSubview(bookmark)
         bookmark.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalTo(4)
             make.width.height.equalTo(12)
         }
-        
+
         let label = UILabel()
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 13)
@@ -362,26 +366,26 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             make.centerY.equalToSuperview()
             make.left.equalTo(bookmark.snp.right)
         }
-        
+
         fakeButton.layer.cornerRadius = 20 / 2
         bottomView.addSubview(fakeButton)
-        
+
         fakeButton.snp.makeConstraints { make in
             make.right.bottom.equalToSuperview()
             make.width.equalTo(72)
             make.height.equalTo(20)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
-    
+
     private let titleLabel = UILabel()
-    
+
     override var model: SSBtodayRecommendViewModel? {
         didSet {
             if let model = model {
@@ -389,10 +393,10 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
             }
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-      
+
         titleLabel.font = UIFont.boldSystemFont(ofSize: 15)
         titleLabel.textColor = .white
         bottomMask.addSubview(titleLabel)
@@ -401,7 +405,7 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
             make.width.lessThanOrEqualTo(200)
             make.left.equalTo(10)
         }
-        
+
         let mark = UILabel()
         mark.text = "NEW"
         mark.textColor = .white
@@ -417,7 +421,7 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
             make.width.equalTo(34)
             make.height.equalTo(17)
         }
-        
+
         let label = UILabel()
         label.text = "热门折扣"
         label.textColor = .white
@@ -429,38 +433,38 @@ class SSBTodayRecommendNewReleasedCell: SSBTodayRecommendTableViewCell {
             make.left.equalTo(10)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBTodayRecommendView: UIView {
-    
+
     let tableView = UITableView(frame: .zero, style: .grouped)
-    
-    weak var delegate : SSBTableViewDelegate? {
+
+    weak var delegate: SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(tableView)
-        
+
         tableView.estimatedRowHeight = 196
         tableView.backgroundView = SSBListBackgroundView(frame: .zero)
         tableView.sectionHeaderHeight = 10
         tableView.sectionFooterHeight = 10
         tableView.separatorStyle = .none
-        
+
         tableView.register(cellType: SSBTodayRecommendCommentCell.self)
         tableView.register(cellType: SSBTodayRecommendHeadlineCell.self)
         tableView.register(cellType: SSBTodayRecommendDiscountCell.self)
         tableView.register(cellType: SSBTodayRecommendNewReleasedCell.self)
-        
+
         // Title
         let contaier = UIView(frame: .init(origin: .zero,
                                            size: .init(width: .screenWidth, height: 55)))
@@ -470,9 +474,9 @@ class SSBTodayRecommendView: UIView {
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textColor = .darkText
         label.text = "今日"
-        
+
         tableView.tableHeaderView = contaier
-        
+
         // 下拉刷新
         tableView.mj_header = SSBCustomRefreshHeader(refreshingTarget: self,
                                                      refreshingAction: #selector(SSBTodayRecommendView.onRefresh(_:)))
@@ -480,20 +484,20 @@ class SSBTodayRecommendView: UIView {
         let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(SSBTodayRecommendView.onAppend(_:)))
         footer?.top = -15
         tableView.mj_footer = footer
-        
+
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToRefresh(tableView)
         }
     }
-    
+
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToAppend(tableView)
@@ -502,10 +506,10 @@ class SSBTodayRecommendView: UIView {
 }
 
 class SSBTodayRecommendViewController: UIViewController {
-    
+
     private let dataSource = SSBTodayRecommendDataSource()
     let todayRecommendView = SSBTodayRecommendView()
-    
+
     private var lastPage = 1
     var request: DataRequest?
     private var isRunningTask: Bool {
@@ -514,30 +518,30 @@ class SSBTodayRecommendViewController: UIViewController {
         }
         return state == .running
     }
-    
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         title = "今日推荐"
     }
-    
+
     override func loadView() {
         todayRecommendView.delegate = self
         todayRecommendView.tableView.dataSource = dataSource
         todayRecommendView.tableView.delegate = self
         view = todayRecommendView
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         todayRecommendView.tableView.mj_header?.isHidden = true
         todayRecommendView.tableView.mj_footer?.isHidden = true
         tableViewBeginToRefresh(todayRecommendView.tableView)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         changeTabBar(hidden: false, animated: animated)
@@ -545,14 +549,14 @@ class SSBTodayRecommendViewController: UIViewController {
 }
 
 extension SSBTodayRecommendViewController: SSBTableViewDelegate {
-    
+
     func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
           //  view.makeToast("正在刷新中")
             return
         }
-        
+
         lastPage = 1
         // 重置没有更多数据的状态
         tableView.mj_footer.resetNoMoreData()
@@ -577,24 +581,24 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
                 self?.request = nil
         }
     }
-    
+
     func tableViewBeginToAppend(_ tableView: UITableView) {
         // 没有下拉刷新的任务，也没有加载任务
         guard !isRunningTask else {
             return
         }
-        
-        let ret = TodayRecommendService.shared.mainPage(page: lastPage + 1)
-        request = ret.requset
-        ret.promise.done { [weak self] data in
+
+        let result = TodayRecommendService.shared.mainPage(page: lastPage + 1)
+        request = result.requset
+        result.promise.done { [weak self] data in
             guard let self = self,
                 let source = data.data else {
                     return
             }
             self.dataSource.append(data: source.informationFlow ?? [],
-                                   totalCount:source.allSize,
+                                   totalCount: source.allSize,
                 collectionView: self.todayRecommendView.tableView)
-            }.catch { [weak self] error in
+            }.catch { [weak self] _ in
                 self?.view.makeToast("请求失败")
                 self?.todayRecommendView.tableView.mj_footer.endRefreshing()
             }.finally { [weak self] in
@@ -604,7 +608,7 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
                 self?.request = nil
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = dataSource.dataSource[indexPath.section]
         guard let type = model.type else {
@@ -613,7 +617,7 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
         switch type {
         case .headline:
             if let addr = model.originalData.content,
-                let url = URL(string: addr)  {
+                let url = URL(string: addr) {
                 let browser = SFSafariViewController(href: url)
                 present(browser, animated: true)
             }
@@ -635,11 +639,11 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return dataSource.heightForRow(indexPath: indexPath)
     }
-    
+
     // MARK: 滚动时隐藏Tabbar
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 { // 向下滚动隐藏
@@ -648,19 +652,19 @@ extension SSBTodayRecommendViewController: SSBTableViewDelegate {
             changeTabBar(hidden: false, animated: true)
         }
     }
-    
-    func changeTabBar(hidden:Bool, animated: Bool) {
+
+    func changeTabBar(hidden: Bool, animated: Bool) {
         guard let tabBar = tabBarController?.tabBar else { return }
-        if tabBar.isHidden == hidden{ return }
+        if tabBar.isHidden == hidden { return }
         let frame = tabBar.frame
-        let duration:TimeInterval = (animated ? 0.5 : 0.0)
+        let duration: TimeInterval = (animated ? 0.5 : 0.0)
         tabBar.isHidden = false
         if animated {
             UIView.animate(withDuration: duration, animations: {
                 tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
-            }) { _ in
+            }, completion: { _ in
                 tabBar.isHidden = hidden
-            }
+            })
         } else {
             tabBar.frame.origin.y = hidden ? .screenHeight : (.screenHeight - frame.height)
             tabBar.isHidden = hidden

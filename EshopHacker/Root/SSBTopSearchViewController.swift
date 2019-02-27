@@ -14,7 +14,7 @@ protocol SSBTopSearchDelegate: UITextFieldDelegate {
 }
 
 class SSBTopSearchView: UIView {
-    
+
     weak var delegate: SSBTopSearchDelegate?
     fileprivate let backButton: UIButton = {
         let button = UIButton()
@@ -23,7 +23,7 @@ class SSBTopSearchView: UIView {
         button.addTarget(self, action: #selector(onGoBack), for: .touchUpInside)
         return button
     }()
-    
+
     fileprivate let cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("取消", for: .normal)
@@ -33,7 +33,7 @@ class SSBTopSearchView: UIView {
         button.titleLabel?.textAlignment = .center
         return button
     }()
-    
+
     fileprivate let searchField: UITextField = {
         let textField = UITextField()
         textField.layer.cornerRadius = 6
@@ -60,10 +60,10 @@ class SSBTopSearchView: UIView {
         textField.leftView = imageView
         return textField
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(cancelButton)
         cancelButton.snp.makeConstraints { make in
             if #available(iOS 11, *) {
@@ -74,7 +74,7 @@ class SSBTopSearchView: UIView {
             make.bottom.equalTo(-4)
             make.height.width.equalTo(30)
         }
-        
+
         addSubview(searchField)
         searchField.snp.makeConstraints { make in
             if #available(iOS 11, *) {
@@ -85,36 +85,36 @@ class SSBTopSearchView: UIView {
             make.right.equalTo(cancelButton.snp.left).offset(-8)
             make.bottom.height.equalTo(cancelButton)
         }
-        
+
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "搜索", attributes: UINavigationBar.appearance().titleTextAttributes)
-        
+
         addSubview(label)
         label.snp.makeConstraints { make in
             make.bottom.equalTo(searchField.snp.top).offset(-10)
             make.centerX.equalToSuperview()
         }
-        
+
         addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.centerY.equalTo(label)
             make.left.equalTo(searchField)
         }
-        
+
         backgroundColor = .eShopColor
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func onGoBack() {
         delegate?.onGoBack(self)
     }
 }
 
 class SSBTopSearchViewController: UIViewController {
-    
+
     weak var delegate: SSBTopSearchDelegate? {
         didSet {
             searchView.delegate = delegate
@@ -122,13 +122,13 @@ class SSBTopSearchViewController: UIViewController {
     }
     private let searchView = SSBTopSearchView()
     fileprivate let searchHistoryViewController = SSBSearchHistoryTableViewController()
-    
+
     override func loadView() {
         view = searchView
         searchView.searchField.delegate = self
         searchHistoryViewController.delegate = self
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 保存变更结果
@@ -137,13 +137,13 @@ class SSBTopSearchViewController: UIViewController {
 }
 
 extension SSBTopSearchViewController: UITextFieldDelegate {
-    
+
     // MARK: TextField Delegate
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         showSearchHistory()
         return true
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text as NSString? ?? ""
         searchHistoryViewController.currentText = text.replacingCharacters(in: range, with: string)
@@ -168,7 +168,7 @@ extension SSBTopSearchViewController: UITextFieldDelegate {
         delegate?.onSearchText(keyword: text)
         return true
     }
-    
+
     private func showSearchHistory() {
         guard let father = parent as? SSBGameSearchViewController else {
             return
@@ -184,7 +184,7 @@ extension SSBTopSearchViewController: UITextFieldDelegate {
             self.searchHistoryViewController.view.alpha = 1
         }
     }
-    
+
     private func hideSearchHistory() {
         UIView.animate(withDuration: 0.3, animations: {
             self.searchHistoryViewController.view.alpha = 0
@@ -196,7 +196,7 @@ extension SSBTopSearchViewController: UITextFieldDelegate {
 }
 
 extension SSBTopSearchViewController: SSBSearchHistoryTableViewControllerDelegate {
-    
+
     func onSelect(text: String) {
         searchView.searchField.text = text
         // 结束编辑状态
@@ -206,7 +206,7 @@ extension SSBTopSearchViewController: SSBSearchHistoryTableViewControllerDelegat
         // 搜索关键字
         delegate?.onSearchText(keyword: text)
     }
-    
+
     func onWillDismiss(_ controller: SSBSearchHistoryTableViewController) {
         view.endEditing(true)
     }

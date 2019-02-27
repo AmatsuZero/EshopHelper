@@ -9,14 +9,14 @@
 import UIKit
 
 class SSBGameRateView: UITableViewCell {
-    
+
     private let rateLabel = UILabel()
     var rate: String? {
         didSet {
             rateLabel.text = rate
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let stackView = UIStackView()
@@ -29,19 +29,19 @@ class SSBGameRateView: UITableViewCell {
             make.left.equalTo(10)
             make.centerY.equalToSuperview()
         }
-        
+
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.textColor = UIColor.darkText
         label.text = "metacritic"
         stackView.addArrangedSubview(label)
-        
+
         let tinyLabel = UILabel()
         tinyLabel.font = UIFont.systemFont(ofSize: 12)
         tinyLabel.textColor = UIColor.lightGray
         tinyLabel.text = "媒体评分综合汇总"
         stackView.addArrangedSubview(tinyLabel)
-        
+
         rateLabel.layer.borderColor = UIColor(r: 247, g: 209, b: 101).cgColor
         rateLabel.layer.borderWidth = 2
         rateLabel.backgroundColor = .black
@@ -54,28 +54,28 @@ class SSBGameRateView: UITableViewCell {
             make.centerY.equalToSuperview()
             make.width.height.equalTo(24)
         }
-        
+
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBGameRateViewController: UIViewController {
-    
+
     private let rateView = SSBGameRateView()
     var rate: String? {
         didSet {
             rateView.rate = rate
         }
     }
-    
+
     override func loadView() {
         view = rateView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -96,10 +96,10 @@ class SSBGameDetailDescriptionView: UITableViewCell {
             data.convert(from: descriptionLabel)
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         let largeLabel = UILabel()
         largeLabel.font = .boldSystemFont(ofSize: 19)
         largeLabel.textColor = .darkText
@@ -109,7 +109,7 @@ class SSBGameDetailDescriptionView: UITableViewCell {
             make.top.left.equalTo(10)
             make.height.equalTo(20)
         }
-        
+
         descriptionLabel.numberOfLines = 0
         descriptionLabel.allowsDefaultTighteningForTruncation = true
         descriptionLabel.font = .systemFont(ofSize: 14)
@@ -120,17 +120,17 @@ class SSBGameDetailDescriptionView: UITableViewCell {
             make.left.equalTo(10)
             make.right.bottom.equalTo(-10)
         }
-        
+
         descriptionLabel.isUserInteractionEnabled = true
         let touch = UITapGestureRecognizer.init(target: self, action: #selector(toggleState(_:)))
         descriptionLabel.addGestureRecognizer(touch)
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func toggleState(_ sender: UITapGestureRecognizer) {
         guard dataSource?.isExpandable ?? false else {
             return
@@ -148,16 +148,16 @@ class SSBGameDetailDescriptionViewController: UIViewController {
     }
     weak var delegate: SSBGameInfoViewControllerReloadDelegate?
     private let detailView = SSBGameDetailDescriptionView()
-    
+
     override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         detailView.delegate = self
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         view = detailView
     }

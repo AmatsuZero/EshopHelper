@@ -15,18 +15,18 @@ class SSBLaunchView: UIView {
     private let duration: CFTimeInterval = 1
     private let label = UILabel()
     private var persistenceHelpers = [LayerPersistentHelper]()
-    
+
     var fillColor = UIColor(r: 255, g: 156, b: 99) {
         didSet {
             animationLayer.sublayers?.forEach { $0.backgroundColor = fillColor.cgColor }
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .eShopColor
         layer.addSublayer(animationLayer)
-        
+
         addSubview(label)
         label.text = "eShop Helper"
         label.textColor = .white
@@ -38,33 +38,33 @@ class SSBLaunchView: UIView {
             make.right.equalTo(-20)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         animationLayer.frame = .init(origin: .zero, size: rect.size)
-        
+
         let count = Int(rect.height / fixedHeight)
-        
+
         // frame发生变化，或者屏幕转向发生变化，则需要重绘
         guard animationLayer.sublayers?.count ?? 0 != count ||
             animationLayer.frame.width != rect.width else {
             return
         }
-        
+
         animationLayer.sublayers?.forEach { $0.removeFromSuperlayer() }
         animationLayer.sublayers?.removeAll()
         persistenceHelpers.removeAll()
-        
-        for (i, y) in stride(from: 0, through: rect.height, by: fixedHeight).enumerated() {
+
+        for (i, originY) in stride(from: 0, through: rect.height, by: fixedHeight).enumerated() {
             let bouncingLayer = CAShapeLayer()
             bouncingLayer.backgroundColor = fillColor.cgColor
             bouncingLayer.anchorPoint = .zero // 默认是在中间，这里需要设置为0.0
-            bouncingLayer.frame = .init(x: 0, y: y, width: rect.width, height: fixedHeight)
-            
+            bouncingLayer.frame = .init(x: 0, y: originY, width: rect.width, height: fixedHeight)
+
             let animation = CABasicAnimation(keyPath: "bounds.size.width")
             animation.duration = duration
             animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
@@ -74,9 +74,9 @@ class SSBLaunchView: UIView {
             animation.fillMode = CAMediaTimingFillMode.backwards
             animation.repeatCount = .greatestFiniteMagnitude
             animation.autoreverses = true
-            
+
             bouncingLayer.add(animation, forKey: "bouncing_\(i)")
-            
+
             animationLayer.addSublayer(bouncingLayer)
             // 添加前后台切换工具类
             let helper = LayerPersistentHelper(with: bouncingLayer)

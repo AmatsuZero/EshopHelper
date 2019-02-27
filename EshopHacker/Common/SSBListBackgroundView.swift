@@ -21,16 +21,16 @@ class SSBListBackgroundView: UIView {
         case error(SSBListBackgroundViewDelegate?)
         case empty
     }
-    
+
     private weak var delegate: SSBListBackgroundViewDelegate?
-    
+
     var state = State.loading {
         didSet {
             sholudStop = true
             retryImageView.layer.removeAllAnimations() // 移除原来的动画
             setNeedsLayout()
             delegate = nil
-            
+
             switch state {
             case .loading:
                 loadingIndicator.isHidden = false
@@ -56,9 +56,9 @@ class SSBListBackgroundView: UIView {
             retryButton.backgroundColor = .eShopColor
         }
     }
-    
+
     private let loadingIndicator: NVActivityIndicatorView
-    
+
     var indicatorHeight: CGFloat = 40 {
         didSet {
             setNeedsLayout()
@@ -72,7 +72,7 @@ class SSBListBackgroundView: UIView {
             guard needImage else { return }
             setNeedsLayout()
             retryImageView.image = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
-            
+
             retryImageView.snp.updateConstraints {
                 $0.width.height.equalTo(imageViewSize)
             }
@@ -86,11 +86,11 @@ class SSBListBackgroundView: UIView {
             }
         }
     }
-    
+
     private var errorViewHeight: CGFloat {
         return (needImage ? imageViewSize : 0) + errorViewPadding + buttonSize.height
     }
-    
+
     private let retryImageView = UIImageView()
     var errorViewPadding: CGFloat = 8 {
         didSet {
@@ -105,55 +105,55 @@ class SSBListBackgroundView: UIView {
     private let retryButton = UIButton(type: .custom)
     let emptyImageView = UIImageView()
     private let emptyLabel = UILabel()
-    
+
     private let needImage: Bool
-    
+
     var emptyDescription: String = "没有数据" {
         didSet {
             emptyLabel.text = emptyDescription
         }
     }
-    
-    init(frame:CGRect,needImage: Bool = true, type: NVActivityIndicatorType = .pacman) {
-        
+
+    init(frame: CGRect, needImage: Bool = true, type: NVActivityIndicatorType = .pacman) {
+
         self.needImage = needImage
-        
+
         loadingIndicator = NVActivityIndicatorView(frame: .zero,
                                                    type: type,
                                                    color: .eShopColor,
                                                    padding: 0)
-        
+
         super.init(frame: frame)
-        
+
         addSubview(loadingIndicator)
         loadingIndicator.snp.makeConstraints { make in
             make.width.height.equalTo(indicatorHeight)
             make.center.equalToSuperview()
         }
         loadingIndicator.startAnimating()
-        
+
         errorView.isHidden = true
         emptyView.isHidden = true
-        
+
         addSubview(errorView)
         addSubview(emptyView)
-        
+
         retryButton.setTitle("重试", for: .normal)
         retryButton.setTitleColor(.white, for: .normal)
         retryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         retryButton.backgroundColor = .eShopColor
         errorView.addSubview(retryButton)
-        
+
         retryButton.layer.cornerRadius = buttonSize.height / 2
         retryButton.layer.masksToBounds = true
         retryButton.addTarget(self, action: #selector(SSBListBackgroundView.onRetryButtonClicked(_:)), for: .touchUpInside)
-        
+
         emptyLabel.font = retryButton.titleLabel?.font
         emptyLabel.textColor = .gray
         emptyLabel.backgroundColor = .clear
         emptyLabel.text = emptyDescription
         emptyView.addSubview(emptyLabel)
-        
+
         let imageViewSize = needImage ? self.imageViewSize : 0
         let retryImage = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
         retryImageView.image = retryImage
@@ -169,19 +169,19 @@ class SSBListBackgroundView: UIView {
             make.top.centerX.equalToSuperview()
             make.width.height.equalTo(imageViewSize)
         }
-        
+
         retryButton.snp.makeConstraints { make in
             make.size.equalTo(buttonSize)
             make.top.equalTo(retryImageView.snp.bottom).offset(errorViewPadding)
             make.centerX.equalToSuperview()
         }
-        
+
         errorView.snp.makeConstraints {
             $0.width.equalTo(retryButton.snp.width)
             $0.height.equalTo(errorViewHeight)
             $0.center.equalToSuperview()
         }
-        
+
         emptyImageView.image = .fontAwesomeIcon(name: .nintendoSwitch,
                                                 style: .brands,
                                                 textColor: .gray,
@@ -191,28 +191,28 @@ class SSBListBackgroundView: UIView {
             make.top.centerX.equalToSuperview()
             make.width.height.equalTo(imageViewSize)
         }
-        
+
         emptyLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(emptyImageView.snp.bottom).offset(errorViewPadding)
         }
-        
+
         emptyView.snp.makeConstraints {
             $0.width.equalTo(retryButton.snp.width)
             $0.height.equalTo(errorViewHeight)
             $0.center.equalToSuperview()
         }
-        
+
         backgroundColor = .white
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private var sholudStop = false
     private var isRotating = false
-    
+
     @objc private func onRetryButtonClicked(_ sender: UIButton) {
         if needImage {
             startAnimation()
@@ -223,7 +223,7 @@ class SSBListBackgroundView: UIView {
         sender.isEnabled = false
         sender.backgroundColor = .gray
     }
-    
+
     private func startAnimation() {
         guard !isRotating else {
             return
@@ -231,7 +231,7 @@ class SSBListBackgroundView: UIView {
         retryImageView.rotate360Degrees(completionDelegate: self)
         isRotating = true
     }
-    
+
     private func reset() {
         isRotating = false
         sholudStop = false

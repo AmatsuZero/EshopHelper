@@ -10,9 +10,9 @@ import UIKit
 import PromiseKit
 
 class SSBGamePostViewController: SSBCommunityViewController {
-    
+
     weak var reloadDelegate: SSBGameInfoViewControllerReloadDelegate?
-    
+
     fileprivate lazy var moreButton: UIButton = {
         let btn = UIButton(frame: .init(x: 0, y: 0, width: .screenWidth, height: 36))
         btn.backgroundColor = .white
@@ -22,16 +22,18 @@ class SSBGamePostViewController: SSBCommunityViewController {
         btn.addTarget(self, action: #selector(viewAllPosts(_:)), for: .touchUpInside)
         return btn
     }()
-    
+
     override init(appid: String) {
         super.init(appid: appid)
-        NotificationCenter.default.removeObserver(self)
+        SSBGamePostViewController.removeNotification(observer: self)
     }
-    
+    class func removeNotification(observer: SSBGamePostViewController) {
+        NotificationCenter.default.removeObserver(observer)
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         headerView = SSBCommunityHeaderView(isEmbeded: true)
         headerView.delegate = self
@@ -39,14 +41,14 @@ class SSBGamePostViewController: SSBCommunityViewController {
         button.isHidden = true
         super.viewDidLoad()
     }
-    
+
     var isReloadOnce = false
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshHeight()
     }
-    
+
     func refreshHeight() {
         if !isRunningTask && !isReloadOnce {
             // Cell开始显示了，刷新一下改行实际高度, 因为前面也有有可能自动计算的，所以这里全部刷新
@@ -54,7 +56,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
             isReloadOnce = true
         }
     }
-    
+
     @discardableResult
     func fetchData() -> Promise<CGFloat> {
         lastPage = 1
@@ -75,22 +77,22 @@ class SSBGamePostViewController: SSBCommunityViewController {
             return Promise.value(self.totalHeight)
         }
     }
-    
+
     var totalHeight: CGFloat {
         guard dataSource.count != 0 else {
             return 100
         }
         return communityView.tableView.contentSize.height  == 0 ? 110 : communityView.tableView.contentSize.height
     }
-    
+
     @objc func viewAllPosts(_ sender: UIButton) {
         delegate?.scrollTo(self, index: 2, animated: true)
     }
-    
+
     override func tableViewBeginToRefresh(_ tableView: UITableView) {
-        
+
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var height = super.tableView(tableView, heightForHeaderInSection: section)
         if section == 0 {
@@ -98,7 +100,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
         }
         return height
     }
-    
+
     override func toggleFoldState(_ cell: UITableViewCell) {
         var model: SSBGamePostViewModel?
         if let view = cell as? SSBCommunityFoldCell {
@@ -107,7 +109,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
             model = view.viewModel
         }
         guard let data = model,
-            let index = dataSource.dataSource.firstIndex(where: { $0 === data} ) else {
+            let index = dataSource.dataSource.firstIndex(where: { $0 === data}) else {
                 return
         }
         let indexPath = IndexPath(row: index, section: 1)
@@ -119,8 +121,8 @@ class SSBGamePostViewController: SSBCommunityViewController {
     }
 }
 
-extension SSBGamePostViewController: SSBCommunityHeaderViewDelegate{
-    
+extension SSBGamePostViewController: SSBCommunityHeaderViewDelegate {
+
     func onMoreButtonClicked(_ view: SSBCommunityViewController.SSBCommunityHeaderView) {
         delegate?.scrollTo(self, index: 2, animated: true)
     }

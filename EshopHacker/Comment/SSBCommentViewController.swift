@@ -10,14 +10,14 @@ import Reusable
 import Alamofire
 
 class SSBCommentView: UITableViewCell {
-    
+
     let tableView = UITableView(frame: .zero, style: .grouped)
     weak var delegate: SSBTableViewDelegate? {
         didSet {
             tableView.delegate = delegate
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(tableView)
@@ -27,7 +27,7 @@ class SSBCommentView: UITableViewCell {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableView.automaticDimension
-        
+
         let backgroundView = SSBListBackgroundView(frame: .zero, type: .orbit)
         backgroundView.emptyDescription = "成为第一个评论的人吧"
         backgroundView.emptyImageView.image = UIImage.fontAwesomeIcon(name: .comments,
@@ -41,22 +41,22 @@ class SSBCommentView: UITableViewCell {
         let footer = SSBCustomAutoFooter(refreshingTarget: self, refreshingAction: #selector(onAppend(_:)))
         footer?.top = 15
         tableView.mj_footer = footer
-    
+
         tableView.backgroundView = backgroundView
         tableView.register(cellType: SSBCommentTableViewCell.self)
         tableView.register(cellType: SSBMyCommentTableViewCell.self)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToRefresh(self.tableView)
         }
     }
-    
+
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToAppend(self.tableView)
@@ -65,7 +65,7 @@ class SSBCommentView: UITableViewCell {
 }
 
 class SSBCommentViewController: UIViewController {
-    
+
     var dataSource: SSBCommentViewModel? {
         didSet {
             let tableView = listView.tableView
@@ -82,10 +82,10 @@ class SSBCommentViewController: UIViewController {
                 tableView.backgroundView?.isHidden = true
                 tableView.mj_footer?.isHidden = false
             }
-            
+
             tableView.mj_header?.isHidden = false
             tableView.reloadData()
-    
+
             if dataSource?.totalCount == dataSource?.comments.count {// 已经取得全部数据
                 tableView.mj_footer.endRefreshingWithNoMoreData()
             } else {
@@ -108,22 +108,22 @@ class SSBCommentViewController: UIViewController {
     var margin: CGFloat = 5
     var emptyMyCommentView = SSBMyCommentEmptyView()
     var request: DataRequest?
-    
+
     init(appid: String) {
         appId = appid
         super.init(nibName: nil, bundle: nil)
         listView.delegate = self
         title = "评测"
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         view = listView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         listView.tableView.mj_header?.isHidden = true
@@ -133,27 +133,27 @@ class SSBCommentViewController: UIViewController {
 }
 
 extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewDelegate {
-    
+
     func retry(view: SSBListBackgroundView) {
         tableViewBeginToRefresh(listView.tableView)
     }
-    
+
     func tableViewBeginToRefresh(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
         }
-        
+
         lastPage = 1
         // 重置没有更多数据的状态
         listView.tableView.mj_footer.resetNoMoreData()
-        
+
         let backgroundView = listView.tableView.backgroundView as? SSBListBackgroundView
-        
-        let (req, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
-        self.request = req
-        promise.done { [weak self] ret in
-            guard let self = self, let data = ret.data else {
+
+        let (request, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
+        self.request = request
+        promise.done { [weak self] result in
+            guard let self = self, let data = result.data else {
                 return
             }
             let model = SSBCommentViewModel(model: data)
@@ -171,17 +171,17 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
             self?.request = nil
         }
     }
-    
+
     func tableViewBeginToAppend(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
         }
-    
-        let ret = CommentService.shared.getGameComment(by: appId, page: lastPage + 1)
-        request = ret.request
-        ret.promise.done { [weak self] ret in
-            guard let self = self, let data = ret.data else {
+
+        let result = CommentService.shared.getGameComment(by: appId, page: lastPage + 1)
+        request = result.request
+        result.promise.done { [weak self] result in
+            guard let self = self, let data = result.data else {
                 return
             }
             self.dataSource?.append(model: data, tableView: tableView)
@@ -197,12 +197,12 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
             self?.request = nil
         }
     }
-    //MARK: UITableView Delegate
+    // MARK: UITableView Delegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard tableView.backgroundView?.isHidden == true else {
             let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
             view.backgroundColor = .clear
-            return view;
+            return view
         }
         if section == 0 {
             if dataSource?.myCommnets.isEmpty ?? true {
@@ -217,27 +217,27 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
             return sectionHeader
         }
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
         view.backgroundColor = .clear
         return view
     }
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return margin
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard tableView.backgroundView?.isHidden == true else {
-            return margin;
+            return margin
         }
         if section == 0 {
             return dataSource?.myCommnets.isEmpty ?? true ? 110 : 40
         }
         return dataSource?.comments.isEmpty ?? true ? 0 : 40
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SSBCommentTableViewCell else {
             return
@@ -247,8 +247,10 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
             tableView.reloadRows(at: [indexPath], with: .fade)
         }
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
         if let cell = cell as? SSBMyCommentTableViewCell {
             cell.delegate = self
         } else if let cell = cell as? SSBCommentTableViewCell {
@@ -258,30 +260,30 @@ extension SSBCommentViewController: SSBTableViewDelegate, SSBListBackgroundViewD
 }
 
 extension SSBCommentViewController: SSBCommentSectionHeaderViewDeleagate, SSBMyCommentEmptyViewDelegate {
-    
+
     // MARK: SSBMyCommentEmptyViewDelegate
     func onLikeButtonClicked(_ view: SSBMyCommentEmptyView) {
-        
+
     }
-    
+
     func onDislikeButtonClicked(_ view: SSBMyCommentEmptyView) {
-        
+
     }
-    
+
     // MARK: SSBCommentSectionHeaderViewDeleagate
     func onSortButtonClicked(_ view: SSBCommentSectionHeaderView) {
-        
+
     }
-    
+
     func onViewAllCommentsButtonClicked(_ view: SSBCommentSectionHeaderView) {
-        
+
     }
 }
 
 extension SSBCommentViewController: SSBMyCommentTableViewCellDelegate, SSBCommentTableViewCellDelegate {
     // MARK: SSBMyCommentTableViewCellDelegate
     func onMoreButtonClicked(_ cell: SSBMyCommentTableViewCell) {
-        
+
     }
 
     // MARK: SSBCommentTableViewCellDelegate 

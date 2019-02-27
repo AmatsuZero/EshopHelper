@@ -9,7 +9,7 @@
 import SafariServices
 
 extension SFSafariViewController {
-    
+
     convenience init(href url: URL, delegate: SFSafariViewControllerDelegate? = nil) {
         if #available(iOS 11.0, *) {
             let config = SFSafariViewController.Configuration()

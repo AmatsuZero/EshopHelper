@@ -11,9 +11,9 @@ import PromiseKit
 import CoreData
 
 extension SearchHistory {
-    
+
     static let entityName = "SearchHistory"
-    
+
     static var context: NSManagedObjectContext  = {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }()

@@ -19,9 +19,9 @@ extension UIDevice {
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
     }()
-    
+
     static let modelName: String = {
-        
+
         func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
             #if os(iOS)
             switch identifier {
@@ -65,8 +65,10 @@ extension UIDevice {
             case "AppleTV5,3":                              return "Apple TV"
             case "AppleTV6,2":                              return "Apple TV 4K"
             case "AudioAccessory1,1":                       return "HomePod"
-            case "i386", "x86_64":                          return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
-            default:                                        return identifier
+            case "i386", "x86_64":
+                return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
+            default:
+                return identifier
             }
             #elseif os(tvOS)
             switch identifier {
@@ -77,7 +79,7 @@ extension UIDevice {
             }
             #endif
         }
-        
+
         return mapToDevice(identifier: identifier)
     }()
 }

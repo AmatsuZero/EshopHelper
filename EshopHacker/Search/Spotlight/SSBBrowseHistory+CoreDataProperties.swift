@@ -10,15 +10,14 @@
 import Foundation
 import CoreData
 
-
 extension SSBBrowseHistory {
-    
+
     static let entityName = "SSBBrowseHistory"
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SSBBrowseHistory> {
         return NSFetchRequest<SSBBrowseHistory>(entityName: entityName)
     }
-    
+
     static var context: NSManagedObjectContext  = {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }()

@@ -5,7 +5,6 @@
 //  Created by Jiang,Zhenhua on 2019/2/3.
 //
 
-
 import Foundation
 
 /// A node in the trie
@@ -17,7 +16,7 @@ class SSBTrieNode<T: Hashable> {
     var isLeaf: Bool {
         return children.count == 0
     }
-    
+
     /// Initializes a node.
     ///
     /// - Parameters:
@@ -27,7 +26,7 @@ class SSBTrieNode<T: Hashable> {
         self.value = value
         self.parentNode = parentNode
     }
-    
+
     /// Adds a child node to self.  If the child is already present,
     /// do nothing.
     ///
@@ -58,14 +57,14 @@ class SSBTrie: NSObject, NSCoding {
     }
     fileprivate let root: Node
     fileprivate var wordCount: Int
-    
+
     /// Creates an empty trie.
     override init() {
         root = Node()
         wordCount = 0
         super.init()
     }
-    
+
     // MARK: NSCoding
     /// Initializes the trie with words from an archive
     ///
@@ -77,7 +76,7 @@ class SSBTrie: NSObject, NSCoding {
         }
         words.forEach { self.insert(word: $0) }
     }
-    
+
     /// Encodes the words in the trie by putting them in an array then encoding
     /// the array.
     ///
@@ -85,14 +84,11 @@ class SSBTrie: NSObject, NSCoding {
     func encode(with coder: NSCoder) {
         coder.encode(words, forKey: "words")
     }
-    
+
     subscript(prefix: String) -> [String] {
-        get {
-            return findWordsWithPrefix(prefix: prefix)
-        }
+       return findWordsWithPrefix(prefix: prefix)
     }
 }
-
 
 // MARK: - Adds methods: insert, remove, contains
 extension SSBTrie {
@@ -120,7 +116,7 @@ extension SSBTrie {
         wordCount += 1
         currentNode.isTerminating = true
     }
-    
+
     /// Determines whether a word is in the trie.
     ///
     /// - Parameter word: the word to check for
@@ -138,7 +134,7 @@ extension SSBTrie {
         }
         return currentNode.isTerminating
     }
-    
+
     /// Attempts to walk to the last node of a word.  The
     /// search will fail if the word is not present. Doesn't
     /// check if the node is terminating
@@ -156,7 +152,7 @@ extension SSBTrie {
         }
         return currentNode
     }
-    
+
     /// Attempts to walk to the terminating node of a word.  The
     /// search will fail if the word is not present.
     ///
@@ -169,7 +165,7 @@ extension SSBTrie {
         }
         return nil
     }
-    
+
     /// Deletes a word from the trie by starting with the last letter
     /// and moving back, deleting nodes until either a non-leaf or a
     /// terminating node is found.
@@ -188,7 +184,7 @@ extension SSBTrie {
             }
         }
     }
-    
+
     /// Removes a word from the trie.  If the word is not present or
     /// it is empty, just ignore it.  If the last node is a leaf,
     /// delete that node and higher nodes that are leaves until a
@@ -211,7 +207,7 @@ extension SSBTrie {
         }
         wordCount -= 1
     }
-    
+
     /// Returns an array of words in a subtrie of the trie
     ///
     /// - Parameters:
@@ -233,7 +229,7 @@ extension SSBTrie {
         }
         return subtrieWords
     }
-    
+
     /// Returns an array of words in a subtrie of the trie that start
     /// with given prefix
     ///
@@ -257,31 +253,31 @@ extension SSBTrie {
 }
 
 public final class LinkedList<T> {
-    
+
     public class LinkedListNode<T> {
         var value: T
         var next: LinkedListNode?
         weak var previous: LinkedListNode?
-        
+
         public init(value: T) {
             self.value = value
         }
     }
-    
+
     public typealias Node = LinkedListNode<T>
-    
+
     fileprivate var head: Node?
-    
+
     public init() {}
-    
+
     public var isEmpty: Bool {
         return head == nil
     }
-    
+
     public var first: Node? {
         return head
     }
-    
+
     public var last: Node? {
         if var node = head {
             while let next = node.next {
@@ -292,44 +288,44 @@ public final class LinkedList<T> {
             return nil
         }
     }
-    
+
     public var count: Int {
         if var node = head {
-            var c = 1
+            var character = 1
             while let next = node.next {
                 node = next
-                c += 1
+                character += 1
             }
-            return c
+            return character
         } else {
             return 0
         }
     }
-    
+
     public func node(atIndex index: Int) -> Node? {
         if index >= 0 {
             var node = head
-            var i = index
+            var index = index
             while node != nil {
-                if i == 0 { return node }
-                i -= 1
+                if index == 0 { return node }
+                index -= 1
                 node = node!.next
             }
         }
         return nil
     }
-    
+
     public subscript(index: Int) -> T {
         let node = self.node(atIndex: index)
         assert(node != nil)
         return node!.value
     }
-    
+
     public func append(_ value: T) {
         let newNode = Node(value: value)
         self.append(newNode)
     }
-    
+
     public func append(_ node: Node) {
         let newNode = LinkedListNode(value: node.value)
         if let lastNode = last {
@@ -339,7 +335,7 @@ public final class LinkedList<T> {
             head = newNode
         }
     }
-    
+
     public func append(_ list: LinkedList) {
         var nodeToCopy = list.head
         while let node = nodeToCopy {
@@ -347,14 +343,14 @@ public final class LinkedList<T> {
             nodeToCopy = node.next
         }
     }
-    
+
     private func nodesBeforeAndAfter(index: Int) -> (Node?, Node?) {
         assert(index >= 0)
-        
+
         var i = index
         var next = head
         var prev: Node?
-        
+
         while next != nil && i > 0 {
             i -= 1
             prev = next
@@ -363,12 +359,12 @@ public final class LinkedList<T> {
         assert(i == 0)  // if > 0, then specified index was too large
         return (prev, next)
     }
-    
+
     public func insert(_ value: T, atIndex index: Int) {
         let newNode = Node(value: value)
         self.insert(newNode, atIndex: index)
     }
-    
+
     public func insert(_ node: Node, atIndex index: Int) {
         let (prev, next) = nodesBeforeAndAfter(index: index)
         let newNode = LinkedListNode(value: node.value)
@@ -376,12 +372,12 @@ public final class LinkedList<T> {
         newNode.next = next
         prev?.next = newNode
         next?.previous = newNode
-        
+
         if prev == nil {
             head = newNode
         }
     }
-    
+
     public func insert(_ list: LinkedList, atIndex index: Int) {
         if list.isEmpty { return }
         var (prev, next) = nodesBeforeAndAfter(index: index)
@@ -401,32 +397,32 @@ public final class LinkedList<T> {
         prev?.next = next
         next?.previous = prev
     }
-    
+
     public func removeAll() {
         head = nil
     }
-    
+
     @discardableResult public func remove(node: Node) -> T {
         let prev = node.previous
         let next = node.next
-        
+
         if let prev = prev {
             prev.next = next
         } else {
             head = next
         }
         next?.previous = prev
-        
+
         node.previous = nil
         node.next = nil
         return node.value
     }
-    
+
     @discardableResult public func removeLast() -> T {
         assert(!isEmpty)
         return remove(node: last!)
     }
-    
+
     @discardableResult public func remove(atIndex index: Int) -> T {
         let node = self.node(atIndex: index)
         assert(node != nil)
@@ -468,7 +464,7 @@ extension LinkedList {
         }
         return result
     }
-    
+
     public func filter(predicate: (T) -> Bool) -> LinkedList<T> {
         let result = LinkedList<T>()
         var node = head
@@ -483,9 +479,9 @@ extension LinkedList {
 }
 
 extension LinkedList {
-    convenience init(array: Array<T>) {
+    convenience init(array: [T]) {
         self.init()
-        
+
         for element in array {
             self.append(element)
         }
@@ -495,7 +491,7 @@ extension LinkedList {
 extension LinkedList: ExpressibleByArrayLiteral {
     public convenience init(arrayLiteral elements: T...) {
         self.init()
-        
+
         for element in elements {
             self.append(element)
         }
@@ -507,32 +503,32 @@ public class LRUCache<KeyType: Hashable, ValueType> {
     private var cache: [KeyType: ValueType] = [:]
     private var priority: LinkedList<KeyType> = LinkedList<KeyType>()
     private var key2node: [KeyType: LinkedList<KeyType>.LinkedListNode<KeyType>] = [:]
-    
+
     public init(_ maxSize: Int) {
         self.maxSize = maxSize
     }
-    
+
     public func get(_ key: KeyType) -> ValueType? {
         guard let val = cache[key] else {
             return nil
         }
-        
+
         remove(key)
         insert(key, val: val)
-        
+
         return val
     }
-    
+
     public func set(_ key: KeyType, val: ValueType) {
         if cache[key] != nil {
             remove(key)
         } else if priority.count >= maxSize, let keyToRemove = priority.last?.value {
             remove(keyToRemove)
         }
-        
+
         insert(key, val: val)
     }
-    
+
     subscript(key: KeyType, val: ValueType?) -> ValueType? {
         get {
             return get(key)
@@ -545,7 +541,7 @@ public class LRUCache<KeyType: Hashable, ValueType> {
             set(key, val: value)
         }
     }
-    
+
     private func remove(_ key: KeyType) {
         cache.removeValue(forKey: key)
         guard let node = key2node[key] else {
@@ -554,7 +550,7 @@ public class LRUCache<KeyType: Hashable, ValueType> {
         priority.remove(node: node)
         key2node.removeValue(forKey: key)
     }
-    
+
     private func insert(_ key: KeyType, val: ValueType) {
         cache[key] = val
         priority.insert(key, atIndex: 0)

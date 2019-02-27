@@ -13,7 +13,7 @@ class SSBGameDLCUITableViewCell: UITableViewCell, Reusable {
     private let titleLabel = UILabel()
     private let originPriceLabel = UILabel()
     private let priceLabel = UILabel()
-    
+
     var data: GameInfoService.GameInfoData.Info.Game? {
         didSet {
             guard let data = self.data else {
@@ -34,16 +34,16 @@ class SSBGameDLCUITableViewCell: UITableViewCell, Reusable {
                 } else {
                     originPriceLabel.isHidden = true
                 }
-                
+
             } else {
                 priceLabel.superview?.isHidden = true
             }
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         coverImageView.layer.borderWidth = 0.5
         coverImageView.layer.borderColor = UIColor.lineColor.cgColor
         contentView.addSubview(coverImageView)
@@ -53,14 +53,14 @@ class SSBGameDLCUITableViewCell: UITableViewCell, Reusable {
             make.width.equalTo(76)
             make.height.equalTo(43)
         }
-        
+
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.height.equalTo(coverImageView)
             make.left.equalTo(contentView.snp.right).offset(4)
             make.width.lessThanOrEqualTo(152)
         }
-        
+
         let view = UIStackView()
         view.axis = .vertical
         view.distribution = .fill
@@ -71,12 +71,12 @@ class SSBGameDLCUITableViewCell: UITableViewCell, Reusable {
         priceLabel.font = .systemFont(ofSize: 14)
         priceLabel.textAlignment = .left
         view.addArrangedSubview(priceLabel)
-        
+
         originPriceLabel.textAlignment = .right
         originPriceLabel.textColor = .lightGray
         originPriceLabel.font = .systemFont(ofSize: 8)
         view.addArrangedSubview(originPriceLabel)
-        
+
         contentView.addSubview(view)
         view.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -84,7 +84,7 @@ class SSBGameDLCUITableViewCell: UITableViewCell, Reusable {
         }
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -95,20 +95,20 @@ protocol SSBGameDLCViewDelegate: UITableViewDelegate, UITableViewDataSource {
 }
 
 class SSBGameDLCView: UITableViewCell {
-    
+
     fileprivate let tableView = UITableView.init(frame: .zero, style: .plain)
     fileprivate let moreButton = UIButton()
     fileprivate let lineSeparator = UIView()
     private let buttonHeight: CGFloat = 33
     fileprivate var isExpaned = false
-    
+
     weak var delegate: SSBGameDLCViewDelegate? {
         didSet {
             tableView.delegate = delegate
             tableView.dataSource = delegate
         }
     }
-    
+
     fileprivate(set) var dataSource: [GameInfoService.GameInfoData.Info.Game]? {
         didSet {
             guard let source = dataSource else {
@@ -131,7 +131,7 @@ class SSBGameDLCView: UITableViewCell {
             tableView.reloadData()
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let titleLabel = UILabel()
@@ -143,7 +143,7 @@ class SSBGameDLCView: UITableViewCell {
             make.top.left.equalTo(10)
             make.height.equalTo(20)
         }
-        
+
         tableView.register(cellType: SSBGameDLCUITableViewCell.self)
         tableView.isScrollEnabled = false
         tableView.rowHeight = 60
@@ -155,7 +155,7 @@ class SSBGameDLCView: UITableViewCell {
             make.left.right.equalToSuperview()
             make.height.equalTo(0).priority(.high)
         }
-        
+
         lineSeparator.backgroundColor = .lineColor
         contentView.addSubview(lineSeparator)
         lineSeparator.snp.makeConstraints { make in
@@ -163,7 +163,7 @@ class SSBGameDLCView: UITableViewCell {
             make.left.right.equalToSuperview()
             make.height.equalTo(1)
         }
-        
+
         moreButton.setTitle("查看全部", for: .normal)
         moreButton.setTitleColor(.lightGray, for: .normal)
         moreButton.titleLabel?.font = .systemFont(ofSize: 14)
@@ -177,11 +177,11 @@ class SSBGameDLCView: UITableViewCell {
         moreButton.addTarget(self, action: #selector(onMoreButtonClicked(_:)), for: .touchUpInside)
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func onMoreButtonClicked(_ sender: UIButton) {
         isExpaned.toggle()
         setNeedsLayout()
@@ -200,33 +200,33 @@ class SSBGameDLCView: UITableViewCell {
 }
 
 class SSBGameDLCViewController: UIViewController {
-    
+
     private let dlcView = SSBGameDLCView()
     private var isExpaned = false
     weak var delegate: SSBGameInfoViewControllerReloadDelegate?
-    
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         dlcView.delegate = self
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     var dataSource: [GameInfoService.GameInfoData.Info.Game]? {
         didSet {
             dlcView.dataSource = dataSource
         }
     }
-    
+
     override func loadView() {
         view = dlcView
     }
 }
 
 extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
-    
+
     func onMoreButtonClicked(_ view: SSBGameDLCView, tableView: UITableView) {
         // 刷新高度
         if let delegate = self.delegate {
@@ -237,11 +237,11 @@ extension SSBGameDLCViewController: SSBGameDLCViewDelegate {
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dlcView.isExpaned ? dataSource?.count ?? 0 : min(dataSource?.count ?? 0, 2)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBGameDLCUITableViewCell.self)
         cell.data = dataSource?[indexPath.row]

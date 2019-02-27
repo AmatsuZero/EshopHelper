@@ -10,23 +10,23 @@ import XCTest
 @testable import EshopHacker
 
 class SSBSearchServiceTests: XCTestCase {
-    
+
     var wordArray: [String]?
     var trie = SSBTrie()
-    
+
     /// Makes sure that the wordArray and trie are initialized before each test.
     override func setUp() {
         super.setUp()
         createWordArray()
         insertWordsIntoTrie()
     }
-    
+
     /// Don't need to do anything here because the wordArray and trie should
     /// stay around.
     override func tearDown() {
         super.tearDown()
     }
-    
+
     /// Reads words from the dictionary file and inserts them into an array.  If
     /// the word array already has words, do nothing.  This allows running all
     /// tests without repeatedly filling the array with the same values.
@@ -37,7 +37,7 @@ class SSBSearchServiceTests: XCTestCase {
         let resourcePath = Bundle.main.resourcePath! as NSString
         let fileName = "dictionary.txt"
         let filePath = resourcePath.appendingPathComponent(fileName)
-        
+
         var data: String?
         do {
             data = try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
@@ -49,19 +49,19 @@ class SSBSearchServiceTests: XCTestCase {
         wordArray = data!.components(separatedBy: "\n").filter { !$0.isEmpty }
         XCTAssertEqual(wordArray!.count, dictionarySize)
     }
-    
+
     /// Inserts words into a trie.  If the trie is non-empty, don't do anything.
     func insertWordsIntoTrie() {
         guard let wordArray = wordArray, trie.count == 0 else { return }
         wordArray.forEach { trie.insert(word: $0) }
     }
-    
+
     /// Tests that a newly created trie has zero words.
     func testCreate() {
         let trie = SSBTrie()
         XCTAssertEqual(trie.count, 0)
     }
-    
+
     /// Tests the insert method
     func testInsert() {
         let trie = SSBTrie()
@@ -74,7 +74,7 @@ class SSBSearchServiceTests: XCTestCase {
         XCTAssertTrue(trie.contains(word: "cut"))
         XCTAssertEqual(trie.count, 4)
     }
-    
+
     /// Tests the remove method
     func testRemove() {
         let trie = SSBTrie()
@@ -86,7 +86,7 @@ class SSBSearchServiceTests: XCTestCase {
         XCTAssertFalse(trie.contains(word: "cute"))
         XCTAssertEqual(trie.count, 1)
     }
-    
+
     /// Tests the words property
     func testWords() {
         let trie = SSBTrie()
@@ -97,7 +97,7 @@ class SSBSearchServiceTests: XCTestCase {
         XCTAssertEqual(words[0], "foobar")
         XCTAssertEqual(words.count, 1)
     }
-    
+
     /// Tests the performance of the insert method.
     func testInsertPerformance() {
         self.measure {
@@ -109,7 +109,7 @@ class SSBSearchServiceTests: XCTestCase {
         XCTAssertGreaterThan(trie.count, 0)
         XCTAssertEqual(trie.count, wordArray?.count)
     }
-    
+
     /// Tests the performance of the insert method when the words are already
     /// present.
     func testInsertAgainPerformance() {
@@ -119,7 +119,7 @@ class SSBSearchServiceTests: XCTestCase {
             }
         }
     }
-    
+
     /// Tests the performance of the contains method.
     func testContainsPerformance() {
         self.measure {
@@ -128,7 +128,7 @@ class SSBSearchServiceTests: XCTestCase {
             }
         }
     }
-    
+
     /// Tests the performance of the remove method.  Since setup has already put
     /// words into the trie, remove them before measuring performance.
     func testRemovePerformance() {
@@ -143,7 +143,7 @@ class SSBSearchServiceTests: XCTestCase {
         }
         XCTAssertEqual(trie.count, 0)
     }
-    
+
     /// Tests the performance of the words computed property.  Also tests to see
     /// if it worked properly.
     func testWordsPerformance() {
@@ -156,7 +156,7 @@ class SSBSearchServiceTests: XCTestCase {
             XCTAssertTrue(self.trie.contains(word: word))
         }
     }
-    
+
     /// Tests the archiving and unarchiving of the trie.
     func testArchiveAndUnarchive() {
         let resourcePath = Bundle.main.resourcePath! as NSString
@@ -166,7 +166,7 @@ class SSBSearchServiceTests: XCTestCase {
         let trieCopy = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? SSBTrie
         XCTAssertEqual(trieCopy?.count, trie.count)
     }
-    
+
     func testFindWordsWithPrefix() {
         let trie = SSBTrie()
         trie.insert(word: "test")

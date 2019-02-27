@@ -12,11 +12,11 @@ import CoreData
 
 @objc(SSBBrowseHistory)
 public class SSBBrowseHistory: NSManagedObject {
-    
+
     enum OperationError: Error {
         case emptyString
     }
-    
+
     class func createOrUpdate(title: String, appid: String, developer: String?) -> Promise<SSBBrowseHistory> {
         return find(title: title).then { words -> Promise<SSBBrowseHistory>  in
             guard words.isEmpty else {
@@ -28,7 +28,7 @@ public class SSBBrowseHistory: NSManagedObject {
             return add(title: title, appid: appid, developer: developer)
         }
     }
-    
+
     @discardableResult
     class func add(title: String, appid: String, developer: String?) -> Promise<SSBBrowseHistory> {
         // 插入标题不为空
@@ -43,7 +43,7 @@ public class SSBBrowseHistory: NSManagedObject {
             resolver.fulfill(model)
         })
     }
-    
+
     class func find(title: String) -> Promise<[SSBBrowseHistory]> {
         let request: NSFetchRequest<SSBBrowseHistory> = fetchRequest()
         request.predicate = NSPredicate(format: "title = %@", title)
@@ -61,7 +61,7 @@ public class SSBBrowseHistory: NSManagedObject {
         SSBBrowseHistory.context.delete(self)
         SSBBrowseHistory.save()
     }
-    
+
     class func deleteAll() -> Promise<Bool> {
         let request: NSFetchRequest<SSBBrowseHistory> = fetchRequest()
         return Promise(resolver: { resolve in
@@ -74,7 +74,7 @@ public class SSBBrowseHistory: NSManagedObject {
             }
         })
     }
-    
+
     class func save() {
         DispatchQueue.main.async {
             guard let delegate = UIApplication.shared.delegate as? AppDelegate else {

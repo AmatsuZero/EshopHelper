@@ -10,11 +10,10 @@ import PromiseKit
 import Toast_Swift
 
 protocol SSBViewModelProtocol {
-    associatedtype T: Codable
-    var originalData: T { get set }
-    init(model: T)
+    associatedtype Tyoe: Codable
+    var originalData: Tyoe { get set }
+    init(model: Tyoe)
 }
-
 
 @objc protocol SSBTableViewDelegate: UITableViewDelegate, SSBListBackgroundViewDelegate {
     @objc func tableViewBeginToRefresh(_ tableView: UITableView)
@@ -22,12 +21,12 @@ protocol SSBViewModelProtocol {
 }
 
 class SSBToggleModel {
-    
+
     var isExpanded = false
     var isExpandable: Bool?
     var lines = [String]()
     let content: String
-    
+
     func lineHeight(for width: CGFloat) -> CGFloat {
         let attr = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
         let fullHeight = attr.boundingRect(with: .init(width: width, height: .greatestFiniteMagnitude),
@@ -35,39 +34,39 @@ class SSBToggleModel {
         if !(isExpandable ?? false) || isExpanded {
             return fullHeight
         }
-        let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel .attributes)
+        let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1}), attributes: SSBToggleModel .attributes)
         attrStr.append(SSBToggleModel.unFoldText)
         return attrStr.boundingRect(with: .init(width: width, height: .greatestFiniteMagnitude),
                                     options: .usesFontLeading, context: nil).height
     }
-    
+
  //   private lazy var expanedHeight: CGFloat =
-    
+
     init(content: String) {
         self.content = content
     }
-    
+
     static var unFoldText: NSAttributedString = {
         return NSAttributedString(string: "...【展开】", attributes: [
             .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.eShopColor
             ])
     }()
-    
+
     static var foldText: NSAttributedString = {
         return NSAttributedString(string: "【收起】", attributes: [
             .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.eShopColor
             ])
     }()
-    
-    static var attributes: [NSAttributedString.Key : Any] = {
+
+    static var attributes: [NSAttributedString.Key: Any] = {
         return [
-            .font:  UIFont.systemFont(ofSize: 14),
+            .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.darkText
         ]
     }()
-    
+
     func convert(from label: UILabel) {
         guard isExpandable == nil else {
             expand(!isExpanded, label: label)
@@ -77,14 +76,15 @@ class SSBToggleModel {
         lines += label.linesOfString()
         isExpandable = lines.count > 6
         if isExpandable! {
-            let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel.attributes)
+            let attrStr = NSMutableAttributedString(string: lines.take(6)
+                .reduce("", { $0 + $1}), attributes: SSBToggleModel.attributes)
             attrStr.append(SSBToggleModel.unFoldText)
             label.attributedText = attrStr
         } else {
             label.attributedText = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
         }
     }
-    
+
     func toggleState(label: UILabel) {
         guard isExpandable ?? false else {
             return
@@ -92,17 +92,18 @@ class SSBToggleModel {
         expand(isExpanded, label: label)
         isExpanded.toggle()
     }
-    
+
     func expand(_ flag: Bool, label: UILabel) {
         guard isExpandable! else {
             label.attributedText = NSAttributedString(string: content, attributes: SSBToggleModel.attributes)
             return
         }
         if flag {
-            let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1} ), attributes: SSBToggleModel .attributes)
+            let attrStr = NSMutableAttributedString(string: lines.take(6).reduce("", { $0 + $1}),
+                                                    attributes: SSBToggleModel .attributes)
             attrStr.append(SSBToggleModel.unFoldText)
             label.attributedText = attrStr
-            
+
         } else {
             let attrStr = NSMutableAttributedString(string: content, attributes: SSBToggleModel.attributes)
             attrStr.append(SSBToggleModel.foldText)
@@ -112,37 +113,37 @@ class SSBToggleModel {
 }
 
 protocol SSBDataSourceProtocol: class {
-    
+
     associatedtype DataType: Codable
     associatedtype ViewType: UIView
     associatedtype ViewModelType: SSBViewModelProtocol
-    
+
     var dataSource: [ViewModelType] { get set }
-    
+
     func clear()
-    
+
     var count: Int { get }
     var totalCount: Int { get set }
-    
+
     func bind(data: [DataType], totalCount: Int, collectionView: ViewType)
     func append(data: [DataType], totalCount: Int, collectionView: ViewType)
 }
 
 extension SSBDataSourceProtocol {
-    
+
     func clear() {
         dataSource.removeAll()
     }
-    
+
     var count: Int {
         return dataSource.count
     }
 }
 
 class SSBConfigHelper {
-    
+
     static let shared = SSBConfigHelper()
-    
+
     func initialization() -> Promise<Bool> {
         // 修改Toast默认时长
         ToastManager.shared.duration = 1
@@ -155,7 +156,7 @@ class SSBConfigHelper {
         addShortcutItems()
         return weChatregiser()
     }
-    
+
     /// 导航栏全局设置
     func navigationbarGlobalSetting() {
         UINavigationBar.appearance().tintColor = .white
@@ -166,11 +167,11 @@ class SSBConfigHelper {
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
     }
-    
+
     enum ShortcutType: String {
         case search = "com.ssb.EshopHacker.search"
     }
-    
+
     /// 配置3D Touch快捷启动
     func addShortcutItems() {
         // 搜索
@@ -182,7 +183,7 @@ class SSBConfigHelper {
                                                     userInfo: nil)
         UIApplication.shared.shortcutItems = [searchItem]
     }
-    
+
     private func weChatregiser() -> Promise<Bool> {
         return Promise(resolver: { resolver in
             // 获取wxkey

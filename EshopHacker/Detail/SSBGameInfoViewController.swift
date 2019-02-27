@@ -11,20 +11,20 @@ import Alamofire
 import PromiseKit
 
 protocol SSBGameInfoViewControllerReloadDelegate: class {
-    func needReload(_ viewController: UIViewController, reloadStyle:UITableView.RowAnimation, needScrollTo: Bool)
+    func needReload(_ viewController: UIViewController, reloadStyle: UITableView.RowAnimation, needScrollTo: Bool)
     func needReloadData(_ viewController: UIViewController)
 }
 
 class SSBGameInfoViewController: UIViewController {
-    
+
     private var model: SSBGameInfoViewModel? {
         willSet {
-            
+
             NotificationCenter.default.post(name: SSBCommunityViewController.BannerDataNotification,
                                             object: newValue,
                                             userInfo: ["appid": appid])
         }
-        
+
         didSet {
             guard let model = self.model else {
                 return
@@ -33,9 +33,9 @@ class SSBGameInfoViewController: UIViewController {
             if !children.contains(topViewController) {
                 addChild(topViewController)
             }
-            
+
             topViewController.dataSource = model.headDataSource
-            
+
             // 绑定解锁信息
             if let unlockInfo = model.unlockInfo {
                 if !children.contains(unlockInfoViewController) {
@@ -43,7 +43,7 @@ class SSBGameInfoViewController: UIViewController {
                 }
                 unlockInfoViewController.dataSource = unlockInfo
             }
-            
+
             // 绑定价格
             if let priceData = model.priceData {
                 if !children.contains(priceViewController) {
@@ -72,68 +72,68 @@ class SSBGameInfoViewController: UIViewController {
                 }
                 descriptionViewController.dataSource = description
             }
-            
+
             // 只有已发售游戏，才添加评论列表控制器
             if model.unlockInfo == nil {
-                if !children.contains(gameCommentViewController)  {
+                if !children.contains(gameCommentViewController) {
                     addChild(gameCommentViewController)
                 }
             }
-            
+
             // 绑定帖子控制器
             if !children.contains(postViewController) {
                 addChild(postViewController)
             }
-            
+
             delegate?.onReceiveTitle(model.originalData.game.titleZh)
-            
+
             // 追踪到Core Spotlight
             SSBCoreSpotlightService.shared.addTrack(game: model.originalData.game)
         }
     }
-    
+
     private lazy var topViewController: SSBGameDetailTopViewController = {
         return SSBGameDetailTopViewController()
     }()
-    
-    private lazy var priceViewController:SSBGamePriceListViewController = {
+
+    private lazy var priceViewController: SSBGamePriceListViewController = {
         return SSBGamePriceListViewController(nibName: nil, bundle: nil)
     }()
-    
+
     private lazy var dlcViewController: SSBGameDLCViewController = {
         let viewController = SSBGameDLCViewController(nibName: nil, bundle: nil)
         viewController.delegate = self
         return viewController
     }()
-    
+
     lazy var gameCommentViewController: SSBGameCommentViewController = {
         let controller = SSBGameCommentViewController(appid: appid)
         controller.reloadDelegate = self
         controller.delegate = delegate
         return controller
     }()
-    
+
     private lazy var unlockInfoViewController: SSBUnlockInfoViewController = {
         return SSBUnlockInfoViewController()
     }()
-    
+
     private lazy var rateViewController: SSBGameRateViewController = {
         return SSBGameRateViewController()
     }()
-    
+
     private lazy var descriptionViewController: SSBGameDetailDescriptionViewController = {
         let viewController = SSBGameDetailDescriptionViewController()
         viewController.delegate = self
         return viewController
     }()
-    
+
     lazy var postViewController: SSBGamePostViewController = {
         let viewController = SSBGamePostViewController(appid: appid)
         viewController.reloadDelegate = self
         viewController.delegate = delegate
         return viewController
     }()
-    
+
     private var cellHeights = [IndexPath: CGFloat]()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let margin: CGFloat = 10
@@ -148,24 +148,24 @@ class SSBGameInfoViewController: UIViewController {
         }
         return state == .running
     }
-    
+
     private var shouldShow = false {
         didSet {
             tableView.backgroundView?.isHidden = shouldShow
         }
     }
-    
+
     init(appid: String, from: String? = nil) {
         self.appid = appid
         self.from = from
         super.init(nibName: nil, bundle: nil)
         title = "游戏信息"
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         super.loadView()
         view.addSubview(tableView)
@@ -178,7 +178,7 @@ class SSBGameInfoViewController: UIViewController {
         tableView.delegate = self
         tableView.separatorStyle = .none
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.mj_header?.isHidden = true
@@ -191,16 +191,16 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
     func numberOfSections(in tableView: UITableView) -> Int {
         return shouldShow ? children.count : 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return children[indexPath.section].view as! UITableViewCell
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
-    // /MARK: TableView Delegate
+
+    // MARK: TableView Delegate
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let controller = children[indexPath.section]
         switch controller {
@@ -217,7 +217,7 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let controller = children[indexPath.section]
         switch controller {
@@ -237,54 +237,54 @@ extension SSBGameInfoViewController: UITableViewDelegate, UITableViewDataSource 
             return height
         }
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cellHeights[indexPath] = cell.frame.height
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return margin
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
         view.backgroundColor = .clear
         return view
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: .init(x: 0, y: 0, width: .screenWidth, height: margin))
         view.backgroundColor = .clear
         return view
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
     }
 }
 
 extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
-    
+
     func retry(view: SSBListBackgroundView) {
         onRefresh()
     }
-    
+
     @objc private func onRefresh() {
         guard !isRunningTask else {
             return
         }
         // 移除所有子控制器
         children.forEach { $0.removeFromParent() }
-       
+
         // 先计算评论子控制器高度
         let backgroundView = self.tableView.backgroundView as? SSBListBackgroundView
         let ret = GameInfoService.shared.gameInfo(appId: appid, fromName: from)
         self.request = ret.request
-        
+
         firstly {
             ret.promise
         }.then { [weak self] ret -> Promise<Bool> in
@@ -306,7 +306,7 @@ extension SSBGameInfoViewController: SSBListBackgroundViewDelegate {
                 return Promise.value(-999)
             }
             return self.gameCommentViewController.fetchData()
-        }.then { [weak self] needFetechcomentData -> Promise<CGFloat>  in
+        }.then { [weak self] _ -> Promise<CGFloat>  in
             // 请求社区帖子
             guard let self = self else {
                 return Promise.value(-999)
@@ -340,7 +340,7 @@ extension SSBGameInfoViewController: SSBGameInfoViewControllerReloadDelegate {
             tableView.scrollToRow(at: indexPath, at: .none, animated: false)
         }
     }
-    
+
     func needReloadData(_ viewController: UIViewController) {
         // 移除缓存的高度
         cellHeights.removeAll()

@@ -9,25 +9,25 @@
 import UIKit
 import PromiseKit
 
-class SSBGameCommentViewController: SSBCommentViewController  {
-    
+class SSBGameCommentViewController: SSBCommentViewController {
+
     weak var reloadDelegate: SSBGameInfoViewControllerReloadDelegate?
-    
+
     fileprivate lazy var moreButton: UIButton = {
-        let btn = UIButton(frame: .init(x: 0, y: 0, width: .screenWidth, height: 36))
-        btn.backgroundColor = .white
-        btn.setTitle("查看全部\(dataSource!.totalCount)评测", for: .normal)
-        btn.setTitleColor(.eShopColor, for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        btn.addTarget(self, action: #selector(onViewAllCommentsButtonClicked(_:)), for: .touchUpInside)
-        return btn
+        let button = UIButton(frame: .init(x: 0, y: 0, width: .screenWidth, height: 36))
+        button.backgroundColor = .white
+        button.setTitle("查看全部\(dataSource!.totalCount)评测", for: .normal)
+        button.setTitleColor(.eShopColor, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(onViewAllCommentsButtonClicked(_:)), for: .touchUpInside)
+        return button
     }()
-    
+
     override var dataSource: SSBCommentViewModel? {
         didSet {
             listView.tableView.mj_header?.isHidden = true
             listView.tableView.mj_footer?.isHidden = true
-         
+
             guard let model = dataSource else {
                 return
             }
@@ -39,7 +39,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         emptyMyCommentView = SSBMyCommentEmptyView(isEmbedded: true)
         sectionHeader = SSBCommentSectionHeaderView(isEmbedded: true)
@@ -47,22 +47,22 @@ class SSBGameCommentViewController: SSBCommentViewController  {
         listView.tableView.isScrollEnabled = false
         super.viewDidLoad()
     }
-    
+
     var totalHeight: CGFloat {
         guard dataSource?.comments.isEmpty == false else {
             return 100
         }
         return listView.tableView.contentSize.height == 0 ? 110 : listView.tableView.contentSize.height
     }
-    
+
     @discardableResult
     func fetchData() -> Promise<CGFloat> {
         lastPage = 1
         let tableView = listView.tableView
-        let (req, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
-        self.request = req
-        return promise.then { [weak self] (ret) -> Promise<CGFloat> in
-            guard let self = self, let data = ret.data else {
+        let (request, promise) = CommentService.shared.getGameComment(by: appId, page: lastPage)
+        self.request = request
+        return promise.then { [weak self] (result) -> Promise<CGFloat> in
+            guard let self = self, let data = result.data else {
                 return Promise.value(UITableView.automaticDimension)
             }
             let model = SSBCommentViewModel(model: data)
@@ -72,14 +72,14 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             return Promise.value(self.totalHeight)
         }
     }
-    
+
     // MARK: 刷新
     override func tableViewBeginToRefresh(_ listView: UITableView) {
-        
+
     }
-    
+
     var isReloadOnce = false
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshHeight()
@@ -92,7 +92,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             isReloadOnce = true
         }
     }
-    
+
     // MARK: TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
@@ -104,7 +104,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
             reloadDelegate?.needReload(self, reloadStyle: .none, needScrollTo: false)
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard tableView.backgroundView?.isHidden == true else {
             return super.tableView(tableView, heightForHeaderInSection: section)
@@ -114,7 +114,7 @@ class SSBGameCommentViewController: SSBCommentViewController  {
         }
         return dataSource?.comments.isEmpty ?? true ? 0 : 50
     }
-    
+
     // MARK: Section Header Delegate
     override func onViewAllCommentsButtonClicked(_ view: SSBCommentSectionHeaderView) {
         delegate?.scrollTo(self, index: 1, animated: true)

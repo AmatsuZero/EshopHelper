@@ -9,11 +9,11 @@
 import PromiseKit
 
 class CommentService {
-    
+
     static let shared = CommentService()
-    
+
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
-    
+
     struct FetchCommentsOption: URLQueryItemConvertiable {
         var moduleId = 1
         var commentId = ""
@@ -27,23 +27,23 @@ class CommentService {
         var limit = 10
         var count = true
     }
-    
+
     struct PostCommentOption: URLQueryItemConvertiable {
         var moduleId = 1
         var commentId: String?
         var acceptorId: String
         let attitude: Int
         var content: String
-        
+
         init(appid: String, content: String, isLike: Bool) {
             acceptorId = appid
             self.content = content
             attitude = isLike ? 1 : -1
         }
     }
-    
+
     struct CommentData: ClientVerifiableData {
-        
+
         struct CommentInfo: Codable {
             struct Comment: Codable {
                 let attitude: Int
@@ -58,23 +58,23 @@ class CommentService {
             }
             let count: Int?
             let hits: Int
-            let comment:[Comment]?
+            let comment: [Comment]?
             let selfComment: [Comment]?
             let selfCommentHits: Int?
         }
-        
+
         var result: ResponseResult
         let data: CommentInfo?
     }
-    
+
     struct PostCommentData: ClientVerifiableData {
         var result: ResponseResult
         let data: Int?
     }
-    
+
     typealias CommentResult = (request: DataRequest, promise: Promise<CommentData>)
     typealias PostResult = (request: DataRequest?, promise: Promise<PostCommentData>)
-    
+
     func getGameComment(by appid: String, page: Int = 0, limit: Int = 7) -> CommentResult {
         var option = FetchCommentsOption()
         option.limit = limit
@@ -82,7 +82,7 @@ class CommentService {
         option.acceptor = appid
         return getComment(option: option)
     }
-    
+
     @discardableResult
     func postGameComment(by appid: String, isLike: Bool, content: String) -> PostResult {
         enum PostCommentError: Error {
@@ -93,57 +93,72 @@ class CommentService {
         }
         return postComment(option: .init(appid: appid, content: content, isLike: isLike))
     }
-    
+
     private func getComment(option: FetchCommentsOption) -> CommentResult {
         return sessionManager.request(Router.getComment(option)).customResponse(CommentData.self)
     }
-    
+
     private func postComment(option: PostCommentOption) -> PostResult {
-        let req = sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
-        return (req.0, req.1)
+        let request = sessionManager.request(Router.postComment(option)).customResponse(PostCommentData.self)
+        return (request.0, request.1)
     }
 }
 
-class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource {
-    
+class SSBCommentViewModel: NSObject, SSBViewModelProtocol, UITableViewDataSource {
+
     class Comment: SSBToggleModel, SSBViewModelProtocol {
         typealias T = CommentService.CommentData.CommentInfo.Comment
         var originalData: T
-        
+
         var postiveString: String {
-            return "欢乐\(originalData.happyNum != nil && originalData.happyNum != 0 ? " \(originalData.happyNum!)" : "")"
+            let text: String = {
+                return originalData.happyNum != nil && originalData.happyNum != 0
+                    ? " \(originalData.happyNum!)"
+                    : ""
+            }()
+            return "欢乐\(text)"
         }
-        
+
         var praiseString: String {
-            return "是\(originalData.positiveNum != nil && originalData.positiveNum != 0 ? " \(originalData.positiveNum!)" : "")"
+            let text: String = {
+                return originalData.positiveNum != nil && originalData.positiveNum != 0
+                    ? " \(originalData.positiveNum!)"
+                    : ""
+            }()
+            return "是\(text)"
         }
-        
+
         var negativeString: String {
-            return "否\(originalData.negativeNum != nil && originalData.negativeNum != 0 ? " \(originalData.negativeNum!)" : "")"
+            let text: String = {
+                return originalData.negativeNum != nil && originalData.negativeNum != 0
+                    ? " \(originalData.negativeNum!)"
+                    : ""
+            }()
+            return "否\(text)"
         }
-        
+
         let isMyComment: Bool
-        
-        init(model:T, isMyComment: Bool = false) {
+
+        init(model: T, isMyComment: Bool = false) {
             self.isMyComment = isMyComment
             originalData = model
             super.init(content: originalData.content ?? "")
         }
-        
+
         required init(model: T) {
             isMyComment = false
             originalData = model
             super.init(content: originalData.content ?? "")
         }
     }
-    
+
     typealias T = CommentService.CommentData.CommentInfo
     var originalData: T
-    
+
     var myCommnets = [Comment]()
     var comments = [Comment]()
     private(set) var totalCount = 0
-    
+
     required init(model: T) {
         originalData = model
         super.init()
@@ -155,25 +170,26 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
         }
         totalCount = model.count ?? 0
     }
-    
+
     func append(model: T, tableView: UITableView) {
         let lastIndex = comments.count
         if let comments = model.comment {
             self.comments += comments.map { Comment(model: $0) }
         }
         totalCount = model.count ?? 0
-        tableView.insertRows(at: (lastIndex..<comments.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
+        tableView.insertRows(at: (lastIndex..<comments.count).map {
+            IndexPath(row: $0, section: 1)}, with: .fade)
         if totalCount == comments.count {// 已经取得全部数据
             tableView.mj_footer.endRefreshingWithNoMoreData()
         } else {
             tableView.mj_footer.endRefreshing()
         }
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let isEmpty = myCommnets.isEmpty && comments.isEmpty
         tableView.backgroundView?.isHidden = !isEmpty
@@ -182,7 +198,7 @@ class SSBCommentViewModel:NSObject, SSBViewModelProtocol, UITableViewDataSource 
         }
         return section == 0 ? myCommnets.count : comments.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBMyCommentTableViewCell.self)

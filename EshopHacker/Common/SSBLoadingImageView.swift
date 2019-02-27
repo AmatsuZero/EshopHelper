@@ -12,12 +12,12 @@ import NVActivityIndicatorView
 import FontAwesome_swift
 
 class SSBLoadingImageView: UIImageView {
-    
+
     private let indicator: NVActivityIndicatorView
     private var lazyLoadUrl: URL?
 
-    init(url: String? = nil, placeHolderImage: UIImage? = nil, indicatorType type: NVActivityIndicatorType? = nil) {
-        
+    init(urlAddress: String? = nil, placeHolderImage: UIImage? = nil, indicatorType type: NVActivityIndicatorType? = nil) {
+
         indicator = NVActivityIndicatorView(frame: .zero, type: type, color: .eShopColor, padding: 0)
         super.init(frame: .zero)
         image = placeHolderImage
@@ -27,16 +27,16 @@ class SSBLoadingImageView: UIImageView {
             make.center.equalToSuperview()
             make.size.equalTo(CGSize(width: 40, height: 40))
         }
-        
-        self.url = url
+
+        self.url = urlAddress
     }
-    
+
     init(frame: CGRect = .zero, lazyLoadUrl: String) {
         indicator = NVActivityIndicatorView(frame: .zero, color: .eShopColor, padding: 0)
         self.lazyLoadUrl = URL(string: lazyLoadUrl)
         super.init(frame: frame)
     }
-    
+
     override func didMoveToWindow() {
         super.didMoveToWindow()
         if let url = lazyLoadUrl, window != nil {
@@ -44,14 +44,14 @@ class SSBLoadingImageView: UIImageView {
             lazyLoadUrl = nil
         }
     }
-    
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         indicator.snp.updateConstraints { make in
             make.size.equalTo(indicator.sizeThatFits(rect.size))
         }
     }
-    
+
     var url: String? {
         didSet {
             guard let url = url else {
@@ -74,7 +74,7 @@ class SSBLoadingImageView: UIImageView {
             }
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -22,7 +22,7 @@ protocol ClientVerifiableData: Codable {
 }
 
 enum Router: URLConvertible, URLRequestConvertible {
-    
+
     static let baseURLString = "https://switch.vgjump.com"
     static let cookieString = "qiyeToken=eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJqdW1wIiwidXNlciI6IkpDODBoSTVvaEJJQ1ZEUWMifQ.wEOn0z1BkT3R-SnF96Vut0-RZ0GVP-hxaZfZsaBISWvgQHYV-LEmT9iHjt6PLPDm1Klk6ZFEq7AQBC5QIWFSRw;version=2;"
     static let version = 41
@@ -48,19 +48,19 @@ enum Router: URLConvertible, URLRequestConvertible {
     case todayRecommend(TodayRecommendService.RequsetOption)
     /// 社区
     case community(GameCommunityService.RequestOption)
-    
+
     enum Error: CustomNSError {
         case invalidURL
         case serverError(ResponseResult)
-        
+
         var errorCode: Int {
             switch self {
             case .invalidURL: return -1001
             case .serverError(let result): return result.code
             }
         }
-        
-        var errorUserInfo: [String : Any] {
+
+        var errorUserInfo: [String: Any] {
             switch self {
             case .invalidURL:
                 return [NSLocalizedDescriptionKey: "URL 不合法"]
@@ -68,10 +68,10 @@ enum Router: URLConvertible, URLRequestConvertible {
                 return [NSLocalizedDescriptionKey: result.msg ?? "未知"]
             }
         }
-        
+
         static var errorDomain: String { return "com.ssb.Network" }
     }
-    
+
     var path: String {
         switch self {
         case .search: return "/switch/gameDlc/list"
@@ -83,7 +83,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .community: return "/switch/post/list"
         }
     }
-    
+
     func asURL() throws -> URL {
         guard var components = URLComponents(string: Router.baseURLString) else {
             throw Error.invalidURL
@@ -115,7 +115,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         }
         return url
     }
-    
+
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
@@ -142,7 +142,7 @@ extension SessionManager {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = [
             "Switch-Agent": Router.switchAgent,
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D40 MicroMessenger/7.0.3(0x17000321) NetType/WIFI Language/zh_CN",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16D40 MicroMessenger/7.0.3(0x17000321) NetType/WIFI Language/zh_CN"
         ]
         return .init(configuration: configuration)
     }
@@ -164,10 +164,10 @@ extension Alamofire.DataRequest {
 }
 
 enum SSBOpenService {
-    
+
     case gameInfo(id: String)
     case search
-    
+
     func open() {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
             let navigationController = rootViewController.selectedViewController as? UINavigationController else {

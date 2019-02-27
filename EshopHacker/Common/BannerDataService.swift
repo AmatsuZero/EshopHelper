@@ -10,17 +10,17 @@ import UIKit
 import PromiseKit
 
 class BannerDataService: NSObject {
-    
+
     static let shared = BannerDataService()
-    
+
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
 
     struct BannerData: ClientVerifiableData {
-        
+
         struct Body: Codable {
-            
+
             struct Banner: Codable {
-                
+
                 let content: String
                 let id: String
                 let pic: String
@@ -28,13 +28,13 @@ class BannerDataService: NSObject {
             }
             let banner: [Banner]
         }
-        
+
         var result: ResponseResult
         let data: Body?
     }
-    
+
     typealias Result = (Request: DataRequest, promise: Promise<BannerData>)
-    
+
     func getBannerData() -> Result {
         return sessionManager.request(Router.banner).customResponse(BannerData.self)
     }
@@ -46,13 +46,13 @@ protocol SSBBannerDataSourceDelegate: class {
 }
 
 class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDelegate, SSBDataSourceProtocol {
-   
+
     typealias DataType = BannerDataService.BannerData.Body.Banner
     typealias ViewType = UICollectionView
     typealias ViewModelType = SSBBannerViewModel
-    
+
     var totalCount = 0
-    
+
     struct SSBBannerViewModel: SSBViewModelProtocol {
         /// 类型
         enum BannerType: Int {
@@ -65,12 +65,12 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
             /// 关注公众号
             case follow = 4
         }
-        
+
         var originalData: DataType
         let pic: String
         let type: BannerType?
         fileprivate(set) var appid: String?
-        
+
         init(model: DataType) {
             type = BannerType(rawValue: model.type)
             originalData = model
@@ -80,11 +80,11 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
             }
         }
     }
-   
+
     var dataSource = [ViewModelType]()
-    
+
     weak var delegate: SSBBannerDataSourceDelegate?
-    
+
     func bind(data: [DataType], totalCount: Int, collectionView: ViewType) {
         self.totalCount = count
         guard !data.isEmpty else {
@@ -97,23 +97,23 @@ class SSBBannerDataSource: NSObject, UICollectionViewDataSource, SSBBannerViewDe
         dataSource.append(newData.first!)
         collectionView.reloadData()
     }
-    
+
     func append(data: [DataType], totalCount: Int, collectionView: ViewType) {
-       
+
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         collectionView.backgroundView?.isHidden = !dataSource.isEmpty
         return dataSource.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(for: indexPath,
                                                       cellType: SSBBannerCollectionViewCell.self)
         cell.imgURL = dataSource[indexPath.row % dataSource.count].pic
         return cell
     }
-    
+
     func bannderView(_ view: SSBannerView, onSelected index: Int) {
         guard dataSource.count > index else {
             return

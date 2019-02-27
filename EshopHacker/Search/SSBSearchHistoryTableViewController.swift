@@ -21,11 +21,11 @@ protocol SSBSearchHistoryTableViewCellDelegate: class {
 }
 
 class SSBSearchHistoryTableViewCell: UITableViewCell, Reusable {
-    
+
     private let label = UILabel()
-    var delegate: SSBSearchHistoryTableViewCellDelegate?
+    weak var delegate: SSBSearchHistoryTableViewCellDelegate?
     var indexPath: IndexPath!
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let imageView = UIImageView(image: .fontAwesomeIcon(name: .search, style: .solid, textColor: .lightGray,
@@ -45,7 +45,7 @@ class SSBSearchHistoryTableViewCell: UITableViewCell, Reusable {
             make.centerY.equalToSuperview()
             make.width.lessThanOrEqualTo(300)
         }
-        
+
         let deleteButton = SSBCustomButton()
         deleteButton.setImage(UIImage.fontAwesomeIcon(name: .timesCircle, style: .solid, textColor: .lightGray,
                                                       size: .init(width: 15, height: 15)), for: .normal)
@@ -61,7 +61,7 @@ class SSBSearchHistoryTableViewCell: UITableViewCell, Reusable {
         deleteButton.addTarget(self, action: #selector(onDeleteButtonClicked), for: .touchUpInside)
         selectionStyle = .none
     }
-    
+
     func updateCell(model: SearchHistory, currentText: String) {
         guard let text = model.word else {
             return
@@ -75,18 +75,18 @@ class SSBSearchHistoryTableViewCell: UITableViewCell, Reusable {
                                      .foregroundColor: UIColor.eShopColor], range: range)
         label.attributedText = attributeText
     }
-    
+
     @objc private func onDeleteButtonClicked() {
         delegate?.onDeleteButtonClicked(self, at: indexPath)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBSearchHistoryTableViewController: UITableViewController {
-    
+
     let context = SearchHistory.context
     var currentText = "" {
         didSet {
@@ -98,7 +98,7 @@ class SSBSearchHistoryTableViewController: UITableViewController {
         }
     }
     weak var delegate: SSBSearchHistoryTableViewControllerDelegate?
-    
+
     lazy var fetchResultContoller: NSFetchedResultsController = { () -> NSFetchedResultsController<SearchHistory> in
         let request: NSFetchRequest<SearchHistory> = SearchHistory.fetchRequest()
         request.fetchBatchSize = 20 // 返回20个结果
@@ -120,7 +120,7 @@ class SSBSearchHistoryTableViewController: UITableViewController {
         tableView.register(cellType: SSBSearchHistoryTableViewCell.self)
         view.backgroundColor = .clear
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         do {
@@ -131,7 +131,7 @@ class SSBSearchHistoryTableViewController: UITableViewController {
             parent?.view.makeToast(error.localizedDescription)
         }
     }
-    
+
     func search(word: String) -> Promise<Bool> {
         fetchResultContoller.fetchRequest.predicate = NSPredicate(format: "word CONTAINS %@", word)
         return Promise { resolver in
@@ -143,16 +143,16 @@ class SSBSearchHistoryTableViewController: UITableViewController {
             }
         }
     }
-    
+
     @objc private func hide() {
         UIView.animate(withDuration: 0.3, animations: {
             self.view.alpha = 0
-        }) { _ in
+        }, completion: { _ in
             self.view.removeFromSuperview()
             self.removeFromParent()
-        }
+        })
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         delegate?.onWillDismiss(self)
@@ -163,14 +163,14 @@ class SSBSearchHistoryTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchResultContoller.sections?.count ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let count = fetchResultContoller.sections?[section].numberOfObjects else {
             return 0
         }
         return count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBSearchHistoryTableViewCell.self)
         let model = fetchResultContoller.object(at: indexPath)
@@ -179,7 +179,7 @@ class SSBSearchHistoryTableViewController: UITableViewController {
         cell.delegate = self
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let text = fetchResultContoller.fetchedObjects?[indexPath.row].word else {
             return
@@ -200,7 +200,7 @@ extension SSBSearchHistoryTableViewController: NSFetchedResultsControllerDelegat
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
-    
+
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any,
                     at indexPath: IndexPath?,
@@ -232,7 +232,7 @@ extension SSBSearchHistoryTableViewController: NSFetchedResultsControllerDelegat
             tableView.insertRows(at: [newIndex], with: .fade)
         }
     }
-    
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }

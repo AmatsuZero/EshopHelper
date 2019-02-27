@@ -13,10 +13,10 @@ import FontAwesome_swift
 class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
     var type: SSBGameInfoViewModel.HeadData.ShowCaseType? {
         didSet {
-            guard let t = type else {
+            guard let type = type else {
                 return
             }
-            switch t {
+            switch type {
             case .pic(let url):
                 playMark.isHidden = true
                 imageView.url = url
@@ -26,16 +26,16 @@ class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
             }
         }
     }
-    
+
     private let imageView = SSBLoadingImageView()
     private let playMark = UIImageView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
         layer.borderColor = UIColor.white.cgColor
-        
+
         playMark.layer.cornerRadius = 2
         playMark.layer.masksToBounds = true
         playMark.backgroundColor = UIColor.black.withAlphaComponent(0.3)
@@ -49,7 +49,7 @@ class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
             make.height.equalTo(10)
         }
     }
-    
+
     override var isSelected: Bool {
         didSet {
             if isSelected {
@@ -59,14 +59,14 @@ class SSBShowCaseCollectionViewCell: UICollectionViewCell, Reusable {
             }
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
-    
+
     var playerInfo: (cover: String, url: String)? {
         didSet {
             guard let addr = playerInfo?.url,
@@ -77,9 +77,9 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
             player.replaceVideo(url)
         }
     }
-    
+
     fileprivate let player = SSBPlayer()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         // 播放器View
@@ -88,11 +88,11 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
         contentView.addSubview(player.displayView)
         player.displayView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override var isSelected: Bool {
         didSet {
             if isSelected {
@@ -105,38 +105,38 @@ class SSBGameShowCasePlayerCell: UICollectionViewCell, Reusable {
 }
 
 class SSBGameShowCaseLargeDisplayCell: UICollectionViewCell, Reusable {
-    
+
     var imgURL: String? {
         didSet {
             imageView.url = imgURL
         }
     }
     private let imageView = SSBLoadingImageView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBGameShowCaseView: UIView, UICollectionViewDelegate {
-    
+
     let displayView: UICollectionView
     let previewView: UICollectionView
-    
+
     override init(frame: CGRect) {
-        
+
         let largeDisplayLayout = UICollectionViewFlowLayout()
         largeDisplayLayout.scrollDirection = .horizontal
         largeDisplayLayout.minimumLineSpacing = 1
         largeDisplayLayout.minimumInteritemSpacing = 1
         largeDisplayLayout.itemSize = CGSize(width: .screenWidth, height: 210)
-        
+
         displayView = UICollectionView(frame: .zero, collectionViewLayout: largeDisplayLayout)
         displayView.register(cellType: SSBGameShowCasePlayerCell.self)
         displayView.register(cellType: SSBGameShowCaseLargeDisplayCell.self)
@@ -145,41 +145,41 @@ class SSBGameShowCaseView: UIView, UICollectionViewDelegate {
         displayView.showsVerticalScrollIndicator = false
         displayView.allowsMultipleSelection = false
         displayView.tag = 213
-        
+
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 62, height: 34)
         layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 1
-        
+
         previewView = .init(frame: .zero, collectionViewLayout: layout)
         previewView.register(cellType: SSBShowCaseCollectionViewCell.self)
         previewView.showsVerticalScrollIndicator = false
         previewView.showsHorizontalScrollIndicator = false
         previewView.tag = 34
         previewView.allowsMultipleSelection = false
-        
+
         super.init(frame: frame)
         displayView.delegate = self
         previewView.delegate = self
-        
+
         addSubview(displayView)
         displayView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.height.equalTo(213)
         }
-        
+
         addSubview(previewView)
         previewView.snp.makeConstraints { make in
             make.top.equalTo(displayView.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == previewView {
             displayView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true) // 先滚动到指定位置，去创建Cell
@@ -193,7 +193,7 @@ class SSBGameShowCaseView: UIView, UICollectionViewDelegate {
             }
         }
     }
-    
+
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard !decelerate else {
             return
@@ -219,7 +219,7 @@ protocol SSBGameDetailTopViewDelegate: SSBPlayerViewDelegate {
 }
 
 class SSBGameDetailTopView: UITableViewCell {
-    
+
     fileprivate let showCaseView = SSBGameShowCaseView()
     fileprivate let gameTitleLabel = UILabel()
     fileprivate let developerLabel = UILabel()
@@ -229,30 +229,30 @@ class SSBGameDetailTopView: UITableViewCell {
     fileprivate let basicInfoStackView = UIStackView()
     fileprivate let markView = UIView()
     fileprivate let gameInfoStackView = UIStackView()
-    
+
     weak var delegate: SSBGameDetailTopViewDelegate?
-    
+
     var dataSource: SSBGameInfoViewModel.HeadData? {
         didSet {
             guard let dataSource = dataSource else {
                 return
             }
-            
+
             setNeedsLayout()
-            
+
             gameTitleLabel.attributedText = dataSource.title
             developerLabel.attributedText = dataSource.developer
-            
+
             recommendContainer.subviews.forEach { $0.removeFromSuperview() }
             recommendContainer.addSubview(dataSource.recommendView)
             dataSource.recommendView.snp.makeConstraints { $0.edges.equalToSuperview() }
-            
+
             categoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             dataSource.categoryLabels.forEach { categoryStackView.addArrangedSubview($0) }
-            
+
             descriptionLabel.attributedText = dataSource.brief
             markView.isHidden = !dataSource.shouldShowOnlineMark
-            
+
             if dataSource.playMode.isEmpty {
                 basicInfoStackView.snp.updateConstraints {
                     $0.height.equalTo(0)
@@ -264,37 +264,37 @@ class SSBGameDetailTopView: UITableViewCell {
                 basicInfoStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
                 dataSource.playMode.forEach { basicInfoStackView.addArrangedSubview($0) }
             }
-           
+
             let selector = #selector(SSBGameDetailTopView.bottomViewClicked(_:))
             gameInfoStackView.arrangedSubviews.forEach {
                 $0.removeFromSuperview()
                 ($0 as? UIControl)?.removeTarget(self, action: selector, for: .touchUpInside)
             }
-            
+
             dataSource.basicDescription.forEach {
                 $0.addTarget(self, action: selector, for: .touchUpInside)
                 gameInfoStackView.addArrangedSubview($0)
             }
-    
+
             showCaseView.previewView.reloadData()
             // 默认选中第一个
             showCaseView.previewView.selectItem(at: IndexPath(row: 0, section: 0),
                                                 animated: false, scrollPosition: [])
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         showCaseView.previewView.dataSource = self
         showCaseView.displayView.dataSource = self
         contentView.addSubview(showCaseView)
-        
+
         showCaseView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.height.equalTo(252)
         }
-        
+
         contentView.addSubview(gameTitleLabel)
         gameTitleLabel.numberOfLines = 3
         gameTitleLabel.snp.makeConstraints { make in
@@ -303,7 +303,7 @@ class SSBGameDetailTopView: UITableViewCell {
             make.height.lessThanOrEqualTo(60)
             make.width.equalTo(230)
         }
-        
+
         contentView.addSubview(recommendContainer)
         recommendContainer.snp.makeConstraints { make in
             make.top.equalTo(showCaseView.snp.bottom).offset(19)
@@ -311,25 +311,25 @@ class SSBGameDetailTopView: UITableViewCell {
             make.height.equalTo(57)
             make.width.equalTo(71)
         }
-        
+
         contentView.addSubview(developerLabel)
         developerLabel.snp.makeConstraints { make in
             make.top.equalTo(gameTitleLabel.snp.bottom).offset(10)
             make.left.equalTo(gameTitleLabel)
             make.width.lessThanOrEqualTo(248)
         }
-        
+
         categoryStackView.axis = .horizontal
         categoryStackView.distribution = .fill
         categoryStackView.alignment = .leading
         categoryStackView.spacing = 2
-        
+
         contentView.addSubview(categoryStackView)
         categoryStackView.snp.makeConstraints { make in
             make.left.equalTo(gameTitleLabel)
             make.top.equalTo(developerLabel.snp.bottom).offset(10)
         }
-        
+
         descriptionLabel.numberOfLines = 0
         contentView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
@@ -337,7 +337,7 @@ class SSBGameDetailTopView: UITableViewCell {
             make.right.equalTo(-10)
             make.left.equalTo(gameTitleLabel)
         }
-        
+
         basicInfoStackView.axis = .horizontal
         basicInfoStackView.distribution = .fill
         basicInfoStackView.alignment = .leading
@@ -348,14 +348,14 @@ class SSBGameDetailTopView: UITableViewCell {
             make.left.equalTo(gameTitleLabel)
             make.height.equalTo(0)
         }
-        
+
         let imageView = UIImageView(image: UIImage.fontAwesomeIcon(name: .nintendoSwitch, style: .brands,
                                                                    textColor: .eShopColor, size: .init(width: 14, height: 14)))
         markView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.top.left.bottom.equalToSuperview()
         }
-        
+
         let label = UILabel()
         label.textColor = .eShopColor
         label.text = "ONLINE会员"
@@ -365,14 +365,14 @@ class SSBGameDetailTopView: UITableViewCell {
             make.left.equalTo(imageView.snp.right).offset(2)
             make.top.right.centerY.equalToSuperview()
         }
-        
+
         markView.isHidden = true
         contentView.addSubview(markView)
         markView.snp.makeConstraints { make in
             make.right.equalTo(recommendContainer)
             make.centerY.equalTo(basicInfoStackView)
         }
-        
+
         let lineView = UIView()
         lineView.backgroundColor = .lineColor
         contentView.addSubview(lineView)
@@ -381,7 +381,7 @@ class SSBGameDetailTopView: UITableViewCell {
             make.width.right.equalToSuperview()
             make.height.equalTo(1)
         }
-        
+
         gameInfoStackView.axis = .horizontal
         gameInfoStackView.alignment = .center
         gameInfoStackView.distribution = .fillEqually
@@ -391,28 +391,28 @@ class SSBGameDetailTopView: UITableViewCell {
             make.right.left.bottom.equalToSuperview()
             make.height.equalTo(39)
         }
-        
+
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if gameInfoStackView.frame.contains(point) {
-            let pt = convert(point, to: gameInfoStackView)
+            let point = convert(point, to: gameInfoStackView)
             for (index, view) in gameInfoStackView.arrangedSubviews.enumerated() {
                 let frame = CGRect(origin: CGPoint(x: CGFloat(index) * view.mj_w, y: 0),
                                    size: CGSize(width: view.mj_w, height: gameInfoStackView.mj_h))
-                if frame.contains(pt) {
+                if frame.contains(point) {
                     return view
                 }
             }
         }
         return super.hitTest(point, with: event)
     }
-    
+
     @objc private func bottomViewClicked(_ sender: UIControl) {
         guard let delegate = self.delegate else {
             return
@@ -422,7 +422,7 @@ class SSBGameDetailTopView: UITableViewCell {
 }
 
 extension SSBGameDetailTopView: UICollectionViewDataSource {
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let type = dataSource!.showCaseDataSource[indexPath.row]
         var cell: UICollectionViewCell!
@@ -454,19 +454,19 @@ extension SSBGameDetailTopView: UICollectionViewDataSource {
         }
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource?.showCaseDataSource.count ?? 0
     }
 }
 
 extension SSBGameDetailTopView: SSBPlayerViewDelegate {
-    
+
     func oneExitFullScreen(_ player: SSBPlayerView) {
         guard let delegate = self.delegate else { return }
         delegate.oneExitFullScreen(player)
     }
-    
+
     func onEnterFullScreen(_ player: SSBPlayerView) {
         guard let delegate = self.delegate else { return }
         delegate.onEnterFullScreen(player)
@@ -474,9 +474,9 @@ extension SSBGameDetailTopView: SSBPlayerViewDelegate {
 }
 
 class SSBGameDetailTopViewController: UIViewController {
-    
+
     private let topView = SSBGameDetailTopView()
-    
+
     fileprivate var isStatusBarHidden = false {
         didSet {
             UIView.animate(withDuration: 0.3) {
@@ -484,18 +484,18 @@ class SSBGameDetailTopViewController: UIViewController {
             }
         }
     }
-    
+
     var dataSource: SSBGameInfoViewModel.HeadData? {
         didSet {
             topView.dataSource = dataSource
         }
     }
-    
+
     override func loadView() {
         topView.delegate = self
         view = topView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -503,23 +503,23 @@ class SSBGameDetailTopViewController: UIViewController {
 }
 
 extension SSBGameDetailTopViewController: SSBGameDetailTopViewDelegate {
-    
+
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
     }
-    
+
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }
-    
+
     func onEnterFullScreen(_ player: SSBPlayerView) {
         isStatusBarHidden = true
     }
-    
+
     func oneExitFullScreen(_ player: SSBPlayerView) {
         isStatusBarHidden = false
     }
-    
+
     func onBottomViewClicked(tag: Int) {
         print(tag)
     }

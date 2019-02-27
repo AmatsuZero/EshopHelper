@@ -12,7 +12,7 @@ class SSBFullscreenPresentationController: UIPresentationController {
 
     let dimmingView = UIView()
     var targetFrame: CGRect
-    
+
     init(targetFrame: CGRect = UIScreen.main.bounds, presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         self.targetFrame = targetFrame
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
@@ -22,7 +22,7 @@ class SSBFullscreenPresentationController: UIPresentationController {
         let tapGez = UITapGestureRecognizer(target: self, action: #selector(SSBFullscreenPresentationController.dismiss(_:)))
         dimmingView.addGestureRecognizer(tapGez)
     }
-    
+
     override func presentationTransitionWillBegin() {
         containerView?.insertSubview(dimmingView, at: 0)
         dimmingView.snp.makeConstraints { $0.edges.equalTo(0) }
@@ -34,7 +34,7 @@ class SSBFullscreenPresentationController: UIPresentationController {
             dimmingView.alpha = 1
         }
     }
-    
+
     override func dismissalTransitionWillBegin() {
         if let coordinator = presentingViewController.transitionCoordinator {
             coordinator.animate(alongsideTransition: { _ in
@@ -44,15 +44,15 @@ class SSBFullscreenPresentationController: UIPresentationController {
             dimmingView.alpha = 1
         }
     }
-    
+
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-        return targetFrame.size;
+        return targetFrame.size
     }
-    
+
     override var frameOfPresentedViewInContainerView: CGRect {
         return targetFrame
     }
-    
+
     @objc func dismiss(_ sender: UITapGestureRecognizer) {
         presentedViewController.dismiss(animated: true)
     }

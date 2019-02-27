@@ -11,18 +11,18 @@ import Alamofire
 import FontAwesome_swift
 
 class SSBCommunityView: UITableViewCell {
-    
+
     weak var delegate: SSBTableViewDelegate? {
         didSet {
             self.tableView.delegate = delegate
         }
     }
-    
+
     class SSBCommunityListHeaderView: UIView {
         private let bannerImageView = SSBLoadingImageView()
         private let titeLabel = UILabel()
         let followButton = UIButton()
-        
+
         init(frame: CGRect, title: String?, banner: String?) {
             super.init(frame: frame)
             bannerImageView.url = banner
@@ -35,7 +35,7 @@ class SSBCommunityView: UITableViewCell {
                     $0.edges.equalToSuperview()
                 }
             }
-    
+
             titeLabel.textColor = .white
             titeLabel.font = UIFont.boldSystemFont(ofSize: 19)
             titeLabel.text = title
@@ -49,7 +49,7 @@ class SSBCommunityView: UITableViewCell {
                 make.top.equalTo(28)
                 make.width.lessThanOrEqualTo(270)
             }
-            
+
             followButton.layer.cornerRadius = 4
             followButton.layer.masksToBounds = true
             followButton.setTitle("+ 关注社区", for: .normal)
@@ -67,15 +67,15 @@ class SSBCommunityView: UITableViewCell {
                 make.height.equalTo(25)
             }
         }
-        
+
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
     }
-    
+
     let tableView = UITableView(frame: .zero, style: .plain)
     private var headerView: SSBCommunityListHeaderView?
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let backgroundView = SSBListBackgroundView(frame: .zero, type: .triangleSkewSpin)
@@ -100,7 +100,7 @@ class SSBCommunityView: UITableViewCell {
         addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
+
     func setHeader(banner: String?, title: String?) {
         guard headerView == nil else {
             return
@@ -109,17 +109,17 @@ class SSBCommunityView: UITableViewCell {
         headerView = SSBCommunityListHeaderView(frame: frame, title: title, banner: banner)
         tableView.tableHeaderView = headerView
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func onRefresh(_ sender: SSBCustomRefreshHeader) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToRefresh(self.tableView)
         }
     }
-    
+
     @objc private func onAppend(_ sender: SSBCustomAutoFooter) {
         if let delegate = self.delegate {
             delegate.tableViewBeginToAppend(self.tableView)
@@ -132,7 +132,7 @@ protocol SSBCommunityHeaderViewDelegate: class {
 }
 
 class SSBCommunityViewController: UIViewController {
-    
+
     class SSBCommunityHeaderView: UIView {
         var totalCount = 0 {
             didSet {
@@ -159,7 +159,7 @@ class SSBCommunityViewController: UIViewController {
                 }
             }
         }
-        
+
         private let label = UILabel()
         private let isEmbeded: Bool
         weak var delegate: SSBCommunityHeaderViewDelegate?
@@ -178,14 +178,14 @@ class SSBCommunityViewController: UIViewController {
             button.addTarget(self, action: #selector(click(_:)), for: .touchUpInside)
             return button
         }()
-        
+
         init(frame: CGRect = .zero, isEmbeded: Bool = false) {
             self.isEmbeded = isEmbeded
             super.init(frame: frame)
             let color = UIColor(r: 120, g: 120, b: 120)
-            
+
             addSubview(label)
-            
+
             if isEmbeded {
                 label.textColor = .darkText
                 label.font = UIFont.boldSystemFont(ofSize: 19)
@@ -214,7 +214,7 @@ class SSBCommunityViewController: UIViewController {
                     }
                     make.centerY.equalToSuperview()
                 }
-                
+
                 label.textColor = color
                 label.font = UIFont.systemFont(ofSize: 12)
                 label.snp.makeConstraints { make in
@@ -222,7 +222,7 @@ class SSBCommunityViewController: UIViewController {
                     make.centerY.equalToSuperview()
                 }
             }
-            
+
             let view = UIView()
             view.backgroundColor = .lineColor
             addSubview(view)
@@ -230,19 +230,19 @@ class SSBCommunityViewController: UIViewController {
                 make.left.right.bottom.equalToSuperview()
                 make.height.equalTo(1)
             }
-        
+
             backgroundColor = .white
         }
-        
+
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         @objc private func click(_ sender: UIButton) {
             delegate?.onMoreButtonClicked(self)
         }
     }
-    
+
     weak var delegate: SSBGameDetailViewControllerDelegate?
     let communityView = SSBCommunityView()
     let appid: String
@@ -257,12 +257,12 @@ class SSBCommunityViewController: UIViewController {
         }
         return state == .running
     }
-    
+
     var lastPage = 1
     var cellHeights = [IndexPath: CGFloat]()
     var headerView = SSBCommunityHeaderView()
     var margin: CGFloat = 5
-    
+
     lazy var button: SSBCustomButton = {
         let control = SSBCustomButton()
         control.setImage(UIImage.fontAwesomeIcon(name: .pen, style: .solid, textColor: .white,
@@ -282,7 +282,7 @@ class SSBCommunityViewController: UIViewController {
         control.addTarget(self, action: #selector(createNewPost), for: .touchUpInside)
         return control
     }()
-    
+
     init(appid: String) {
         self.appid = appid
         super.init(nibName: nil, bundle: nil)
@@ -294,15 +294,15 @@ class SSBCommunityViewController: UIViewController {
         communityView.delegate = self
         dataSource.tableView = communityView.tableView
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func loadView() {
         view = communityView
         view.addSubview(button)
@@ -312,14 +312,14 @@ class SSBCommunityViewController: UIViewController {
             make.width.height.equalTo(50)
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         communityView.tableView.mj_header?.isHidden = true
         communityView.tableView.mj_footer?.isHidden = true
         tableViewBeginToRefresh(communityView.tableView)
     }
-    
+
     @objc private func onReceiveNotification(_ notifcation: Notification) {
         let userInfo = notifcation.userInfo as? [String: Any]
         guard let id = userInfo?["appid"] as? String, appid == id  else {
@@ -330,7 +330,7 @@ class SSBCommunityViewController: UIViewController {
                                     title: obj.originalData.game.titleZh)
         }
     }
-    
+
     @objc private func createNewPost() {
         let controller = SSBPostDetailViewController()
         controller.hidesBottomBarWhenPushed = true
@@ -339,22 +339,22 @@ class SSBCommunityViewController: UIViewController {
 }
 
 extension SSBCommunityViewController: SSBTableViewDelegate {
-    
+
     func tableViewBeginToRefresh(_ tableView: UITableView) {
         guard !isRunningTask else {
             return
         }
-        
+
         lastPage = 1
         let ret = GameCommunityService.shared.postList(id: appid, page: lastPage)
         request = ret.request
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
-        
+
         ret.promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {
                 return
             }
-            
+
             self.dataSource.totalCount = data.count
             self.dataSource.refresh(data.list)
             // 刷新帖子数量
@@ -370,13 +370,13 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
                 self?.request = nil
         }
     }
-    
+
     func tableViewBeginToAppend(_ tableView: UITableView) {
         // 如果正在刷新中，则取消
         guard !isRunningTask else {
             return
         }
-        
+
         let ret = GameCommunityService.shared.postList(id: appid, page: lastPage + 1)
         request = ret.request
         ret.promise.done { [weak self] ret in
@@ -397,39 +397,39 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
             self?.request = nil
         }
     }
-    
+
     func retry(view: SSBListBackgroundView) {
         tableViewBeginToRefresh(communityView.tableView)
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cellHeights[indexPath] = cell.frame.height
         if let view = cell as? SSBCommunityFoldableCell {
             view.delegate = self
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let height = cellHeights[indexPath] {
             return height
         }
         return UITableView.automaticDimension
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         if let view = cell as? SSBCommunityFoldCell {
             toggleFoldState(view)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard !isRunningTask, tableView.backgroundView?.isHidden == true, section == 0 else {
             return margin
         }
         return 35
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard !isRunningTask, tableView.backgroundView?.isHidden == true, section == 0 else {
             let view = UIView()
@@ -450,7 +450,7 @@ extension SSBCommunityViewController: SSBCommunityCellDelegate {
             model = view.viewModel
         }
         guard let data = model,
-            let index = dataSource.dataSource.firstIndex(where: { $0 === data} ) else {
+            let index = dataSource.dataSource.firstIndex(where: { $0 === data}) else {
             return
         }
         let indexPath = IndexPath(row: index, section: 1)

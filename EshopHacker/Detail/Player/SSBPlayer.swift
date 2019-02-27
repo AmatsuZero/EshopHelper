@@ -28,10 +28,10 @@ extension SSBPlayerDelegate {
 class SSBPlayer: NSObject {
     
     public struct PlayerError: CustomStringConvertible {
-        var error : Error?
-        var playerItemErrorLogEvent : [AVPlayerItemErrorLogEvent]?
-        var extendedLogData : Data?
-        var extendedLogDataStringEncoding : UInt?
+        var error: Error?
+        var playerItemErrorLogEvent: [AVPlayerItemErrorLogEvent]?
+        var extendedLogData: Data?
+        var extendedLogDataStringEncoding: UInt?
         
         public var description: String {
             return """
@@ -45,15 +45,14 @@ class SSBPlayer: NSObject {
         }
     }
     
-    
-    public enum PlayerMediaFormat : String {
+    public enum PlayerMediaFormat: String {
         case unknown
         case mpeg4 = ".mp4"
         case m3u8 = ".m3u8"
         case mov = ".mov"
         case m4v = ".m4v"
         case error
-    
+        
         init?(_ URL: URL?) {
             guard let ext = URL?.pathExtension else {
                 self = .error
@@ -99,7 +98,7 @@ class SSBPlayer: NSObject {
         }
     }
     
-    var bufferState : PlayerBufferstate = .none {
+    var bufferState: PlayerBufferstate = .none {
         didSet {
             guard bufferState != oldValue else { return }
             displayView.bufferStateDidChange(bufferState)
@@ -107,22 +106,22 @@ class SSBPlayer: NSObject {
         }
     }
     
-    var displayView : SSBPlayerView
+    var displayView: SSBPlayerView
     var gravityMode = VideoGravityMode.resizeAspect
     var backgroundMode = PlayerBackgroundMode.autoPlayAndPaused
-    var bufferInterval : TimeInterval = 2.0
-    weak var delegate : SSBPlayerDelegate?
-    fileprivate(set) var mediaFormat : PlayerMediaFormat
-    fileprivate(set) var totalDuration : TimeInterval = 0.0
-    fileprivate(set) var currentDuration : TimeInterval = 0.0
+    var bufferInterval: TimeInterval = 2.0
+    weak var delegate: SSBPlayerDelegate?
+    fileprivate(set) var mediaFormat: PlayerMediaFormat
+    fileprivate(set) var totalDuration: TimeInterval = 0.0
+    fileprivate(set) var currentDuration: TimeInterval = 0.0
     fileprivate(set) var buffering = false
-    fileprivate(set) var player : AVPlayer? {
-        willSet{ removePlayerObservers() }
+    fileprivate(set) var player: AVPlayer? {
+        willSet { removePlayerObservers() }
         didSet { addPlayerObservers() }
     }
     
     var timeObserver: Any?
-    fileprivate(set) var playerItem : AVPlayerItem? {
+    fileprivate(set) var playerItem: AVPlayerItem? {
         willSet {
             removePlayerItemObservers()
             removePlayerNotifations()
@@ -133,11 +132,13 @@ class SSBPlayer: NSObject {
         }
     }
     
-    fileprivate(set) var playerAsset : AVURLAsset?
-    fileprivate(set) var contentURL : URL?
+    fileprivate(set) var playerAsset: AVURLAsset?
+    fileprivate(set) var contentURL: URL?
     fileprivate(set) var error = PlayerError()
     fileprivate var seeking  = false
-    
+    var statusObserver: NSKeyValueObservation?
+    var loadTimeRangesObserver: NSKeyValueObservation?
+    var playbackBufferEmptyObserver: NSKeyValueObservation?
     init(URL: URL? = nil, playerView: SSBPlayerView? = nil) {
         mediaFormat = PlayerMediaFormat(URL) ?? .error
         contentURL = URL
@@ -159,7 +160,7 @@ class SSBPlayer: NSObject {
         displayView.setPlayer(player: self)
         playerAsset = AVURLAsset(url: URL, options: .none)
         if URL.absoluteString.hasPrefix("file:///") {
-            let keys = ["tracks", "playable"];
+            let keys = ["tracks", "playable"]
             playerItem = AVPlayerItem(asset: playerAsset!, automaticallyLoadedAssetKeys: keys)
         } else {
             playerItem = AVPlayerItem(asset: .init(url: URL))
@@ -189,7 +190,6 @@ class SSBPlayer: NSObject {
                                                       queue: DispatchQueue.main,
                                                       using: block)
     }
-    
     func removePlayerObservers() {
         guard let observer = timeObserver else {
             return
@@ -203,7 +203,6 @@ class SSBPlayer: NSObject {
         contentURL = URL
         configurationPlayer(URL)
     }
-    
     func reloadPlayer() {
         seeking = false
         totalDuration = 0.0
@@ -214,7 +213,6 @@ class SSBPlayer: NSObject {
         bufferState = .none
         cleanPlayer()
     }
-    
     func cleanPlayer() {
         player?.pause()
         player?.cancelPendingPrerolls()
@@ -225,14 +223,12 @@ class SSBPlayer: NSObject {
         playerItem?.cancelPendingSeeks()
         playerItem = nil
     }
-    
     func play() {
         guard contentURL != nil else { return }
         player?.play()
         state = .playing
         displayView.play()
     }
-    
     func pause() {
         guard state != .paused else {
             return
@@ -241,11 +237,9 @@ class SSBPlayer: NSObject {
         state = .paused
         displayView.pause()
     }
-    
     func seekTime(_ time: TimeInterval) {
         seekTime(time, completion: nil)
     }
-    
     func seekTime(_ time: TimeInterval, completion: ((Bool) -> Void)?) {
         if time.isNaN || playerItem?.status != .readyToPlay {
             if completion != nil {
@@ -274,18 +268,15 @@ class SSBPlayer: NSObject {
                       completionHandler: block)
         }
     }
-    
     private func startPlayerBuffering() {
         pause()
         bufferState = .buffering
         buffering = true
     }
-    
     private func stopPlayerBuffering() {
         bufferState = .stop
         buffering = false
     }
-    
     private func collectPlayerErrorLogEvent() {
         error.playerItemErrorLogEvent = playerItem?.errorLog()?.events
         error.error = playerItem?.error
@@ -295,45 +286,103 @@ class SSBPlayer: NSObject {
 }
 
 // MARK: - Notifation Selector & KVO
-private var playerItemContext = 0
-
 extension SSBPlayer {
-    
     func addPlayerItemObservers() {
-        let options = NSKeyValueObservingOptions([.new, .initial])
-        playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: options, context: &playerItemContext)
-        playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.loadedTimeRanges), options: options, context: &playerItemContext)
-        playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.playbackBufferEmpty), options: options, context: &playerItemContext)
+        addStatusObserver()
+        addLoadedTimeRanges()
+        addPlaybackBufferEmptyObserver()
+    }
+    func addStatusObserver() {
+        statusObserver = playerItem?.observe(\.status,
+                                             options: [.new, .initial],
+                                             changeHandler: { [weak self] (_, change) in
+                                                guard let self = self else { return }
+                                                let status: AVPlayerItem.Status = change.newValue ?? .unknown
+                                                switch status {
+                                                case .unknown:
+                                                    self.startPlayerBuffering()
+                                                case .readyToPlay:
+                                                    self.bufferState = .readyToPlay
+                                                case .failed:
+                                                    self.state = .error
+                                                    self.collectPlayerErrorLogEvent()
+                                                    self.stopPlayerBuffering()
+                                                    self.delegate?.player(self, playerFailed: self.error)
+                                                    self.displayView.playFailed(self.error)
+                                                }
+        })
+    }
+    func addPlaybackBufferEmptyObserver() {
+        playbackBufferEmptyObserver = playerItem?.observe(\.isPlaybackBufferEmpty,
+                                                          options: [.new, .initial],
+                                                          changeHandler: { [weak self] (_, _) in
+                                                            self?.startPlayerBuffering()
+        })
+    }
+    func addLoadedTimeRanges() {
+        loadTimeRangesObserver = playerItem?.observe(\.loadedTimeRanges,
+                                                     options: [.new, .initial],
+                                                     changeHandler: { [weak self] (_, _) in
+                                                        guard let self = self,
+                                                            let loadedTimeRanges = self.player?.currentItem?.loadedTimeRanges,
+                                                            let bufferTimeRange = loadedTimeRanges.first?.timeRangeValue else {
+                                                                return
+                                                        }
+                                                        let star = bufferTimeRange.start.seconds         // The start time of the time range.
+                                                        let duration = bufferTimeRange.duration.seconds  // The duration of the time range.
+                                                        let bufferTime = star + duration
+                                                        if let itemDuration = self.playerItem?.duration.seconds {
+                                                            self.delegate?.player(self, bufferedDidChange: bufferTime, totalDuration: itemDuration)
+                                                            self.displayView.bufferedDidChange(bufferTime, totalDuration: itemDuration)
+                                                            self.totalDuration = itemDuration
+                                                            if itemDuration == bufferTime {
+                                                                self.bufferState = .bufferFinished
+                                                            }
+                                                        }
+                                                        if let currentTime = self.playerItem?.currentTime().seconds {
+                                                            if (bufferTime - currentTime) >= self.bufferInterval,
+                                                                self.state != .paused {
+                                                                self.play()
+                                                            }
+                                                            if (bufferTime - currentTime) < self.bufferInterval {
+                                                                self.bufferState = .buffering
+                                                                self.buffering = true
+                                                            } else {
+                                                                self.buffering = false
+                                                                self.bufferState = .readyToPlay
+                                                            }
+                                                        }
+        })
     }
     
     func addPlayerNotifications() {
-        NotificationCenter.default.addObserver(self, selector: .playerItemDidPlayToEndTime, name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        NotificationCenter.default.addObserver(self, selector: .applicationWillEnterForeground, name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: .applicationDidEnterBackground, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: .playerItemDidPlayToEndTime,
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: .applicationWillEnterForeground,
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: .applicationDidEnterBackground,
+                                               name: UIApplication.didEnterBackgroundNotification,
+                                               object: nil)
     }
-    
     func removePlayerItemObservers() {
-        playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status))
-        playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.loadedTimeRanges))
-        playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.playbackBufferEmpty))
+        statusObserver?.invalidate()
+        loadTimeRangesObserver?.invalidate()
+        playbackBufferEmptyObserver?.invalidate()
     }
-    
     func removePlayerNotifations() {
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
-    
-    
     @objc func playerItemDidPlayToEnd(_ notification: Notification) {
         if state != .playFinished {
             state = .playFinished
         }
     }
-    
     @objc func applicationWillEnterForeground(_ notification: Notification) {
-        
-        if let playerLayer = displayView.playerLayer  {
+        if let playerLayer = displayView.playerLayer {
             playerLayer.player = player
         }
         switch self.backgroundMode {
@@ -345,9 +394,8 @@ extension SSBPlayer {
             break
         }
     }
-    
     @objc func applicationDidEnterBackground(_ notification: Notification) {
-        if let playerLayer = displayView.playerLayer  {
+        if let playerLayer = displayView.playerLayer {
             playerLayer.player = nil
         }
         switch self.backgroundMode {
@@ -356,73 +404,6 @@ extension SSBPlayer {
         case .autoPlayAndPaused:
             pause()
         case .proceed:
-            play()
-        }
-    }
-}
-
-extension SSBPlayer {
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        guard context == &playerItemContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        
-        switch keyPath {
-            
-        case #keyPath(AVPlayerItem.status):
-            let status: AVPlayerItem.Status
-            if let statusNumber = change?[.newKey] as? NSNumber {
-                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
-            } else {
-                status = .unknown
-            }
-            switch status {
-            case .unknown:
-                startPlayerBuffering()
-            case .readyToPlay:
-                bufferState = .readyToPlay
-            case .failed:
-                state = .error
-                collectPlayerErrorLogEvent()
-                stopPlayerBuffering()
-                delegate?.player(self, playerFailed: error)
-                displayView.playFailed(error)
-            }
-            
-        case #keyPath(AVPlayerItem.playbackBufferEmpty) where change?[.newKey] as? Bool == true:
-            startPlayerBuffering()
-            
-        case  #keyPath(AVPlayerItem.loadedTimeRanges): // 计算缓冲
-            guard let loadedTimeRanges = player?.currentItem?.loadedTimeRanges,
-                let bufferTimeRange = loadedTimeRanges.first?.timeRangeValue else {
-                    return
-            }
-            let star = bufferTimeRange.start.seconds         // The start time of the time range.
-            let duration = bufferTimeRange.duration.seconds  // The duration of the time range.
-            let bufferTime = star + duration
-            if let itemDuration = playerItem?.duration.seconds {
-                delegate?.player(self, bufferedDidChange: bufferTime, totalDuration: itemDuration)
-                displayView.bufferedDidChange(bufferTime, totalDuration: itemDuration)
-                totalDuration = itemDuration
-                if itemDuration == bufferTime {
-                    bufferState = .bufferFinished
-                }
-            }
-            if let currentTime = playerItem?.currentTime().seconds {
-                if (bufferTime - currentTime) >= bufferInterval, state != .paused {
-                    play()
-                }
-                if (bufferTime - currentTime) < bufferInterval {
-                    bufferState = .buffering
-                    buffering = true
-                } else {
-                    buffering = false
-                    bufferState = .readyToPlay
-                }
-            }
-        default:
             play()
         }
     }

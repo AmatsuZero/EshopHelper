@@ -9,36 +9,36 @@
 import UIKit
 
 extension CGFloat {
-    
+
     static var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
     }
-    
+
     static var screenHeight: CGFloat {
         return UIScreen.main.bounds.height
     }
-    
-    func factoredWitdh(by: CGFloat) -> CGFloat {
-        return by != 0 ? self * .screenWidth / by : 0
+
+    func factoredWitdh(by width: CGFloat) -> CGFloat {
+        return width != 0 ? self * .screenWidth / width : 0
     }
-    
-    func factoredHeight(by: CGFloat) -> CGFloat {
-        return by != 0 ? self * .screenHeight / by : 0
+
+    func factoredHeight(by height: CGFloat) -> CGFloat {
+        return height != 0 ? self * .screenHeight / height : 0
     }
-    
+
     static var statusBarHeight: CGFloat {
         return UIApplication.shared.statusBarFrame.height
     }
 }
 
 extension CGSize {
-    
+
     static var screenSize: CGSize {
         return UIScreen.main.bounds.size
     }
-    
-    func factoredSize(by: CGSize) -> CGSize {
-        return CGSize(width: width.factoredWitdh(by: by.width),
-                      height: height.factoredHeight(by: by.height))
+
+    func factoredSize(by size: CGSize) -> CGSize {
+        return CGSize(width: width.factoredWitdh(by: size.width),
+                      height: height.factoredHeight(by: size.height))
     }
 }

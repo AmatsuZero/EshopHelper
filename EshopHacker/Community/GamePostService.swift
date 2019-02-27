@@ -9,17 +9,17 @@
 import PromiseKit
 
 class GameCommunityService {
-    
+
     static let shared = GameCommunityService()
-    
+
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
-    
+
     struct RequestOption: URLQueryItemConvertiable {
-        
+
         enum SortType: String {
-            case postDefault = "postDefault"
+            case postDefault
         }
-        
+
         var moduleId = 1
         var entityIdStr = ""
         var offset = 0
@@ -27,14 +27,14 @@ class GameCommunityService {
         var version = 2
         var limit = 10
     }
-    
+
     struct ResultData: ClientVerifiableData {
         struct PostData: Codable {
             struct Post: Codable {
                 struct Content: Codable {
                     enum ContentType: String, Codable {
-                        case text = "text"
-                        case image = "image"
+                        case text
+                        case image
                     }
                     let type: ContentType
                     let text: String?
@@ -64,9 +64,9 @@ class GameCommunityService {
         var result: ResponseResult
         var data: PostData?
     }
-    
+
     typealias Result = (request: DataRequest, promise: Promise<ResultData>)
-    
+
     func postList(id: String, page: Int, limit: Int = 5, type: RequestOption.SortType = .postDefault) -> Result {
         var option = RequestOption()
         option.limit = limit
@@ -75,16 +75,16 @@ class GameCommunityService {
         option.sortType = type
         return post(option: option)
     }
-    
+
     private func post(option: RequestOption) -> Result {
         return sessionManager.request(Router.community(option)).customResponse(ResultData.self)
     }
 }
 
 class SSBGamePostViewModel: SSBViewModelProtocol {
-    
-    typealias T = GameCommunityService.ResultData.PostData.Post
-    var originalData: T
+
+    typealias Tyoe = GameCommunityService.ResultData.PostData.Post
+    var originalData: Tyoe
     let title: NSAttributedString
     let replyTime: NSAttributedString
     let nickName: NSAttributedString
@@ -93,8 +93,8 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
     let avatar: String
     let canFold: Bool
     var isExpand = false
-    
-    required init(model: T) {
+
+    required init(model: Tyoe) {
         originalData = model
         avatar = model.avatarUrl ?? ""
         title = NSAttributedString(string: model.title, attributes: [
@@ -137,15 +137,15 @@ class SSBGamePostViewModel: SSBViewModelProtocol {
 
 class SSBCommunityDataSource: NSObject, UITableViewDataSource {
     private(set) var dataSource = [SSBGamePostViewModel]()
-    
+
     var totalCount = 0
-    
+
     var count: Int {
         return dataSource.count
     }
-    
+
     weak var tableView: UITableView?
-    
+
     func refresh(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
         dataSource.removeAll()
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
@@ -165,33 +165,33 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
             tableView?.mj_footer?.endRefreshing()
         }
     }
-    
+
     func append(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
         let lastIndex = count
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
-        tableView?.insertRows(at:  (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
+        tableView?.insertRows(at: (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
         if totalCount == count {// 已经取得全部数据
             tableView?.mj_footer?.endRefreshingWithNoMoreData()
         } else {
             tableView?.mj_footer?.endRefreshing()
         }
     }
-    
+
     func toggleState(at indexPath: IndexPath) {
         dataSource[indexPath.row].isExpand.toggle()
     }
-    
+
     // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.isEmpty ? 0 : 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? 0 : count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let model = dataSource[indexPath.row]
         if model.canFold {
             if model.isExpand {
@@ -213,4 +213,3 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
         }
     }
 }
-

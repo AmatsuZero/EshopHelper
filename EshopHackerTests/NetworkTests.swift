@@ -11,11 +11,11 @@ import PromiseKit
 @testable import EshopHacker
 
 class NetworkTests: XCTestCase {
-    
+
     enum TestError: Error {
         case noAppId
     }
-    
+
     func testBuildSearch() {
         let expectation = self.expectation(description: "搜索")
         firstly {
@@ -29,7 +29,7 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 3)
     }
-    
+
     func testGameInfo() {
         let expectation = self.expectation(description: "游戏信息")
         firstly {
@@ -43,7 +43,7 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
+
     func testBannerData() {
         let expectation = self.expectation(description: "轮播图")
         firstly {
@@ -57,7 +57,7 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
+
     func testGetComment() {
         let expectation = self.expectation(description: "拉评论")
         firstly {
@@ -71,11 +71,13 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
+
     func testPostComment() {
         let expectation = self.expectation(description: "发评论")
         firstly {
-            CommentService.shared.postGameComment(by: "ABgtXtGz9Q6fDBQI", isLike: true, content: "画风清奇，脑洞很大").promise
+            CommentService.shared.postGameComment(by: "ABgtXtGz9Q6fDBQI",
+                                                  isLike: true,
+                                                  content: "画风清奇，脑洞很大").promise
         }.done {
             print($0)
         }.catch {
@@ -85,7 +87,7 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
+
     func testTodayRecommend() {
         let expectation = self.expectation(description: "今日推荐")
         firstly {
@@ -99,7 +101,7 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
+
     func testgetPostList() {
         let expectation = self.expectation(description: "帖子列表")
         firstly {

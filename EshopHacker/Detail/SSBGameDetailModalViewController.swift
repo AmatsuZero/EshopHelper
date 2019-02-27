@@ -9,18 +9,18 @@
 import UIKit
 
 class SSBGameDetailModalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    
+
     let isPresentation: Bool
-    
+
     init(isPresentation: Bool) {
         self.isPresentation = isPresentation
         super.init()
     }
-    
+
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
-    
+
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let controller = transitionContext.viewController(forKey: isPresentation ? .to : .from) else {
             return
@@ -44,7 +44,7 @@ private let buttonSize: CGFloat = 52
 class SSBGameDetailModalView: UIView {
 
     private let shapeLayer = CAShapeLayer()
-    
+
     let closeButton: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage.fontAwesomeIcon(name: .times, style: .solid, textColor: UIColor(r: 218, g: 219, b: 220),
@@ -89,35 +89,35 @@ class SSBGameDetailModalView: UIView {
 }
 
 class SSBGameDetailModalViewController: UIViewController {
-    
+
     let contentView = SSBGameDetailModalView()
-    
+
     override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         modalPresentationStyle = .custom
         transitioningDelegate = self
         contentView.closeButton.addTarget(self, action: #selector(closePage(_:)), for: .touchUpInside)
     }
-    
+
     override func loadView() {
         view = contentView
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override var shouldAutorotate: Bool {
         return false
     }
-    
+
     @objc func closePage(_ sender: UIButton) {
         dismiss(animated: true)
     }
 }
 
 extension SSBGameDetailModalViewController: UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
-    
+
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let padding: CGFloat = 14
         let bottom: CGFloat = {
@@ -142,27 +142,26 @@ extension SSBGameDetailModalViewController: UIViewControllerTransitioningDelegat
         presentationController.delegate = self
         return presentationController
     }
-    
+
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SSBGameDetailModalAnimator(isPresentation: false)
     }
-    
+
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SSBGameDetailModalAnimator(isPresentation: true)
     }
-    
+
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return traitCollection.verticalSizeClass == .compact ? .fullScreen : .none
     }
 }
 
-
 class SSBGamePriceListModalViewController: SSBGameDetailModalViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
     let listView = UITableView(frame: .zero, style: .plain)
-    
+
     private let dataSource: SSBGameInfoViewModel.PriceData
-    
+
     init(dataSource: SSBGameInfoViewModel.PriceData) {
         self.dataSource = dataSource
         super.init(nibName: nil, bundle: nil)
@@ -173,7 +172,7 @@ class SSBGamePriceListModalViewController: SSBGameDetailModalViewController, UIT
         listView.separatorInset = .init(top: 0, left: -10, bottom: 0, right: -10)
         listView.register(cellType: SSBGamePriceListView.GamePriceListCell.self)
     }
-    
+
     override func loadView() {
         super.loadView()
         contentView.addSubview(listView)
@@ -183,20 +182,20 @@ class SSBGamePriceListModalViewController: SSBGameDetailModalViewController, UIT
             make.bottom.equalTo(contentView.closeButton.snp.top)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     // MARK: Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.prices.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SSBGamePriceListView.GamePriceListCell.self)
         cell.data = dataSource.prices[indexPath.row]

@@ -14,7 +14,7 @@ import Reusable
 }
 
 class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
-    
+
     var viewModel: SSBGamePostViewModel? {
         didSet {
             guard let model = viewModel else {
@@ -43,7 +43,7 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             negativeButton.setTitle(model.originalData.negativeNum != 0 ? "\(model.originalData.negativeNum)" : "", for: .normal)
         }
     }
-    
+
     private let contentStackView = UIStackView()
     let titleLabel = UILabel()
     private let timeStampLabel = UILabel()
@@ -54,17 +54,17 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
     private let discussButton = SSBCustomButton.makeCustomButton(title: "讨论", style: .comment)
     private let positiveButton = SSBCustomButton.makeCustomButton(title: "表态", style: .thumbsUp)
     private let negativeButton = SSBCustomButton.makeCustomButton(title: "", style: .thumbsDown)
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.left.equalTo(10)
             make.right.equalTo(-20)
         }
-        
+
         contentStackView.axis = .vertical
         contentStackView.spacing = 4
         contentStackView.alignment = .leading
@@ -74,7 +74,7 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.left.right.equalTo(titleLabel)
         }
-        
+
         avatarImageView.layer.cornerRadius = 15 / 2
         avatarImageView.layer.masksToBounds = true
         contentView.addSubview(avatarImageView)
@@ -83,19 +83,19 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.top.equalTo(contentStackView.snp.bottom).offset(10)
             make.width.height.equalTo(15)
         }
-        
+
         contentView.addSubview(nickNameLabel)
         nickNameLabel.snp.makeConstraints { make in
             make.left.equalTo(avatarImageView.snp.right).offset(4)
             make.centerY.equalTo(avatarImageView)
         }
-        
+
         contentView.addSubview(timeStampLabel)
         timeStampLabel.snp.makeConstraints { make in
             make.centerY.equalTo(avatarImageView)
             make.right.equalTo(-10)
         }
-        
+
         let lineView = UIView()
         lineView.backgroundColor = .lineColor
         contentView.addSubview(lineView)
@@ -104,7 +104,7 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.height.equalTo(1)
             make.left.right.equalToSuperview()
         }
-        
+
         let bottomView = UIView()
         contentView.addSubview(bottomView)
         bottomView.snp.makeConstraints { make in
@@ -112,7 +112,7 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.left.right.equalToSuperview()
             make.height.equalTo(34)
         }
-        
+
         separator.backgroundColor = .lineColor
         contentView.addSubview(separator)
         separator.snp.makeConstraints { make in
@@ -120,17 +120,17 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.top.equalTo(bottomView.snp.bottom)
             make.height.equalTo(2)
         }
-        
+
         let shareButton = SSBCustomButton.makeCustomButton(title: "分享", style: .shareAlt)
         bottomView.addSubview(shareButton)
         shareButton.snp.makeConstraints { make in
             make.left.equalTo(20)
             make.centerY.equalToSuperview()
         }
-        
+
         bottomView.addSubview(discussButton)
         discussButton.snp.makeConstraints { $0.center.equalToSuperview() }
-        
+
         let praiseStack = UIStackView()
         praiseStack.alignment = .fill
         praiseStack.distribution = .fill
@@ -145,14 +145,14 @@ class SSBCommunityUITableViewCell: UITableViewCell, Reusable {
             make.right.equalTo(-20)
             make.centerY.equalToSuperview()
         }
-        
+
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -174,20 +174,20 @@ fileprivate extension SSBCustomButton {
 }
 
 class SSBCommunityFoldCell: UITableViewCell, Reusable {
-    
+
     var viewModel: SSBGamePostViewModel?
     let separator = UIView()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         let container = UIView()
         contentView.addSubview(container)
         container.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.height.equalTo(33)
         }
-        
+
         let color = UIColor(r: 120, g: 120, b: 120)
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
@@ -198,7 +198,7 @@ class SSBCommunityFoldCell: UITableViewCell, Reusable {
             make.left.equalTo(10)
             make.centerY.equalToSuperview()
         }
-        
+
         let button = SSBCustomButton()
         button.setImage(UIImage.fontAwesomeIcon(name: .chevronDown,
                                                 style: .solid,
@@ -215,7 +215,7 @@ class SSBCommunityFoldCell: UITableViewCell, Reusable {
             make.right.equalTo(-14)
             make.centerY.equalToSuperview()
         }
-        
+
         separator.backgroundColor = .lineColor
         contentView.addSubview(separator)
         separator.snp.makeConstraints { make in
@@ -223,29 +223,29 @@ class SSBCommunityFoldCell: UITableViewCell, Reusable {
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(2)
         }
-        
+
         selectionStyle = .none
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
-    
+
     weak var delegate: SSBCommunityCellDelegate?
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         let container = UIControl()
         contentView.addSubview(container)
         container.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.height.equalTo(33)
         }
-        
+
         let color = UIColor(r: 120, g: 120, b: 120)
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
@@ -256,7 +256,7 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
             make.left.equalTo(10)
             make.centerY.equalToSuperview()
         }
-        
+
         let button = SSBCustomButton()
         button.setImage(UIImage.fontAwesomeIcon(name: .chevronUp,
                                                 style: .solid,
@@ -273,9 +273,9 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
             make.right.equalTo(-14)
             make.centerY.equalToSuperview()
         }
-        
+
         container.addTarget(self, action: #selector(toggleState), for: .touchUpInside)
-        
+
         let lineView = UIView()
         lineView.backgroundColor = .lineColor
         contentView.addSubview(lineView)
@@ -284,18 +284,18 @@ class SSBCommunityFoldableCell: SSBCommunityUITableViewCell {
             make.left.right.equalToSuperview()
             make.height.equalTo(1)
         }
-        
+
         titleLabel.snp.remakeConstraints { make in
             make.top.equalTo(lineView.snp.bottom).offset(10)
             make.left.equalTo(10)
             make.right.equalTo(-20)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func toggleState() {
         delegate?.toggleFoldState(self)
     }
