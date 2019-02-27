@@ -3,6 +3,9 @@ disabled_rules: # rule identifiers to exclude from running
   - identifier_name
   - force_cast
   - nesting
+  - cyclomatic_complexity
+  - function_body_length
+  - line_length
 opt_in_rules: # some rules are only opt-in
   # Find all the available rules by running:
   # swiftlint rules

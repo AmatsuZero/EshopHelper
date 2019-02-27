@@ -9,7 +9,7 @@
 import AVFoundation
 
 protocol SSBPlayerDelegate: class {
-    
+
     func player(_ player: SSBPlayer, stateDidChange state: SSBPlayer.PlayerState)
     func player(_ player: SSBPlayer, playerDurationDidChange currentDuration: TimeInterval, totalDuration: TimeInterval)
     func player(_ player: SSBPlayer, bufferStateDidChange state: SSBPlayer.PlayerBufferstate)
@@ -26,13 +26,11 @@ extension SSBPlayerDelegate {
 }
 
 class SSBPlayer: NSObject {
-    
     public struct PlayerError: CustomStringConvertible {
         var error: Error?
         var playerItemErrorLogEvent: [AVPlayerItemErrorLogEvent]?
         var extendedLogData: Data?
         var extendedLogDataStringEncoding: UInt?
-        
         public var description: String {
             return """
             VGPlayer Log --------------------------
@@ -44,7 +42,6 @@ class SSBPlayer: NSObject {
             """
         }
     }
-    
     public enum PlayerMediaFormat: String {
         case unknown
         case mpeg4 = ".mp4"
@@ -52,7 +49,6 @@ class SSBPlayer: NSObject {
         case mov = ".mov"
         case m4v = ".m4v"
         case error
-        
         init?(_ URL: URL?) {
             guard let ext = URL?.pathExtension else {
                 self = .error
@@ -61,7 +57,6 @@ class SSBPlayer: NSObject {
             self.init(rawValue: ext)
         }
     }
-    
     public enum PlayerState: Int {
         case none            // default
         case playing
@@ -69,7 +64,6 @@ class SSBPlayer: NSObject {
         case playFinished
         case error
     }
-    
     public enum PlayerBufferstate: Int {
         case none           // default
         case readyToPlay
@@ -77,19 +71,16 @@ class SSBPlayer: NSObject {
         case stop
         case bufferFinished
     }
-    
     public enum VideoGravityMode: Int {
         case resize
         case resizeAspect      // default
         case resizeAspectFill
     }
-    
     public enum PlayerBackgroundMode: Int {
         case suspend
         case autoPlayAndPaused
         case proceed
     }
-    
     var state: PlayerState = .none {
         didSet {
             guard state != oldValue else { return }
@@ -97,7 +88,6 @@ class SSBPlayer: NSObject {
             delegate?.player(self, stateDidChange: state)
         }
     }
-    
     var bufferState: PlayerBufferstate = .none {
         didSet {
             guard bufferState != oldValue else { return }
@@ -105,7 +95,7 @@ class SSBPlayer: NSObject {
             delegate?.player(self, bufferStateDidChange: bufferState)
         }
     }
-    
+
     var displayView: SSBPlayerView
     var gravityMode = VideoGravityMode.resizeAspect
     var backgroundMode = PlayerBackgroundMode.autoPlayAndPaused
@@ -119,7 +109,6 @@ class SSBPlayer: NSObject {
         willSet { removePlayerObservers() }
         didSet { addPlayerObservers() }
     }
-    
     var timeObserver: Any?
     fileprivate(set) var playerItem: AVPlayerItem? {
         willSet {
@@ -131,7 +120,6 @@ class SSBPlayer: NSObject {
             addPlayerNotifications()
         }
     }
-    
     fileprivate(set) var playerAsset: AVURLAsset?
     fileprivate(set) var contentURL: URL?
     fileprivate(set) var error = PlayerError()
@@ -148,14 +136,12 @@ class SSBPlayer: NSObject {
             configurationPlayer(url)
         }
     }
-    
     deinit {
         removePlayerNotifations()
         cleanPlayer()
         displayView.removeFromSuperview()
         NotificationCenter.default.removeObserver(self)
     }
-    
     func configurationPlayer(_ URL: URL) {
         displayView.setPlayer(player: self)
         playerAsset = AVURLAsset(url: URL, options: .none)
@@ -171,7 +157,6 @@ class SSBPlayer: NSObject {
         player = AVPlayer(playerItem: playerItem)
         displayView.reloadPlayerView()
     }
-    
     func addPlayerObservers() {
         guard let player = self.player else {
             return
@@ -196,7 +181,6 @@ class SSBPlayer: NSObject {
         }
         player?.removeTimeObserver(observer)
     }
-    
     func replaceVideo(_ URL: URL) {
         reloadPlayer()
         mediaFormat = SSBPlayer.PlayerMediaFormat(URL) ?? .error
@@ -354,7 +338,6 @@ extension SSBPlayer {
                                                         }
         })
     }
-    
     func addPlayerNotifications() {
         NotificationCenter.default.addObserver(self, selector: .playerItemDidPlayToEndTime,
                                                name: .AVPlayerItemDidPlayToEndTime,

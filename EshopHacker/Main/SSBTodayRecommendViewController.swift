@@ -344,10 +344,11 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             $0.bottom.equalToSuperview()
             $0.left.equalTo(titleLabel)
         }
-
+        setupBottom()
+    }
+    func setupBottom() {
         let fakeButton = UIView()
         fakeButton.backgroundColor = UIColor(r: 235, g: 236, b: 237)
-
         let bookmark = UIImageView(image: .fontAwesomeIcon(name: .bookmark, style: .solid,
                                                            textColor: .lightGray, size: .init(width: 12, height: 12)))
         fakeButton.addSubview(bookmark)
@@ -356,7 +357,6 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             make.left.equalTo(4)
             make.width.height.equalTo(12)
         }
-
         let label = UILabel()
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 13)
@@ -366,10 +366,8 @@ class SSBTodayRecommendHeadlineCell: SSBTodayRecommendDiscountCell {
             make.centerY.equalToSuperview()
             make.left.equalTo(bookmark.snp.right)
         }
-
         fakeButton.layer.cornerRadius = 20 / 2
         bottomView.addSubview(fakeButton)
-
         fakeButton.snp.makeConstraints { make in
             make.right.bottom.equalToSuperview()
             make.width.equalTo(72)

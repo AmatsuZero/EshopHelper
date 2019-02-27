@@ -195,14 +195,14 @@ class SSBCustomButton: UIButton {
         let imageLimitWidth = contentSize.width - contentEdgeInsets.horizontal
         let imageSize = imageView?.sizeThatFits(.init(width: imageLimitWidth, height: .greatestFiniteMagnitude)) ?? .zero// 假设图片高度必定完整显示
         var imageFrame = CGRect(origin: .zero, size: imageSize)
-        
+
         let titleLimitSize = CGSize(width: contentSize.width - titleEdgeInsets.horizontal,
                                     height: contentSize.height - imageEdgeInsets.vertical - imageSize.height - titleEdgeInsets.vertical)
-        
+
         var titleSize = titleLabel?.sizeThatFits(titleLimitSize) ?? .zero
         titleSize.height = min(titleSize.height, titleLimitSize.height)
         var titleFrame = CGRect(origin: .zero, size: titleSize)
-        
+
         //到这里image和title都是扣除了偏移量后的实际size，frame重置为x/y=0
         switch contentHorizontalAlignment {
         case .left:
@@ -292,7 +292,7 @@ class SSBCustomButton: UIButton {
         default:
             break
         }
-        
+
         switch contentVerticalAlignment {
         case .top:
             titleFrame.origin.y = contentEdgeInsets.top + titleEdgeInsets.top
@@ -309,7 +309,7 @@ class SSBCustomButton: UIButton {
             imageFrame.origin.y = contentEdgeInsets.top + imageEdgeInsets.top
             imageFrame.size.height = bounds.height - contentEdgeInsets.bottom - imageEdgeInsets.bottom - imageFrame.minY
         }
-        
+
         imageView?.frame = imageFrame.flatted()
         titleLabel?.frame = titleFrame.flatted()
     }

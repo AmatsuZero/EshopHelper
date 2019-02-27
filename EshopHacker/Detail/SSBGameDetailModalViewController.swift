@@ -33,9 +33,9 @@ class SSBGameDetailModalAnimator: NSObject, UIViewControllerAnimatedTransitionin
         controller.view.frame = transitionContext.finalFrame(for: controller)
         UIView.animate(withDuration: duration, animations: {
             controller.view.alpha = self.isPresentation ? 1 : 0
-        }) { flag in
+        }, completion: { flag in
             transitionContext.completeTransition(flag)
-        }
+        })
     }
 }
 

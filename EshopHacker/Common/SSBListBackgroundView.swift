@@ -91,7 +91,20 @@ class SSBListBackgroundView: UIView {
         return (needImage ? imageViewSize : 0) + errorViewPadding + buttonSize.height
     }
 
-    private let retryImageView = UIImageView()
+    private lazy var retryImageView: UIImageView = {
+        let retryImageView = UIImageView()
+        let imageViewSize = needImage ? self.imageViewSize : 0
+        let retryImage = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
+        retryImageView.image = retryImage
+        retryImageView.backgroundColor = .white
+        retryImageView.layer.cornerRadius = imageViewSize / 2
+        retryImageView.layer.masksToBounds = true
+        retryImageView.layer.shadowColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        retryImageView.layer.shadowOffset = .init(width: 0, height: -2)
+        retryImageView.layer.shadowRadius = 4
+        retryImageView.layer.shadowOpacity = 0.3
+        return retryImageView
+    }()
     var errorViewPadding: CGFloat = 8 {
         didSet {
             setNeedsLayout()
@@ -102,9 +115,25 @@ class SSBListBackgroundView: UIView {
     }
     private let errorView = UIView()
     private let emptyView = UIView()
-    private let retryButton = UIButton(type: .custom)
+    private lazy var retryButton: UIButton = {
+        let retryButton = UIButton(type: .custom)
+        retryButton.setTitle("重试", for: .normal)
+        retryButton.setTitleColor(.white, for: .normal)
+        retryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        retryButton.backgroundColor = .eShopColor
+        retryButton.layer.cornerRadius = buttonSize.height / 2
+        retryButton.layer.masksToBounds = true
+        return retryButton
+    }()
     let emptyImageView = UIImageView()
-    private let emptyLabel = UILabel()
+    private lazy var emptyLabel: UILabel = {
+        let emptyLabel = UILabel()
+        emptyLabel.font = retryButton.titleLabel?.font
+        emptyLabel.textColor = .gray
+        emptyLabel.backgroundColor = .clear
+        emptyLabel.text = emptyDescription
+        return emptyLabel
+    }()
 
     private let needImage: Bool
 
@@ -138,32 +167,10 @@ class SSBListBackgroundView: UIView {
         addSubview(errorView)
         addSubview(emptyView)
 
-        retryButton.setTitle("重试", for: .normal)
-        retryButton.setTitleColor(.white, for: .normal)
-        retryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        retryButton.backgroundColor = .eShopColor
         errorView.addSubview(retryButton)
-
-        retryButton.layer.cornerRadius = buttonSize.height / 2
-        retryButton.layer.masksToBounds = true
         retryButton.addTarget(self, action: #selector(SSBListBackgroundView.onRetryButtonClicked(_:)), for: .touchUpInside)
-
-        emptyLabel.font = retryButton.titleLabel?.font
-        emptyLabel.textColor = .gray
-        emptyLabel.backgroundColor = .clear
-        emptyLabel.text = emptyDescription
         emptyView.addSubview(emptyLabel)
 
-        let imageViewSize = needImage ? self.imageViewSize : 0
-        let retryImage = UIImage.fontAwesomeIcon(name: .redo, style: .solid, textColor: .eShopColor, size: .init(width: imageViewSize, height: imageViewSize))
-        retryImageView.image = retryImage
-        retryImageView.backgroundColor = .white
-        retryImageView.layer.cornerRadius = imageViewSize / 2
-        retryImageView.layer.masksToBounds = true
-        retryImageView.layer.shadowColor = UIColor.black.withAlphaComponent(0.8).cgColor
-        retryImageView.layer.shadowOffset = .init(width: 0, height: -2)
-        retryImageView.layer.shadowRadius = 4
-        retryImageView.layer.shadowOpacity = 0.3
         errorView.addSubview(retryImageView)
         retryImageView.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()

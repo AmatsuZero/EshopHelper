@@ -73,7 +73,7 @@ class TodayRecommendService {
     }
 }
 
-struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
+class SSBtodayRecommendViewModel: SSBViewModelProtocol {
 
     var originalData: TodayRecommendService.Response.Data.FlowInfo
 
@@ -98,11 +98,41 @@ struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
     private(set) var commentContent: String?
     private(set) var userNickName: String?
     private(set) var avatarURL: String?
-    private(set) var headlineTitle: NSAttributedString?
+    private(set) lazy var headlineTitle: NSAttributedString? = {
+        guard let title = originalData.title else {
+            return nil
+        }
+        let font = UIFont.boldSystemFont(ofSize: 14)
+        let str = NSMutableAttributedString()
+        let markLabel = UILabel(frame: .init(x: 0, y: 0, width: 31, height: 17))
+        markLabel.layer.cornerRadius = 2
+        markLabel.layer.masksToBounds = true
+        markLabel.textAlignment = .center
+        markLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        markLabel.text = "头条"
+        markLabel.textColor = .white
+        markLabel.backgroundColor = UIColor(r: 218, g: 219, b: 220)
+        if let image = markLabel.toImage() {
+            let attachment = NSTextAttachment()
+            attachment.image = image
+            attachment.bounds = CGRect(x: 0,
+                                       y: -(font.lineHeight - font.pointSize) / 2,
+                                       width: image.size.width / image.size.height * font.pointSize,
+                                       height: font.pointSize)
+            str.append(.init(attachment: attachment))
+            str.append(.init(string: " "))
+            str.append(.init(string: title, attributes: [
+                .font: font,
+                .foregroundColor: UIColor.darkText
+                ]))
+            return str
+        }
+        return str
+    }()
     fileprivate var headlineTitleHeight: CGFloat?
     let time: String
 
-    init(model: TodayRecommendService.Response.Data.FlowInfo) {
+    required init(model: TodayRecommendService.Response.Data.FlowInfo) {
         originalData = model
         type = CellType(rawValue: model.type)
         imageURL = model.pic
@@ -132,40 +162,6 @@ struct SSBtodayRecommendViewModel: SSBViewModelProtocol {
         commentContent = model.content
         userNickName = model.nickName
         avatarURL = model.avatarUrl
-
-        if let title = model.title {
-
-            let font = UIFont.boldSystemFont(ofSize: 14)
-
-            let str = NSMutableAttributedString()
-            let markLabel = UILabel(frame: .init(x: 0, y: 0, width: 31, height: 17))
-
-            markLabel.layer.cornerRadius = 2
-            markLabel.layer.masksToBounds = true
-            markLabel.textAlignment = .center
-            markLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            markLabel.text = "头条"
-            markLabel.textColor = .white
-            markLabel.backgroundColor = UIColor(r: 218, g: 219, b: 220)
-
-            if let image = markLabel.toImage() {
-                let attachment = NSTextAttachment()
-                attachment.image = image
-                attachment.bounds = CGRect(x: 0,
-                                           y: -(font.lineHeight - font.pointSize) / 2,
-                                           width: image.size.width / image.size.height * font.pointSize,
-                                           height: font.pointSize)
-                str.append(.init(attachment: attachment))
-
-                str.append(.init(string: " "))
-                str.append(.init(string: title, attributes: [
-                    .font: font,
-                    .foregroundColor: UIColor.darkText
-                    ]))
-                headlineTitle = str
-            }
-        }
-
         time = model.startTime
     }
 

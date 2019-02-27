@@ -107,8 +107,8 @@ class CommentService {
 class SSBCommentViewModel: NSObject, SSBViewModelProtocol, UITableViewDataSource {
 
     class Comment: SSBToggleModel, SSBViewModelProtocol {
-        typealias T = CommentService.CommentData.CommentInfo.Comment
-        var originalData: T
+        typealias `Type` = CommentService.CommentData.CommentInfo.Comment
+        var originalData: Type
 
         var postiveString: String {
             let text: String = {
@@ -139,27 +139,27 @@ class SSBCommentViewModel: NSObject, SSBViewModelProtocol, UITableViewDataSource
 
         let isMyComment: Bool
 
-        init(model: T, isMyComment: Bool = false) {
+        init(model: Type, isMyComment: Bool = false) {
             self.isMyComment = isMyComment
             originalData = model
             super.init(content: originalData.content ?? "")
         }
 
-        required init(model: T) {
+        required init(model: Type) {
             isMyComment = false
             originalData = model
             super.init(content: originalData.content ?? "")
         }
     }
 
-    typealias T = CommentService.CommentData.CommentInfo
-    var originalData: T
+    typealias `Type` = CommentService.CommentData.CommentInfo
+    var originalData: Type
 
     var myCommnets = [Comment]()
     var comments = [Comment]()
     private(set) var totalCount = 0
 
-    required init(model: T) {
+    required init(model: Type) {
         originalData = model
         super.init()
         if let comments = model.comment {
@@ -171,7 +171,7 @@ class SSBCommentViewModel: NSObject, SSBViewModelProtocol, UITableViewDataSource
         totalCount = model.count ?? 0
     }
 
-    func append(model: T, tableView: UITableView) {
+    func append(model: Type, tableView: UITableView) {
         let lastIndex = comments.count
         if let comments = model.comment {
             self.comments += comments.map { Comment(model: $0) }

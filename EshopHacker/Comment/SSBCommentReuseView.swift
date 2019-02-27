@@ -392,12 +392,13 @@ class SSBMyCommentEmptyView: UIView {
     private let praiseButton = SSBCustomButton()
     private let dislikeButton = SSBCustomButton()
     weak var delegate: SSBMyCommentEmptyViewDelegate?
-
+    private let color = UIColor(r: 64, g: 64, b: 64)
+    private let bgColor = UIColor(r: 252, g: 252, b: 252)
+    private let borderColor = UIColor(r: 239, g: 239, b: 239)
+    private let label = UILabel()
     init(frame: CGRect = .zero,
          isEmbedded: Bool = false) {
         super.init(frame: frame)
-
-        let label = UILabel()
         label.text = "玩过这款游戏了？"
         addSubview(label)
 
@@ -425,6 +426,12 @@ class SSBMyCommentEmptyView: UIView {
             }
         }
 
+        setupPraiseButton()
+        setupDislikeButton()
+
+        backgroundColor = .white
+    }
+    func setupPraiseButton() {
         let lowerLabel = UILabel()
         lowerLabel.text = "· 你是否推荐这款游戏？·"
         lowerLabel.font = .systemFont(ofSize: 12, weight: .medium)
@@ -434,11 +441,6 @@ class SSBMyCommentEmptyView: UIView {
             make.centerX.equalToSuperview()
             make.top.equalTo(label.snp.bottom).offset(10)
         }
-
-        let color = UIColor(r: 64, g: 64, b: 64)
-        let bgColor = UIColor(r: 252, g: 252, b: 252)
-        let borderColor = UIColor(r: 239, g: 239, b: 239)
-
         praiseButton.setImage(UIImage.fontAwesomeIcon(name: .thumbsUp, style: .regular, textColor: color,
                                                       size: .init(width: 14, height: 14)), for: .normal)
         praiseButton.setTitle("推荐", for: .normal)
@@ -456,7 +458,8 @@ class SSBMyCommentEmptyView: UIView {
             make.width.equalTo(102)
             make.height.equalTo(33)
         }
-
+    }
+    func setupDislikeButton() {
         dislikeButton.setTitle("不推荐", for: .normal)
         dislikeButton.setTitleColor(color, for: .normal)
         dislikeButton.titleLabel?.font = praiseButton.titleLabel?.font
@@ -473,8 +476,6 @@ class SSBMyCommentEmptyView: UIView {
             make.top.width.height.equalTo(praiseButton)
             make.right.equalTo(-64)
         }
-
-        backgroundColor = .white
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -188,10 +188,10 @@ extension SSBTopSearchViewController: UITextFieldDelegate {
     private func hideSearchHistory() {
         UIView.animate(withDuration: 0.3, animations: {
             self.searchHistoryViewController.view.alpha = 0
-        }) { _ in
+        }, completion: { _ in
             self.searchHistoryViewController.removeFromParent()
             self.searchHistoryViewController.view.removeFromSuperview()
-        }
+        })
     }
 }
 
