@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>wxkey</key>
-	<string>wxb0010112234306ba</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -28,6 +26,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wxb0010112234306ba</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.ssb.EshopHacker.TodayExtension</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ssbwidget</string>
 			</array>
 		</dict>
 	</array>
@@ -64,5 +72,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>wxkey</key>
+	<string>wxb0010112234306ba</string>
 </dict>
 </plist>

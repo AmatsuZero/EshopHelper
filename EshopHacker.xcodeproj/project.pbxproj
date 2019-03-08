@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		39C2AA03411DAF54897006D4 /* Pods_EshopHackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */; };
+		8006C5C42226D13C00FB410C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8006C5C32226D13C00FB410C /* NotificationCenter.framework */; };
+		8006C5C72226D13C00FB410C /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8006C5C62226D13C00FB410C /* TodayViewController.swift */; };
+		8006C5CE2226D13C00FB410C /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8006C5C22226D13C00FB410C /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8006C5DD2226DE7600FB410C /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8006C5DC2226DE7600FB410C /* DataSource.swift */; };
+		8006C5DF2226DF0100FB410C /* ReuseCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8006C5DE2226DF0100FB410C /* ReuseCells.swift */; };
+		8006C5E32226E8A400FB410C /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B806321FFE4BF007DFCB5 /* UIColor+Extensions.swift */; };
+		8006C6122227772000FB410C /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F9621FDAFE2007DFCB5 /* UIDevice+Extensions.swift */; };
 		800F24EE221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800F24EC221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift */; };
 		800F24EF221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800F24ED221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift */; };
 		801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B7F6A21FD912D007DFCB5 /* AppDelegate.swift */; };
@@ -63,6 +70,24 @@
 		806FF9912205B85A0016B623 /* SSBPlayerSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */; };
 		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
+		8074872D2232B32B00E40C20 /* SSBBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8074872C2232B32B00E40C20 /* SSBBackgroundView.swift */; };
+		807487452232B84900E40C20 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 8074872F2232B84900E40C20 /* index.html */; };
+		807487462232B84900E40C20 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 807487302232B84900E40C20 /* index.js */; };
+		807487472232B84900E40C20 /* index.css in Resources */ = {isa = PBXBuildFile; fileRef = 807487312232B84900E40C20 /* index.css */; };
+		8074874A2232B84900E40C20 /* t-rex-runner-bot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487352232B84900E40C20 /* t-rex-runner-bot.gif */; };
+		8074874B2232B84900E40C20 /* offline-sprite-1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487362232B84900E40C20 /* offline-sprite-1x.png */; };
+		8074874C2232B84900E40C20 /* t-rex-runner-19janil.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487372232B84900E40C20 /* t-rex-runner-19janil.gif */; };
+		8074874D2232B84900E40C20 /* 200-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487392232B84900E40C20 /* 200-disabled.png */; };
+		8074874E2232B84900E40C20 /* 200-offline-sprite.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873A2232B84900E40C20 /* 200-offline-sprite.png */; };
+		8074874F2232B84900E40C20 /* 200-error-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873B2232B84900E40C20 /* 200-error-offline.png */; };
+		807487502232B84900E40C20 /* kumamon-runner.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8074873C2232B84900E40C20 /* kumamon-runner.gif */; };
+		807487512232B84900E40C20 /* 100-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873E2232B84900E40C20 /* 100-disabled.png */; };
+		807487522232B84900E40C20 /* 100-error-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873F2232B84900E40C20 /* 100-error-offline.png */; };
+		807487532232B84900E40C20 /* 100-offline-sprite.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487402232B84900E40C20 /* 100-offline-sprite.png */; };
+		807487542232B84900E40C20 /* offline-sprite-2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487412232B84900E40C20 /* offline-sprite-2x.png */; };
+		807487552232B84900E40C20 /* novas-coisas.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487422232B84900E40C20 /* novas-coisas.gif */; };
+		807487562232B84900E40C20 /* hello-kugou.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487432232B84900E40C20 /* hello-kugou.gif */; };
+		807487572232B84900E40C20 /* screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487442232B84900E40C20 /* screenshot.gif */; };
 		80871D1F2215C2FD002DFC26 /* SSBGamePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */; };
 		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
@@ -81,9 +106,17 @@
 		80F054BB2206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054B92206EBB600F97CEC /* SearchHistory+CoreDataProperties.swift */; };
 		80F054EB2208853B00F97CEC /* SSBUnlockInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F054EA2208853B00F97CEC /* SSBUnlockInfoViewController.swift */; };
 		ACE42D6D7FDA8AD73FD4E2AC /* Pods_EshopHacker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */; };
+		C0D2AE233C945D58FDDDC9F8 /* Pods_TodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C86DAD8C78AE9F57903FE74 /* Pods_TodayExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8006C5CC2226D13C00FB410C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 801B7F5F21FD912D007DFCB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8006C5C12226D13C00FB410C;
+			remoteInfo = TodayExtension;
+		};
 		801B7F7F21FD912F007DFCB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 801B7F5F21FD912D007DFCB5 /* Project object */;
@@ -93,10 +126,33 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8006C5D22226D13C00FB410C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8006C5CE2226D13C00FB410C /* TodayExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		06B81865E1BBF846783C7162 /* Pods-TodayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.release.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.release.xcconfig"; sourceTree = "<group>"; };
+		499067FEC661BB7065762025 /* Pods-TodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.debug.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		51B7A549FEC49D0E0478B99D /* Pods-EshopHacker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHacker.debug.xcconfig"; path = "Target Support Files/Pods-EshopHacker/Pods-EshopHacker.debug.xcconfig"; sourceTree = "<group>"; };
+		5C86DAD8C78AE9F57903FE74 /* Pods_TodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B0AA7E8481ADBDF63C7378E /* Pods-EshopHackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EshopHackerTests.debug.xcconfig"; path = "Target Support Files/Pods-EshopHackerTests/Pods-EshopHackerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EshopHacker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8006C5C22226D13C00FB410C /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8006C5C32226D13C00FB410C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		8006C5C62226D13C00FB410C /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		8006C5CB2226D13C00FB410C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8006C5DC2226DE7600FB410C /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		8006C5DE2226DF0100FB410C /* ReuseCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseCells.swift; sourceTree = "<group>"; };
 		800F24EC221CFDF10033B117 /* SSBBrowseHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSBBrowseHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		800F24ED221CFDF10033B117 /* SSBBrowseHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SSBBrowseHistory+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		801B7F6721FD912D007DFCB5 /* EshopHacker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EshopHacker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +213,24 @@
 		806FF9902205B85A0016B623 /* SSBPlayerSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerSlider.swift; sourceTree = "<group>"; };
 		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
+		8074872C2232B32B00E40C20 /* SSBBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBackgroundView.swift; sourceTree = "<group>"; };
+		8074872F2232B84900E40C20 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		807487302232B84900E40C20 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		807487312232B84900E40C20 /* index.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = index.css; sourceTree = "<group>"; };
+		807487352232B84900E40C20 /* t-rex-runner-bot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "t-rex-runner-bot.gif"; sourceTree = "<group>"; };
+		807487362232B84900E40C20 /* offline-sprite-1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-1x.png"; sourceTree = "<group>"; };
+		807487372232B84900E40C20 /* t-rex-runner-19janil.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "t-rex-runner-19janil.gif"; sourceTree = "<group>"; };
+		807487392232B84900E40C20 /* 200-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-disabled.png"; sourceTree = "<group>"; };
+		8074873A2232B84900E40C20 /* 200-offline-sprite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-offline-sprite.png"; sourceTree = "<group>"; };
+		8074873B2232B84900E40C20 /* 200-error-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-error-offline.png"; sourceTree = "<group>"; };
+		8074873C2232B84900E40C20 /* kumamon-runner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "kumamon-runner.gif"; sourceTree = "<group>"; };
+		8074873E2232B84900E40C20 /* 100-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-disabled.png"; sourceTree = "<group>"; };
+		8074873F2232B84900E40C20 /* 100-error-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-error-offline.png"; sourceTree = "<group>"; };
+		807487402232B84900E40C20 /* 100-offline-sprite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-offline-sprite.png"; sourceTree = "<group>"; };
+		807487412232B84900E40C20 /* offline-sprite-2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-2x.png"; sourceTree = "<group>"; };
+		807487422232B84900E40C20 /* novas-coisas.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "novas-coisas.gif"; sourceTree = "<group>"; };
+		807487432232B84900E40C20 /* hello-kugou.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "hello-kugou.gif"; sourceTree = "<group>"; };
+		807487442232B84900E40C20 /* screenshot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = screenshot.gif; sourceTree = "<group>"; };
 		80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePostViewController.swift; sourceTree = "<group>"; };
 		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
@@ -180,6 +254,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8006C5BF2226D13C00FB410C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8006C5C42226D13C00FB410C /* NotificationCenter.framework in Frameworks */,
+				C0D2AE233C945D58FDDDC9F8 /* Pods_TodayExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		801B7F6421FD912D007DFCB5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -204,8 +287,23 @@
 			children = (
 				779AE79481F99B788C642E17 /* Pods_EshopHacker.framework */,
 				F79A5419BD5415AA29F29C17 /* Pods_EshopHackerTests.framework */,
+				8006C5C32226D13C00FB410C /* NotificationCenter.framework */,
+				5C86DAD8C78AE9F57903FE74 /* Pods_TodayExtension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8006C5C52226D13C00FB410C /* TodayExtension */ = {
+			isa = PBXGroup;
+			children = (
+				8074872E2232B84900E40C20 /* OfflineGame */,
+				8006C5C62226D13C00FB410C /* TodayViewController.swift */,
+				8006C5DC2226DE7600FB410C /* DataSource.swift */,
+				8006C5DE2226DF0100FB410C /* ReuseCells.swift */,
+				8074872C2232B32B00E40C20 /* SSBBackgroundView.swift */,
+				8006C5CB2226D13C00FB410C /* Info.plist */,
+			);
+			path = TodayExtension;
 			sourceTree = "<group>";
 		};
 		800F24E3221CFA980033B117 /* Spotlight */ = {
@@ -223,6 +321,7 @@
 			children = (
 				801B7F6921FD912D007DFCB5 /* EshopHacker */,
 				801B7F8121FD912F007DFCB5 /* EshopHackerTests */,
+				8006C5C52226D13C00FB410C /* TodayExtension */,
 				801B7F6821FD912D007DFCB5 /* Products */,
 				E083909B0DB579583FBBF872 /* Pods */,
 				1B2092CA78980514C1228F9B /* Frameworks */,
@@ -234,6 +333,7 @@
 			children = (
 				801B7F6721FD912D007DFCB5 /* EshopHacker.app */,
 				801B7F7E21FD912F007DFCB5 /* EshopHackerTests.xctest */,
+				8006C5C22226D13C00FB410C /* TodayExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -413,6 +513,54 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
+		8074872E2232B84900E40C20 /* OfflineGame */ = {
+			isa = PBXGroup;
+			children = (
+				8074872F2232B84900E40C20 /* index.html */,
+				807487302232B84900E40C20 /* index.js */,
+				807487312232B84900E40C20 /* index.css */,
+				807487342232B84900E40C20 /* assets */,
+			);
+			path = OfflineGame;
+			sourceTree = "<group>";
+		};
+		807487342232B84900E40C20 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				807487352232B84900E40C20 /* t-rex-runner-bot.gif */,
+				807487362232B84900E40C20 /* offline-sprite-1x.png */,
+				807487372232B84900E40C20 /* t-rex-runner-19janil.gif */,
+				807487382232B84900E40C20 /* default_200_percent */,
+				8074873C2232B84900E40C20 /* kumamon-runner.gif */,
+				8074873D2232B84900E40C20 /* default_100_percent */,
+				807487412232B84900E40C20 /* offline-sprite-2x.png */,
+				807487422232B84900E40C20 /* novas-coisas.gif */,
+				807487432232B84900E40C20 /* hello-kugou.gif */,
+				807487442232B84900E40C20 /* screenshot.gif */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
+		807487382232B84900E40C20 /* default_200_percent */ = {
+			isa = PBXGroup;
+			children = (
+				807487392232B84900E40C20 /* 200-disabled.png */,
+				8074873A2232B84900E40C20 /* 200-offline-sprite.png */,
+				8074873B2232B84900E40C20 /* 200-error-offline.png */,
+			);
+			path = default_200_percent;
+			sourceTree = "<group>";
+		};
+		8074873D2232B84900E40C20 /* default_100_percent */ = {
+			isa = PBXGroup;
+			children = (
+				8074873E2232B84900E40C20 /* 100-disabled.png */,
+				8074873F2232B84900E40C20 /* 100-error-offline.png */,
+				807487402232B84900E40C20 /* 100-offline-sprite.png */,
+			);
+			path = default_100_percent;
+			sourceTree = "<group>";
+		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +568,8 @@
 				D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */,
 				6B0AA7E8481ADBDF63C7378E /* Pods-EshopHackerTests.debug.xcconfig */,
 				85BDC696A5A7C8DE5AC7F211 /* Pods-EshopHackerTests.release.xcconfig */,
+				499067FEC661BB7065762025 /* Pods-TodayExtension.debug.xcconfig */,
+				06B81865E1BBF846783C7162 /* Pods-TodayExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -427,6 +577,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8006C5C12226D13C00FB410C /* TodayExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8006C5D12226D13C00FB410C /* Build configuration list for PBXNativeTarget "TodayExtension" */;
+			buildPhases = (
+				B536BCF1E64F759B4F4177D6 /* [CP] Check Pods Manifest.lock */,
+				8006C5BE2226D13C00FB410C /* Sources */,
+				8006C5BF2226D13C00FB410C /* Frameworks */,
+				8006C5C02226D13C00FB410C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TodayExtension;
+			productName = TodayExtension;
+			productReference = 8006C5C22226D13C00FB410C /* TodayExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		801B7F6621FD912D007DFCB5 /* EshopHacker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 801B7F8721FD912F007DFCB5 /* Build configuration list for PBXNativeTarget "EshopHacker" */;
@@ -437,10 +605,12 @@
 				801B7F6521FD912D007DFCB5 /* Resources */,
 				CFC7F5B07CB82676190FEE52 /* [CP] Embed Pods Frameworks */,
 				801E3DCC22258B89003809CA /* SwiftLint */,
+				8006C5D22226D13C00FB410C /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8006C5CD2226D13C00FB410C /* PBXTargetDependency */,
 			);
 			name = EshopHacker;
 			productName = EshopHacker;
@@ -477,6 +647,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Daubert;
 				TargetAttributes = {
+					8006C5C12226D13C00FB410C = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					801B7F6621FD912D007DFCB5 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1010;
@@ -502,11 +675,36 @@
 			targets = (
 				801B7F6621FD912D007DFCB5 /* EshopHacker */,
 				801B7F7D21FD912F007DFCB5 /* EshopHackerTests */,
+				8006C5C12226D13C00FB410C /* TodayExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8006C5C02226D13C00FB410C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807487532232B84900E40C20 /* 100-offline-sprite.png in Resources */,
+				807487562232B84900E40C20 /* hello-kugou.gif in Resources */,
+				8074874C2232B84900E40C20 /* t-rex-runner-19janil.gif in Resources */,
+				8074874A2232B84900E40C20 /* t-rex-runner-bot.gif in Resources */,
+				807487452232B84900E40C20 /* index.html in Resources */,
+				807487522232B84900E40C20 /* 100-error-offline.png in Resources */,
+				807487542232B84900E40C20 /* offline-sprite-2x.png in Resources */,
+				807487512232B84900E40C20 /* 100-disabled.png in Resources */,
+				807487462232B84900E40C20 /* index.js in Resources */,
+				807487502232B84900E40C20 /* kumamon-runner.gif in Resources */,
+				8074874B2232B84900E40C20 /* offline-sprite-1x.png in Resources */,
+				8074874D2232B84900E40C20 /* 200-disabled.png in Resources */,
+				807487552232B84900E40C20 /* novas-coisas.gif in Resources */,
+				807487572232B84900E40C20 /* screenshot.gif in Resources */,
+				807487472232B84900E40C20 /* index.css in Resources */,
+				8074874E2232B84900E40C20 /* 200-offline-sprite.png in Resources */,
+				8074874F2232B84900E40C20 /* 200-error-offline.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		801B7F6521FD912D007DFCB5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -562,6 +760,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-EshopHacker-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B536BCF1E64F759B4F4177D6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TodayExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -639,6 +859,19 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8006C5BE2226D13C00FB410C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8006C5DD2226DE7600FB410C /* DataSource.swift in Sources */,
+				8006C5DF2226DF0100FB410C /* ReuseCells.swift in Sources */,
+				8006C5C72226D13C00FB410C /* TodayViewController.swift in Sources */,
+				8074872D2232B32B00E40C20 /* SSBBackgroundView.swift in Sources */,
+				8006C6122227772000FB410C /* UIDevice+Extensions.swift in Sources */,
+				8006C5E32226E8A400FB410C /* UIColor+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		801B7F6321FD912D007DFCB5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -724,6 +957,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8006C5CD2226D13C00FB410C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8006C5C12226D13C00FB410C /* TodayExtension */;
+			targetProxy = 8006C5CC2226D13C00FB410C /* PBXContainerItemProxy */;
+		};
 		801B7F8021FD912F007DFCB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 801B7F6621FD912D007DFCB5 /* EshopHacker */;
@@ -743,6 +981,50 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8006C5CF2226D13C00FB410C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 499067FEC661BB7065762025 /* Pods-TodayExtension.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TCU9L9SQC4;
+				INFOPLIST_FILE = TodayExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ssb.EshopHacker.TodayExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8006C5D02226D13C00FB410C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06B81865E1BBF846783C7162 /* Pods-TodayExtension.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TCU9L9SQC4;
+				INFOPLIST_FILE = TodayExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ssb.EshopHacker.TodayExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		801B7F8521FD912F007DFCB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -863,6 +1145,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 51B7A549FEC49D0E0478B99D /* Pods-EshopHacker.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -885,6 +1168,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6EB24F83629E90650532766 /* Pods-EshopHacker.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -949,6 +1233,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8006C5D12226D13C00FB410C /* Build configuration list for PBXNativeTarget "TodayExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8006C5CF2226D13C00FB410C /* Debug */,
+				8006C5D02226D13C00FB410C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		801B7F6221FD912D007DFCB5 /* Build configuration list for PBXProject "EshopHacker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -14,13 +14,10 @@ extension UILabel {
         guard let context = UIGraphicsGetCurrentContext() else {
             return nil
         }
-
         defer {
             UIGraphicsEndImageContext()
         }
-
         layer.render(in: context)
-
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }

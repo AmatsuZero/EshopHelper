@@ -7,6 +7,7 @@
 //
 
 import PromiseKit
+import SafariServices
 
 struct ResponseResult: Codable {
     var code: Int
@@ -167,21 +168,85 @@ enum SSBOpenService {
 
     case gameInfo(id: String)
     case search
+    case today(type: SSBtodayRecommendViewModel.CellType?, content: String?)
+    init?(url: URL) {
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        switch urlComponents.host {
+        case "gameInfo":
+            guard let id = urlComponents.queryItems?.first(where: { $0.name == "appid" })?.value else {
+                return nil
+            }
+            self = .gameInfo(id: id)
+        case "search":
+            self = .search
+        case "today":
+            var type: SSBtodayRecommendViewModel.CellType?
+            var content: String?
+            if let string = urlComponents.queryItems?.first(where: { $0.name == "type" })?.value,
+                let rawValue = Int(string) {
+                type = SSBtodayRecommendViewModel.CellType(rawValue: rawValue)
+            }
+            if let value = urlComponents.queryItems?.first(where: { $0.name == "content"})?.value {
+                content = value
+            }
+            self = .today(type: type, content: content)
+        default:
+            return nil
+        }
+    }
 
     func open() {
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
-            let navigationController = rootViewController.selectedViewController as? UINavigationController else {
-                return
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController else {
+            return
         }
+        var navigationController = rootViewController.selectedViewController as? UINavigationController
         switch self {
         case .gameInfo(let id):
             let viewController = SSBGameDetailViewController(appid: id)
             viewController.hidesBottomBarWhenPushed = true
-            navigationController.pushViewController(viewController, animated: true)
+            navigationController?.pushViewController(viewController, animated: true)
         case .search:
             let searchController = SSBGameSearchViewController()
             searchController.hidesBottomBarWhenPushed = true
-            navigationController.pushViewController(searchController, animated: true)
+            navigationController?.pushViewController(searchController, animated: true)
+        case .today(let type, let content):
+            guard let cellType = type else {
+                rootViewController.selectedIndex = 0
+                navigationController = rootViewController.selectedViewController as? UINavigationController
+                navigationController?.popToRootViewController(animated: false)
+                if let controller = navigationController?.topViewController as? SSBRecommendWrapperViewController {
+                    let recommend = controller.recommenViewController
+                    recommend.scrollToPage(.at(index: 1), animated: true)
+                }
+                return
+            }
+            let topViewController = navigationController?.topViewController
+            switch cellType {
+            case .headline:
+                if let addr = content,
+                    let url = URL(string: addr) {
+                    let browser = SFSafariViewController(href: url)
+                    topViewController?.present(browser, animated: true)
+                }
+            case .comment:
+                guard let appid = content else {
+                    topViewController?.view.makeToast("没有找到该游戏")
+                    return
+                }
+                let viewController = SSBGameDetailViewController(appid: appid, pageIndex: 1)
+                viewController.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(viewController, animated: true)
+            default:
+                guard let id = content, !id.isEmpty else {
+                    topViewController?.view.makeToast("没有找到该游戏")
+                    return
+                }
+                let viewController = SSBGameDetailViewController(appid: id, pageIndex: 0)
+                viewController.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(viewController, animated: true)
+            }
         }
     }
 }

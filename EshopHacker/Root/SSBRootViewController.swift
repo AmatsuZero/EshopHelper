@@ -51,6 +51,8 @@ class SSBRootViewController: UITabBarController {
             case .search:
                 SSBOpenService.search.open()
             }
+        } else if let url = options[UIApplication.LaunchOptionsKey.url] as? URL {// URL 打开
+            SSBOpenService(url: url)?.open()
         }
         launchOption = nil
     }

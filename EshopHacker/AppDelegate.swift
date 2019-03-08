@@ -84,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if urlKey == "com.tencent.xin" {
             return WXApi.handleOpen(url, delegate: UserService.shared)
         }
+        SSBOpenService(url: url)?.open()
         return true
     }
 

@@ -466,12 +466,19 @@ class SSBTodayRecommendView: UIView {
         // Title
         let contaier = UIView(frame: .init(origin: .zero,
                                            size: .init(width: .screenWidth, height: 55)))
-        let label = UILabel(frame: .init(origin: .init(x: 10, y: 0),
-                                         size: .init(width: contaier.mj_w - 10, height: contaier.mj_h)))
+        let label = UILabel()
         contaier.addSubview(label)
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textColor = .darkText
         label.text = "今日"
+        label.snp.makeConstraints { make in
+            make.height.top.equalToSuperview()
+            if #available(iOS 11.0, *) {
+                make.left.equalTo(contaier.safeAreaLayoutGuide).offset(10)
+            } else {
+                make.left.equalTo(10)
+            }
+        }
 
         tableView.tableHeaderView = contaier
 
