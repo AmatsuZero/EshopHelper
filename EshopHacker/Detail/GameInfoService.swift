@@ -10,7 +10,6 @@ import PromiseKit
 import UIKit
 
 class GameInfoService {
-
     static let shared = GameInfoService()
 
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
@@ -93,7 +92,8 @@ class GameInfoService {
                 let country: String
                 let originPrice: String?
                 let price: String
-                let cutfoff: Int?
+                let cutoff: Int?
+                var isLowest: Bool?
             }
 
             let commentCount: Int
@@ -321,14 +321,14 @@ class SSBGameInfoViewModel: SSBViewModelProtocol {
                 ])
             developer = NSAttributedString(string: "\(game.pubDate)/\(game.publisher)/\(game.developer ?? "未知")",
                 attributes: [
-                .font: UIFont.boldSystemFont(ofSize: 12),
-                .foregroundColor: UIColor.gray
-            ])
+                    .font: UIFont.boldSystemFont(ofSize: 12),
+                    .foregroundColor: UIColor.gray
+                ])
 
             brief = NSAttributedString(string: game.brief ?? "无简介", attributes: [
                 .font: UIFont.systemFont(ofSize: 14),
                 .foregroundColor: UIColor.darkText
-            ])
+                ])
 
             shouldShowOnlineMark = game.playMode?.contains("线上联机(需会员)") ?? false
             languageRegion = game.languageRegion ?? []
@@ -416,7 +416,13 @@ class SSBGameInfoViewModel: SSBViewModelProtocol {
             }
 
             hasMore = prices.count > 3
-            self.prices = prices.sorted { Double($0.price) ?? 0 < Double($1.price) ?? 0 }
+            self.prices = prices
+                .sorted { Double($0.price) ?? 0 < Double($1.price) ?? 0 }
+                .map {
+                    var original = $0
+                    original.isLowest = $0.price == lowestPrice
+                    return original
+            }
         }
     }
 

@@ -63,7 +63,16 @@ class SSBGamePriceListView: UITableViewCell {
     class GamePriceListCell: UITableViewCell, Reusable {
 
         private let countryLabel = UILabel()
-        private let disCountLabel = UILabel()
+        private let disCountLabel: UILabel = {
+            let disCountLabel = UILabel()
+            disCountLabel.layer.cornerRadius = 2
+            disCountLabel.layer.masksToBounds = true
+            disCountLabel.backgroundColor = .eShopColor
+            disCountLabel.font = .systemFont(ofSize: 10)
+            disCountLabel.textAlignment = .center
+            disCountLabel.textColor = .white
+            return disCountLabel
+        }()
         private let originPriceLabel = UILabel()
         private let priceLabel = UILabel()
         var data: GameInfoService.GameInfoData.Info.GamePrice? {
@@ -73,12 +82,13 @@ class SSBGamePriceListView: UITableViewCell {
                 }
                 setNeedsLayout()
                 countryLabel.text = model.country
-                if let cutoff = model.cutfoff {
+                if let cutoff = model.cutoff {
                     disCountLabel.superview?.isHidden = false
                     disCountLabel.text = "\(cutoff)%折扣"
                 } else {
                     disCountLabel.superview?.isHidden = true
                 }
+                lowestLabel.isHidden = !(model.isLowest ?? false)
                 if let price = model.price.rmbExpression() {
                     priceLabel.superview?.isHidden = false
                     priceLabel.text = price
@@ -88,6 +98,18 @@ class SSBGamePriceListView: UITableViewCell {
                 }
             }
         }
+        let lowestLabel: UILabel = {
+            let label = UILabel()
+            label.layer.cornerRadius = 2
+            label.layer.masksToBounds = true
+            label.backgroundColor = .cyan
+            label.font = .systemFont(ofSize: 10)
+            label.textAlignment = .center
+            label.textColor = .white
+            label.isHidden = true
+            label.text = "历史最低"
+            return label
+        }()
 
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -101,21 +123,23 @@ class SSBGamePriceListView: UITableViewCell {
 
             let discountLabelContainer = UIView()
             discountLabelContainer.isHidden = true
-            disCountLabel.layer.cornerRadius = 2
-            disCountLabel.layer.masksToBounds = true
-            disCountLabel.backgroundColor = .eShopColor
-            disCountLabel.font = .systemFont(ofSize: 12)
-            disCountLabel.textColor = .white
             discountLabelContainer.addSubview(disCountLabel)
             disCountLabel.snp.makeConstraints { make in
-                make.left.top.equalTo(2)
-                make.right.bottom.equalTo(-2)
+                make.left.top.equalToSuperview()
+                make.height.equalTo(18.6)
+                make.width.equalTo(46)
+            }
+
+            discountLabelContainer.addSubview(lowestLabel)
+            lowestLabel.snp.makeConstraints { make in
+                make.left.equalTo(disCountLabel.snp.right).offset(2)
+                make.top.width.height.equalTo(disCountLabel)
             }
 
             contentView.addSubview(discountLabelContainer)
             discountLabelContainer.snp.makeConstraints { make in
-                make.centerY.equalTo(countryLabel)
-                make.left.equalTo(countryLabel.snp.right).offset(10)
+                make.top.equalTo(countryLabel)
+                make.centerX.equalToSuperview().offset(-40)
             }
 
             let view = UIStackView()
