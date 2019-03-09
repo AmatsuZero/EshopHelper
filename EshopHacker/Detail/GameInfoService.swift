@@ -56,7 +56,7 @@ class GameInfoService {
                 let entity: Bool?
                 let discountEnd: Int?
                 let icon: String?
-                let languageRegion: [LanguageRegion]
+                let languageRegion: [LanguageRegion]?
 
                 let leftDiscount: String?
                 let lowestPrice: String?
@@ -331,7 +331,7 @@ class SSBGameInfoViewModel: SSBViewModelProtocol {
             ])
 
             shouldShowOnlineMark = game.playMode?.contains("线上联机(需会员)") ?? false
-            languageRegion = game.languageRegion
+            languageRegion = game.languageRegion ?? []
 
             func createBasicLabel(title: String, desc: String, needTriangle: Bool = false, tag: Int) -> UIControl {
                 let view = UIControl()

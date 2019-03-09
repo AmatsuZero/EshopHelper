@@ -7,12 +7,13 @@
     </entity>
     <entity name="SSBBrowseHistory" representedClassName="SSBBrowseHistory" syncable="YES">
         <attribute name="appid" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Favourites" positionX="-63" positionY="-18" width="128" height="45"/>
         <element name="SearchHistory" positionX="-54" positionY="-9" width="128" height="75"/>
-        <element name="SSBBrowseHistory" positionX="-54" positionY="0" width="128" height="90"/>
+        <element name="SSBBrowseHistory" positionX="-54" positionY="0" width="128" height="105"/>
     </elements>
 </model>

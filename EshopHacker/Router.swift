@@ -47,8 +47,10 @@ enum Router: URLConvertible, URLRequestConvertible {
     case postComment(CommentService.PostCommentOption)
     /// 今日推荐
     case todayRecommend(TodayRecommendService.RequsetOption)
+    /// 帖子
+    case bbs(GameBBSService.RequestOption)
     /// 社区
-    case community(GameCommunityService.RequestOption)
+    case community(path: String)
 
     enum Error: CustomNSError {
         case invalidURL
@@ -81,7 +83,9 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .getComment: return "/switch/comment/listGameComment"
         case .postComment: return "/switch/comment/gameComment"
         case .todayRecommend: return "/switch/informationFlow/list"
-        case .community: return "/switch/post/list"
+        case .bbs: return "/switch/post/list"
+        case .community(let path):
+            return "/switch/community/\(path)"
         }
     }
 
@@ -99,7 +103,7 @@ enum Router: URLConvertible, URLRequestConvertible {
             components.queryItems = option.asQueryItems()
         case .todayRecommend(let option):
             components.queryItems = option.asQueryItems()
-        case .community(let option):
+        case .bbs(let option):
             components.queryItems = option.asQueryItems()
         case .gameInfo(let appId, let fromName):
             var queryItems = [URLQueryItem]()
@@ -110,6 +114,7 @@ enum Router: URLConvertible, URLRequestConvertible {
             components.queryItems = queryItems
         case .banner:
             components.queryItems = [.init(name: "version", value: "\(Router.version)")]
+        default: break
         }
         guard let url = components.url else {
             throw Error.invalidURL
@@ -120,7 +125,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
-        case .banner, .getComment, .postComment, .community:
+        case .banner, .getComment, .postComment, .bbs, .community:
             request.setValue(Router.cookieString, forHTTPHeaderField: "Cookie")
         default:
             break

@@ -346,7 +346,7 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
         }
 
         lastPage = 1
-        let ret = GameCommunityService.shared.postList(id: appid, page: lastPage)
+        let ret = GameBBSService.shared.postList(id: appid, page: lastPage)
         request = ret.request
         let backgroundView = tableView.backgroundView as? SSBListBackgroundView
 
@@ -377,7 +377,7 @@ extension SSBCommunityViewController: SSBTableViewDelegate {
             return
         }
 
-        let ret = GameCommunityService.shared.postList(id: appid, page: lastPage + 1)
+        let ret = GameBBSService.shared.postList(id: appid, page: lastPage + 1)
         request = ret.request
         ret.promise.done { [weak self] ret in
             guard let self = self, let data = ret.data else {

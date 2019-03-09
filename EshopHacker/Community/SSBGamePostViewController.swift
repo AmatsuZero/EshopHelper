@@ -60,7 +60,7 @@ class SSBGamePostViewController: SSBCommunityViewController {
     @discardableResult
     func fetchData() -> Promise<CGFloat> {
         lastPage = 1
-        let ret = GameCommunityService.shared.postList(id: appid, page: lastPage)
+        let ret = GameBBSService.shared.postList(id: appid, page: lastPage)
         request = ret.request
         let tableView = communityView.tableView
         self.request = ret.request

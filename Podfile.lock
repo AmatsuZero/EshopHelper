@@ -6,7 +6,7 @@ PODS:
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
   - NVActivityIndicatorView/Presenter (4.6.1)
-  - Pageboy (3.0.7)
+  - Pageboy (3.1.0)
   - PromiseKit/Alamofire (6.8.3):
     - Alamofire (~> 4.0)
     - PromiseKit/CorePromise
@@ -21,9 +21,9 @@ PODS:
   - SDWebImage/Core (4.4.6)
   - SnapKit (4.0.1)
   - SwiftLint (0.31.0)
-  - Tabman (2.1.4):
+  - Tabman (2.2.0):
     - AutoInsetter (~> 1.5)
-    - Pageboy (~> 3.0)
+    - Pageboy (~> 3.1)
   - Toast-Swift (4.0.1)
   - UIWindowTransitions (0.2.0)
   - WechatOpenSDK (1.8.4)
@@ -67,17 +67,17 @@ SPEC CHECKSUMS:
   FontAwesome.swift: 9b5a9b9adb6d48b2d37c1e789889ef377cfbc205
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
-  Pageboy: 8210fff0db9dd487f58dc9769d5d046f2618ebe0
+  Pageboy: 338e39c26c64d1793704bb252df0897b4d7edf40
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   Reusable: 188be1a54ac0691bc66e5bb24ec6eb91971b315b
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
-  Tabman: f8a6a1967312077334631d2f67010fe905a545f1
+  Tabman: e5b1b3faef854c666bc8e500aebb26fbaf7674c8
   Toast-Swift: e42a638589a2f95036b4bb7626cfbdde7daf0393
   UIWindowTransitions: cb662e2ae9e2d1060fcdbe3eb3de9232bedb7612
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
 
 PODFILE CHECKSUM: 78534d0f318d846388d9e05954e4d09a2292ee85
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.6.1

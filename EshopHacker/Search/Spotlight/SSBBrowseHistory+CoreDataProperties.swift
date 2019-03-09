@@ -15,7 +15,11 @@ extension SSBBrowseHistory {
     static let entityName = "SSBBrowseHistory"
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SSBBrowseHistory> {
-        return NSFetchRequest<SSBBrowseHistory>(entityName: entityName)
+        let request = NSFetchRequest<SSBBrowseHistory>(entityName: entityName)
+        // 按照时间排序
+        let descriptor = NSSortDescriptor(key: "date", ascending: false)
+        request.sortDescriptors = [descriptor]
+        return request
     }
 
     static var context: NSManagedObjectContext  = {
@@ -25,5 +29,5 @@ extension SSBBrowseHistory {
     @NSManaged public var title: String?
     @NSManaged public var appid: String?
     @NSManaged public var developer: String?
-
+    @NSManaged public var date: NSDate?
 }

@@ -105,7 +105,35 @@ class NetworkTests: XCTestCase {
     func testgetPostList() {
         let expectation = self.expectation(description: "帖子列表")
         firstly {
-            GameCommunityService.shared.postList(id: "ABgtXtGz9Q6fDBQI", page: 1).promise
+            GameBBSService.shared.postList(id: "ABgtXtGz9Q6fDBQI", page: 1).promise
+        }.done {
+            print($0)
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }.finally {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testGetRecentViewList() {
+        let expectation = self.expectation(description: "最近浏览的")
+        firstly {
+            GameCommuintyService.shared.recentViewList().promise
+        }.done {
+            print($0)
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }.finally {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testGetHotGameList() {
+        let expectation = self.expectation(description: "热门游戏")
+        firstly {
+            GameCommuintyService.shared.hotGameList().promise
         }.done {
             print($0)
         }.catch {

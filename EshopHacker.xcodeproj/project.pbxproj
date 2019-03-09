@@ -71,23 +71,15 @@
 		806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9942205BBC90016B623 /* SSBPlayer.swift */; };
 		806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806FF9962205BCBA0016B623 /* SSBPlayerView.swift */; };
 		8074872D2232B32B00E40C20 /* SSBBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8074872C2232B32B00E40C20 /* SSBBackgroundView.swift */; };
-		807487452232B84900E40C20 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 8074872F2232B84900E40C20 /* index.html */; };
-		807487462232B84900E40C20 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 807487302232B84900E40C20 /* index.js */; };
-		807487472232B84900E40C20 /* index.css in Resources */ = {isa = PBXBuildFile; fileRef = 807487312232B84900E40C20 /* index.css */; };
-		8074874A2232B84900E40C20 /* t-rex-runner-bot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487352232B84900E40C20 /* t-rex-runner-bot.gif */; };
-		8074874B2232B84900E40C20 /* offline-sprite-1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487362232B84900E40C20 /* offline-sprite-1x.png */; };
-		8074874C2232B84900E40C20 /* t-rex-runner-19janil.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487372232B84900E40C20 /* t-rex-runner-19janil.gif */; };
-		8074874D2232B84900E40C20 /* 200-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487392232B84900E40C20 /* 200-disabled.png */; };
-		8074874E2232B84900E40C20 /* 200-offline-sprite.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873A2232B84900E40C20 /* 200-offline-sprite.png */; };
-		8074874F2232B84900E40C20 /* 200-error-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873B2232B84900E40C20 /* 200-error-offline.png */; };
-		807487502232B84900E40C20 /* kumamon-runner.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8074873C2232B84900E40C20 /* kumamon-runner.gif */; };
-		807487512232B84900E40C20 /* 100-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873E2232B84900E40C20 /* 100-disabled.png */; };
-		807487522232B84900E40C20 /* 100-error-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 8074873F2232B84900E40C20 /* 100-error-offline.png */; };
-		807487532232B84900E40C20 /* 100-offline-sprite.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487402232B84900E40C20 /* 100-offline-sprite.png */; };
-		807487542232B84900E40C20 /* offline-sprite-2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487412232B84900E40C20 /* offline-sprite-2x.png */; };
-		807487552232B84900E40C20 /* novas-coisas.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487422232B84900E40C20 /* novas-coisas.gif */; };
-		807487562232B84900E40C20 /* hello-kugou.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487432232B84900E40C20 /* hello-kugou.gif */; };
-		807487572232B84900E40C20 /* screenshot.gif in Resources */ = {isa = PBXBuildFile; fileRef = 807487442232B84900E40C20 /* screenshot.gif */; };
+		807487872233BF5000E40C20 /* SSBRootCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807487862233BF5000E40C20 /* SSBRootCommunityViewController.swift */; };
+		807487B72233CA0A00E40C20 /* GameCommunityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807487B62233CA0A00E40C20 /* GameCommunityService.swift */; };
+		807487C12233D26A00E40C20 /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 807487B92233D26900E40C20 /* main.css */; };
+		807487C22233D26A00E40C20 /* CNAME in Resources */ = {isa = PBXBuildFile; fileRef = 807487BA2233D26900E40C20 /* CNAME */; };
+		807487C32233D26A00E40C20 /* game.js in Resources */ = {isa = PBXBuildFile; fileRef = 807487BC2233D26A00E40C20 /* game.js */; };
+		807487C42233D26A00E40C20 /* offline-sprite-2x-src.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487BE2233D26A00E40C20 /* offline-sprite-2x-src.png */; };
+		807487C52233D26A00E40C20 /* offline-sprite-1x-src.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487BF2233D26A00E40C20 /* offline-sprite-1x-src.png */; };
+		807487C62233D26A00E40C20 /* t-rex-kugou.png in Resources */ = {isa = PBXBuildFile; fileRef = 807487C02233D26A00E40C20 /* t-rex-kugou.png */; };
+		807487C82233D29A00E40C20 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 807487C72233D29A00E40C20 /* index.html */; };
 		80871D1F2215C2FD002DFC26 /* SSBGamePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */; };
 		80AA16F2220DDB8800D4AD81 /* SSBCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */; };
 		80AA16F42210067300D4AD81 /* SSBCommentReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */; };
@@ -214,23 +206,15 @@
 		806FF9942205BBC90016B623 /* SSBPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayer.swift; sourceTree = "<group>"; };
 		806FF9962205BCBA0016B623 /* SSBPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBPlayerView.swift; sourceTree = "<group>"; };
 		8074872C2232B32B00E40C20 /* SSBBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBBackgroundView.swift; sourceTree = "<group>"; };
-		8074872F2232B84900E40C20 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		807487302232B84900E40C20 /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		807487312232B84900E40C20 /* index.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = index.css; sourceTree = "<group>"; };
-		807487352232B84900E40C20 /* t-rex-runner-bot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "t-rex-runner-bot.gif"; sourceTree = "<group>"; };
-		807487362232B84900E40C20 /* offline-sprite-1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-1x.png"; sourceTree = "<group>"; };
-		807487372232B84900E40C20 /* t-rex-runner-19janil.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "t-rex-runner-19janil.gif"; sourceTree = "<group>"; };
-		807487392232B84900E40C20 /* 200-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-disabled.png"; sourceTree = "<group>"; };
-		8074873A2232B84900E40C20 /* 200-offline-sprite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-offline-sprite.png"; sourceTree = "<group>"; };
-		8074873B2232B84900E40C20 /* 200-error-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200-error-offline.png"; sourceTree = "<group>"; };
-		8074873C2232B84900E40C20 /* kumamon-runner.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "kumamon-runner.gif"; sourceTree = "<group>"; };
-		8074873E2232B84900E40C20 /* 100-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-disabled.png"; sourceTree = "<group>"; };
-		8074873F2232B84900E40C20 /* 100-error-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-error-offline.png"; sourceTree = "<group>"; };
-		807487402232B84900E40C20 /* 100-offline-sprite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "100-offline-sprite.png"; sourceTree = "<group>"; };
-		807487412232B84900E40C20 /* offline-sprite-2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-2x.png"; sourceTree = "<group>"; };
-		807487422232B84900E40C20 /* novas-coisas.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "novas-coisas.gif"; sourceTree = "<group>"; };
-		807487432232B84900E40C20 /* hello-kugou.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "hello-kugou.gif"; sourceTree = "<group>"; };
-		807487442232B84900E40C20 /* screenshot.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = screenshot.gif; sourceTree = "<group>"; };
+		807487862233BF5000E40C20 /* SSBRootCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBRootCommunityViewController.swift; sourceTree = "<group>"; };
+		807487B62233CA0A00E40C20 /* GameCommunityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCommunityService.swift; sourceTree = "<group>"; };
+		807487B92233D26900E40C20 /* main.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = main.css; sourceTree = "<group>"; };
+		807487BA2233D26900E40C20 /* CNAME */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CNAME; sourceTree = "<group>"; };
+		807487BC2233D26A00E40C20 /* game.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = game.js; sourceTree = "<group>"; };
+		807487BE2233D26A00E40C20 /* offline-sprite-2x-src.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-2x-src.png"; sourceTree = "<group>"; };
+		807487BF2233D26A00E40C20 /* offline-sprite-1x-src.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offline-sprite-1x-src.png"; sourceTree = "<group>"; };
+		807487C02233D26A00E40C20 /* t-rex-kugou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t-rex-kugou.png"; sourceTree = "<group>"; };
+		807487C72233D29A00E40C20 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBGamePostViewController.swift; sourceTree = "<group>"; };
 		80AA16F1220DDB8800D4AD81 /* SSBCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCustomButton.swift; sourceTree = "<group>"; };
 		80AA16F32210067300D4AD81 /* SSBCommentReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSBCommentReuseView.swift; sourceTree = "<group>"; };
@@ -498,6 +482,8 @@
 				80871D1E2215C2FD002DFC26 /* SSBGamePostViewController.swift */,
 				802E38CB2212C71600B5399F /* SSBPostDetailViewController.swift */,
 				80B4540E22180DDE00AE2575 /* SSBCommunityResueView.swift */,
+				807487862233BF5000E40C20 /* SSBRootCommunityViewController.swift */,
+				807487B62233CA0A00E40C20 /* GameCommunityService.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -516,49 +502,39 @@
 		8074872E2232B84900E40C20 /* OfflineGame */ = {
 			isa = PBXGroup;
 			children = (
-				8074872F2232B84900E40C20 /* index.html */,
-				807487302232B84900E40C20 /* index.js */,
-				807487312232B84900E40C20 /* index.css */,
-				807487342232B84900E40C20 /* assets */,
+				807487C72233D29A00E40C20 /* index.html */,
+				807487BD2233D26A00E40C20 /* assets */,
+				807487BA2233D26900E40C20 /* CNAME */,
+				807487B82233D26900E40C20 /* css */,
+				807487BB2233D26A00E40C20 /* js */,
 			);
 			path = OfflineGame;
 			sourceTree = "<group>";
 		};
-		807487342232B84900E40C20 /* assets */ = {
+		807487B82233D26900E40C20 /* css */ = {
 			isa = PBXGroup;
 			children = (
-				807487352232B84900E40C20 /* t-rex-runner-bot.gif */,
-				807487362232B84900E40C20 /* offline-sprite-1x.png */,
-				807487372232B84900E40C20 /* t-rex-runner-19janil.gif */,
-				807487382232B84900E40C20 /* default_200_percent */,
-				8074873C2232B84900E40C20 /* kumamon-runner.gif */,
-				8074873D2232B84900E40C20 /* default_100_percent */,
-				807487412232B84900E40C20 /* offline-sprite-2x.png */,
-				807487422232B84900E40C20 /* novas-coisas.gif */,
-				807487432232B84900E40C20 /* hello-kugou.gif */,
-				807487442232B84900E40C20 /* screenshot.gif */,
+				807487B92233D26900E40C20 /* main.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		807487BB2233D26A00E40C20 /* js */ = {
+			isa = PBXGroup;
+			children = (
+				807487BC2233D26A00E40C20 /* game.js */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		807487BD2233D26A00E40C20 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				807487BE2233D26A00E40C20 /* offline-sprite-2x-src.png */,
+				807487BF2233D26A00E40C20 /* offline-sprite-1x-src.png */,
+				807487C02233D26A00E40C20 /* t-rex-kugou.png */,
 			);
 			path = assets;
-			sourceTree = "<group>";
-		};
-		807487382232B84900E40C20 /* default_200_percent */ = {
-			isa = PBXGroup;
-			children = (
-				807487392232B84900E40C20 /* 200-disabled.png */,
-				8074873A2232B84900E40C20 /* 200-offline-sprite.png */,
-				8074873B2232B84900E40C20 /* 200-error-offline.png */,
-			);
-			path = default_200_percent;
-			sourceTree = "<group>";
-		};
-		8074873D2232B84900E40C20 /* default_100_percent */ = {
-			isa = PBXGroup;
-			children = (
-				8074873E2232B84900E40C20 /* 100-disabled.png */,
-				8074873F2232B84900E40C20 /* 100-error-offline.png */,
-				807487402232B84900E40C20 /* 100-offline-sprite.png */,
-			);
-			path = default_100_percent;
 			sourceTree = "<group>";
 		};
 		E083909B0DB579583FBBF872 /* Pods */ = {
@@ -685,23 +661,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				807487532232B84900E40C20 /* 100-offline-sprite.png in Resources */,
-				807487562232B84900E40C20 /* hello-kugou.gif in Resources */,
-				8074874C2232B84900E40C20 /* t-rex-runner-19janil.gif in Resources */,
-				8074874A2232B84900E40C20 /* t-rex-runner-bot.gif in Resources */,
-				807487452232B84900E40C20 /* index.html in Resources */,
-				807487522232B84900E40C20 /* 100-error-offline.png in Resources */,
-				807487542232B84900E40C20 /* offline-sprite-2x.png in Resources */,
-				807487512232B84900E40C20 /* 100-disabled.png in Resources */,
-				807487462232B84900E40C20 /* index.js in Resources */,
-				807487502232B84900E40C20 /* kumamon-runner.gif in Resources */,
-				8074874B2232B84900E40C20 /* offline-sprite-1x.png in Resources */,
-				8074874D2232B84900E40C20 /* 200-disabled.png in Resources */,
-				807487552232B84900E40C20 /* novas-coisas.gif in Resources */,
-				807487572232B84900E40C20 /* screenshot.gif in Resources */,
-				807487472232B84900E40C20 /* index.css in Resources */,
-				8074874E2232B84900E40C20 /* 200-offline-sprite.png in Resources */,
-				8074874F2232B84900E40C20 /* 200-error-offline.png in Resources */,
+				807487C82233D29A00E40C20 /* index.html in Resources */,
+				807487C32233D26A00E40C20 /* game.js in Resources */,
+				807487C12233D26A00E40C20 /* main.css in Resources */,
+				807487C62233D26A00E40C20 /* t-rex-kugou.png in Resources */,
+				807487C52233D26A00E40C20 /* offline-sprite-1x-src.png in Resources */,
+				807487C22233D26A00E40C20 /* CNAME in Resources */,
+				807487C42233D26A00E40C20 /* offline-sprite-2x-src.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,6 +873,7 @@
 				801B7F6B21FD912D007DFCB5 /* AppDelegate.swift in Sources */,
 				805451F5220138F0002F04D7 /* SSBListBackgroundView.swift in Sources */,
 				801B8168220062E1007DFCB5 /* SSBBannerViewController.swift in Sources */,
+				807487B72233CA0A00E40C20 /* GameCommunityService.swift in Sources */,
 				801B816A22009AA3007DFCB5 /* CGValue+Extensions.swift in Sources */,
 				801B805E21FFE2F3007DFCB5 /* SSBLaunchViewController.swift in Sources */,
 				80573BB22202DB7C0001F080 /* TodayRecommendService.swift in Sources */,
@@ -925,6 +892,7 @@
 				806FF9952205BBC90016B623 /* SSBPlayer.swift in Sources */,
 				80F054A32206E1CF00F97CEC /* SSBDataStructure.swift in Sources */,
 				806FF9972205BCBA0016B623 /* SSBPlayerView.swift in Sources */,
+				807487872233BF5000E40C20 /* SSBRootCommunityViewController.swift in Sources */,
 				801B80A622001A0D007DFCB5 /* SSBSearchListViewController.swift in Sources */,
 				802E38CC2212C71600B5399F /* SSBPostDetailViewController.swift in Sources */,
 				802C0DBF22214B4400A7D31B /* SSBSearchViewController.swift in Sources */,

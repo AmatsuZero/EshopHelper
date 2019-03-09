@@ -23,11 +23,11 @@ class SSBRootViewController: UITabBarController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let recommenViewController = SSBRecommendWrapperViewController()
         let main = UINavigationController(rootViewController: recommenViewController)
-
         let searchViewController = SSBSearchViewController(nibName: nil, bundle: nil)
         let search = UINavigationController(rootViewController: searchViewController)
-
-        viewControllers = [main, search]
+        let communityViewController = SSBRootCommunityViewController(nibName: nil, bundle: nil)
+        let community = UINavigationController(rootViewController: communityViewController)
+        viewControllers = [main, search, community]
     }
 
     required init?(coder aDecoder: NSCoder) {

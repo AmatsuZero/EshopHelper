@@ -23,6 +23,7 @@ public class SSBBrowseHistory: NSManagedObject {
                 let history = words.first!
                 history.appid = appid
                 history.developer = developer
+                history.date = NSDate() // 更新日期
                 return Promise.value(history)
             }
             return add(title: title, appid: appid, developer: developer)
@@ -40,6 +41,7 @@ public class SSBBrowseHistory: NSManagedObject {
             model.title = title
             model.appid = appid
             model.developer = developer
+            model.date = NSDate()
             resolver.fulfill(model)
         })
     }

@@ -8,9 +8,9 @@
 
 import PromiseKit
 
-class GameCommunityService {
+class GameBBSService {
 
-    static let shared = GameCommunityService()
+    static let shared = GameBBSService()
 
     fileprivate let sessionManager = SessionManager.defaultSwitchSessionManager
 
@@ -77,13 +77,13 @@ class GameCommunityService {
     }
 
     private func post(option: RequestOption) -> Result {
-        return sessionManager.request(Router.community(option)).customResponse(ResultData.self)
+        return sessionManager.request(Router.bbs(option)).customResponse(ResultData.self)
     }
 }
 
 class SSBGamePostViewModel: SSBViewModelProtocol {
 
-    typealias Tyoe = GameCommunityService.ResultData.PostData.Post
+    typealias Tyoe = GameBBSService.ResultData.PostData.Post
     var originalData: Tyoe
     let title: NSAttributedString
     let replyTime: NSAttributedString
@@ -146,7 +146,7 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
 
     weak var tableView: UITableView?
 
-    func refresh(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
+    func refresh(_ posts: [GameBBSService.ResultData.PostData.Post]) {
         dataSource.removeAll()
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
         let isEmpty = dataSource.isEmpty
@@ -166,7 +166,7 @@ class SSBCommunityDataSource: NSObject, UITableViewDataSource {
         }
     }
 
-    func append(_ posts: [GameCommunityService.ResultData.PostData.Post]) {
+    func append(_ posts: [GameBBSService.ResultData.PostData.Post]) {
         let lastIndex = count
         dataSource += posts.map { SSBGamePostViewModel(model: $0) }
         tableView?.insertRows(at: (lastIndex..<dataSource.count).map { IndexPath(row: $0, section: 1) }, with: .fade)
