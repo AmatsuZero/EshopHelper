@@ -73,19 +73,19 @@ class NetworkTests: XCTestCase {
     }
 
     func testPostComment() {
-        let expectation = self.expectation(description: "发评论")
-        firstly {
-            CommentService.shared.postGameComment(by: "ABgtXtGz9Q6fDBQI",
-                                                  isLike: true,
-                                                  content: "画风清奇，脑洞很大").promise
-        }.done {
-            print($0)
-        }.catch {
-            XCTFail($0.localizedDescription)
-        }.finally {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10)
+//        let expectation = self.expectation(description: "发评论")
+//        firstly {
+//            CommentService.shared.postGameComment(by: "ABgtXtGz9Q6fDBQI",
+//                                                  isLike: true,
+//                                                  content: "画风清奇，脑洞很大").promise
+//        }.done {
+//            print($0)
+//        }.catch {
+//            XCTFail($0.localizedDescription)
+//        }.finally {
+//            expectation.fulfill()
+//        }
+//        wait(for: [expectation], timeout: 10)
     }
 
     func testTodayRecommend() {

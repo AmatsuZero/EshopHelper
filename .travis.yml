@@ -1,0 +1,7 @@
+language: swift
+xcode_workspace: EshopHacker.xcworkspace
+xcode_scheme: 
+  - "EshopHacker"
+  - "TodayExtension"
+xcode_destination: platform=iOS, Simulator, OS=11.4, name=iPhone X
+osx_image: xcode10.1
