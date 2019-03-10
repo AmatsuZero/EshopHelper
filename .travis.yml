@@ -1,5 +1,8 @@
 language: swift
 xcode_workspace: EshopHacker.xcworkspace
+before_install: 
+  - bundle install # 确保安装了最新的Pod
+  - pod repo update # 确保Pod源为最新
 xcode_scheme: 
   - "EshopHacker"
   - "TodayExtension"
