@@ -51,6 +51,8 @@ enum Router: URLConvertible, URLRequestConvertible {
     case bbs(GameBBSService.RequestOption)
     /// 社区
     case community(path: String)
+    /// 我喜欢的
+    case communityFavorite
 
     enum Error: CustomNSError {
         case invalidURL
@@ -84,6 +86,7 @@ enum Router: URLConvertible, URLRequestConvertible {
         case .postComment: return "/switch/comment/gameComment"
         case .todayRecommend: return "/switch/informationFlow/list"
         case .bbs: return "/switch/post/list"
+        case .communityFavorite: return "/switch/communityFavorite/list"
         case .community(let path):
             return "/switch/community/\(path)"
         }
@@ -114,7 +117,8 @@ enum Router: URLConvertible, URLRequestConvertible {
             components.queryItems = queryItems
         case .banner:
             components.queryItems = [.init(name: "version", value: "\(Router.version)")]
-        default: break
+        case .communityFavorite, .community:
+            break
         }
         guard let url = components.url else {
             throw Error.invalidURL
@@ -125,7 +129,7 @@ enum Router: URLConvertible, URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         var request = URLRequest(url: try asURL())
         switch self {
-        case .banner, .getComment, .postComment, .bbs, .community:
+        case .banner, .getComment, .postComment, .bbs, .community, .communityFavorite:
             request.setValue(Router.cookieString, forHTTPHeaderField: "Cookie")
         default:
             break

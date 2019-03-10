@@ -143,4 +143,18 @@ class NetworkTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
+    
+    func testMyFollowedGames() {
+        let expectation = self.expectation(description: "我关注的社区")
+        firstly {
+            GameCommuintyService.shared.followedList().promise
+        }.done {
+            print($0)
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }.finally {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
+    }
 }
