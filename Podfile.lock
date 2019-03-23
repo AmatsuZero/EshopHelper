@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (4.8.1)
   - AutoInsetter (1.5.1)
-  - FontAwesome.swift (1.5.1)
+  - FontAwesome.swift (1.6.0)
   - MJRefresh (3.1.15.7)
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
@@ -64,7 +64,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AutoInsetter: 249b103e316d5a9f2c7b88193e966f59bc1aa7b2
-  FontAwesome.swift: 9b5a9b9adb6d48b2d37c1e789889ef377cfbc205
+  FontAwesome.swift: 71a422e7b209ee940c7c21a5d13964ecf2897ca4
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
   Pageboy: 338e39c26c64d1793704bb252df0897b4d7edf40
